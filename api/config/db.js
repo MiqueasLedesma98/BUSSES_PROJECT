@@ -1,5 +1,21 @@
 const { Sequelize } = require("sequelize");
+// TODO: Agregar variables de entorno
 
-const sequelize = new Sequelize("sqlite::memory:");
+const sequelize = new Sequelize("VeoTrans", "postgres", null, {
+  host: "localhost",
+  dialect: "postgres",
+  logging: false,
+});
 
-module.exports = { sequelize };
+const initializeDB = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Conección con DB establecida");
+    await sequelize.sync({ force: true });
+    console.log("Database sincronizada");
+  } catch (error) {
+    console.error("No se a podido conectar a la base de datos:", error);
+  }
+};
+
+module.exports = { sequelize, initializeDB };
