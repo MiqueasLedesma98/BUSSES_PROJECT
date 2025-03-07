@@ -1,7 +1,9 @@
 module.exports = {
-  ...require("./user"),
-  ...require("./multimedia"),
+  ...require("./bus"),
   ...require("./category"),
   ...require("./company"),
-  ...require("./bus"),
+  ...require("./device"),
+  ...require("./multimedia"),
+  ...require("./promotion"),
+  ...require("./user"),
 };

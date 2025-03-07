@@ -15,7 +15,7 @@ const Multimedia = sequelize.define(
     },
     duration: { type: DataTypes.STRING, allowNull: false },
     views: { type: DataTypes.BIGINT, defaultValue: 0 },
-    path: { type: DataTypes.STRING, allowNull: false },
+    url_path: { type: DataTypes.STRING, allowNull: false },
   },
 
   { timestamps: true, version: false }

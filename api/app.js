@@ -1,20 +1,40 @@
+// Librerias
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const fs = require("fs");
 
+// Middleware - manejo de error
 const { httpErrors } = require("./middlewares");
 
-const { User, Multimedia } = require("./models");
+// DB - Config
 const { sequelize, initializeDB } = require("./config/db");
+
+const {
+  User,
+  Multimedia,
+  Bus,
+  Category,
+  Company,
+  Device,
+  Promotion,
+} = require("./models");
 
 const app = express();
 
-// Conexión con la base de datos - Relaciones
-// TODO: Realacionar los modelos / Configurar el modo de la DB
+// Relaciones
+User.hasMany(Multimedia);
+Bus.hasMany(Device);
+Company.hasMany(Bus);
+Multimedia.belongsToMany(Category, { through: "media_categories" });
+Category.belongsToMany(Multimedia, { through: "media_categories" });
+Company.belongsToMany(Promotion, { through: "company_promotions" });
+Promotion.belongsToMany(Company, { through: "company_promotions" });
 
+// Conexión con la base de datos
 initializeDB();
+
 // Middlewares
 app.use(logger("dev"));
 app.use(express.json());
