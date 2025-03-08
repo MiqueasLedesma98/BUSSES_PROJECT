@@ -9,7 +9,7 @@ const fs = require("fs");
 const { httpErrors } = require("./middlewares");
 
 // DB - Config
-const { sequelize, initializeDB } = require("./config/db");
+const { initializeDB } = require("./config/db");
 
 const {
   User,

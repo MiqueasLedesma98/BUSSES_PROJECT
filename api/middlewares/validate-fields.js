@@ -1,6 +1,22 @@
 const { validationResult } = require("express-validator");
 
+/**
+ * @template T
+ * @typedef {(
+ *   req: Request & T,
+ *   res: Response,
+ *   next: NextFunction
+ * ) => void} ExpressController
+ */
+
+/**
+ * @typedef {Object} propsType
+ */
+
 module.exports = {
+  /**
+   * @type {ExpressController<propsType>}
+   */
   validateFields: (req, res, next) => {
     const errors = validationResult(req);
 

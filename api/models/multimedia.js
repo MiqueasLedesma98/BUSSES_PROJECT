@@ -4,7 +4,12 @@ const { sequelize } = require("../config/db");
 const Multimedia = sequelize.define(
   "Media",
   {
-    id: { type: DataTypes.UUID, primaryKey: true, allowNull: false },
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+    },
     title: { type: DataTypes.UUID, allowNull: false },
     lang: { type: DataTypes.ENUM("ESP", "ENG") },
     type: { type: DataTypes.ENUM("MOVIE", "MUSIC") },
