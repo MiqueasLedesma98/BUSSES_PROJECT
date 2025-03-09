@@ -1,10 +1,9 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
-import LogoImg from "../assets/veotrans-logo.png";
-import IconMovie from "../assets/icon-movie.png";
-import IconChat from "../assets/icon-chat.png";
-import IconGraph from "../assets/icon-graph.png";
-import IconHelp from "../assets/icon-help.png";
+import { Card, SideBar } from "../components";
+import { useNavigate } from "react-router-dom";
+
 export default function Dashboard() {
+  const navigate = useNavigate();
   return (
     <Box
       display={"grid"}
@@ -15,62 +14,98 @@ export default function Dashboard() {
       <SideBar />
       <Box sx={{ backgroundColor: "#f8f8f8", width: "100%" }}>
         <Header />
-        <Box width={"100%"} height={"100px"} display={"flex"} alignItems={"center"} justifyContent={"end"}>
-          <Button variant="contained" sx={{height:"40px", marginRight:"30px"}}>
-            Nueva película
-          </Button>
+        <Box
+          width={"100%"}
+          height={"100px"}
+          display={"flex"}
+          alignItems={"center"}
+          justifyContent={"space-between"}
+        >
+          <Typography variant="h5" fontWeight={700} padding={3}>
+            Películas
+          </Typography>
+          <Box sx={{ padding: "20px", display: "flex", gap: "15px" }}>
+            <Button
+              variant="contained"
+              sx={{
+                height: "40px",
+                width: "150px",
+                borderRadius: "10px",
+              }}
+            >
+              Nueva película
+            </Button>
+            <Button
+              variant="outlined"
+              sx={{
+                height: "40px",
+                width: "150px",
+                borderRadius: "10px",
+                border: "2px solid #1976d2",
+              }}
+              onClick={() => navigate("/dashboard/movies")}
+            >
+              Ver todo
+            </Button>
+          </Box>
         </Box>
+        <CardsContainer />
+        <Box
+          width={"100%"}
+          height={"100px"}
+          display={"flex"}
+          alignItems={"center"}
+          marginTop={3}
+          justifyContent={"space-between"}
+        >
+          <Typography variant="h5" fontWeight={700} padding={3}>
+            Músicas
+          </Typography>
+          <Box sx={{ padding: "20px", display: "flex", gap: "15px" }}>
+            <Button
+              variant="contained"
+              sx={{
+                height: "40px",
+                width: "150px",
+                borderRadius: "10px",
+              }}
+            >
+              Nueva canción
+            </Button>
+            <Button
+              variant="outlined"
+              sx={{
+                height: "40px",
+                width: "150px",
+                borderRadius: "10px",
+                border: "2px solid #1976d2",
+              }}
+              onClick={() => navigate("/dashboard/musics")}
+            >
+              Ver todo
+            </Button>
+          </Box>
+        </Box>
+        <CardsContainer />
       </Box>
     </Box>
   );
 }
-
-const SideBar = () => {
+const CardsContainer = () => {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-        alignItems: "center",
-        paddingTop: "50px",
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(250px, 350px))",
+        justifyContent: "space-around",
+        gap: "30px",
       }}
     >
-      <img src={LogoImg} style={{ width: "127px", height: "35px" }} />
-      <Stack
-        sx={{
-          width: "100%",
-          paddingTop: "50px",
-          paddingLeft: "50px",
-          gap: "30px",
-        }}
-      >
-        <Box display={"flex"} gap={2} alignItems={"center"} width={"100%"}>
-          <img src={IconMovie} alt="icon_movie" style={{ width: "25px" }} />
-          <Typography fontSize={"18px"} sx={{ cursor: "pointer" }}>
-            Contenidos
-          </Typography>
-        </Box>
-        <Box display={"flex"} gap={2} alignItems={"center"}>
-          <img src={IconChat} alt="icon_movie" style={{ width: "25px" }} />
-          <Typography fontSize={"18px"} sx={{ cursor: "pointer" }}>
-            Publicidad
-          </Typography>
-        </Box>
-        <Box display={"flex"} gap={2} alignItems={"center"}>
-          <img src={IconHelp} alt="icon_movie" style={{ width: "25px" }} />
-          <Typography fontSize={"18px"} sx={{ cursor: "pointer" }}>
-            Empresa
-          </Typography>
-        </Box>
-        <Box display={"flex"} gap={2} alignItems={"center"}>
-          <img src={IconGraph} alt="icon_movie" style={{ width: "25px" }} />
-          <Typography fontSize={"18px"} sx={{ cursor: "pointer" }}>
-            Métricas
-          </Typography>
-        </Box>
-      </Stack>
-    </Box>
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+    </div>
   );
 };
 const Header = () => {
@@ -84,7 +119,7 @@ const Header = () => {
     >
       <Box flexGrow={1} padding={3}>
         <Typography variant="h4" fontWeight={700}>
-          Contenidos &#62; películas
+          Contenidos
         </Typography>
       </Box>
       <Stack padding={7}>
