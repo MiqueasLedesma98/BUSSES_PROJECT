@@ -6,6 +6,7 @@ import {
   Button,
   TextField,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import LoginImg from "../assets/img-login.png";
 import LogoImg from "../assets/veotrans-logo.png";
@@ -13,9 +14,11 @@ export default function Login() {
   const { setFieldValue, values } = useFormik({
     initialValues: { email: "", password: "" },
   });
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log({ values });
+    navigate("/dashboard");
   };
   return (
     <Box
