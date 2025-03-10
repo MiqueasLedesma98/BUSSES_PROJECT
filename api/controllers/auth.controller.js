@@ -5,16 +5,16 @@ const { User } = require("../models");
 /**
  * @template T
  * @typedef {(
- *   req: Request & T,
- *   res: Response,
- *   next: NextFunction
+ *   req: import('express').Request & T,
+ *   res: import('express').Response,
+ *   next: import('express').NextFunction
  * ) => void} ExpressController
  */
 
 /**
  * @typedef {Object} propsType
+ * @property {string} [customProperty] // Añade propiedades específicas si es necesario
  */
-
 module.exports = {
   /**
    * @type {ExpressController<propsType>}

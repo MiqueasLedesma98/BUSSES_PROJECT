@@ -7,11 +7,12 @@ const { check } = require("express-validator");
 // Middleware
 const { validateFields } = require("../middlewares");
 
-const {  } = require('../controllers')
+const { auth: controller } = require("../controllers");
 
-router.post("/login", [
-  check("email", "Debe ser un email válido").isEmail(),
-  validateFields,
-]);
+router.post(
+  "/login",
+  [check("email", "Debe ser un email válido").isEmail(), validateFields],
+  controller.login
+);
 
 module.exports = router;

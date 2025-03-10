@@ -1,4 +1,4 @@
 module.exports = {
-  ...require("./auth.controller"),
-  ...require("./multimedia.controller"),
+  auth: require("./auth.controller"),
+  stream: require("./stream"),
 };

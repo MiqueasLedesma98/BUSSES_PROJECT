@@ -59,3 +59,6 @@ typings/
 
 # next.js build output
 .next
+
+# Ignorar todos los archivos .mp4 dentro de la carpeta media y sus subcarpetas
+media/**/*.mp4

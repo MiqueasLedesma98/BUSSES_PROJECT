@@ -19,7 +19,7 @@ module.exports = {
    * @type {ExpressController<propsType>}
    */
   validateJWT: async (req, res, next) => {
-    const token = requestAnimationFrame.header("x-token");
+    const token = req.header("x-token");
 
     if (!token) return res.status(401).json({ msg: "No autorizado" });
 
