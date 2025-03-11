@@ -1,12 +1,16 @@
 const { User } = require("../models");
+const bcrypt = require("bcryptjs");
 
 const seedUsers = async () => {
   try {
+    const salt = await bcrypt.genSalt(10);
+    const password = await bcrypt.hash("123456a", salt);
+
     const users = [
       {
-        name: "ADMIN",
         email: "admin@admin.com",
-        password: "123456a",
+        name: "ADMIN",
+        password,
         role: "admin",
       },
     ];

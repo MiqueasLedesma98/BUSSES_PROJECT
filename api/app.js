@@ -11,6 +11,7 @@ const { httpErrors } = require("./middlewares");
 // DB - Config
 const { initializeDB } = require("./config/db");
 
+// Modelos
 const {
   User,
   Multimedia,
@@ -49,7 +50,7 @@ const routes = fs.readdirSync(path.join(__dirname, "routes"), {
 
 // Inicializar rutas
 routes.forEach((route) => {
-  app.use(`/${route.split(".")[0]}`, require(`./routes/${route}`));
+  app.use(`/api/${route.split(".")[0]}`, require(`./routes/${route}`));
 });
 
 // Manejo de errores
