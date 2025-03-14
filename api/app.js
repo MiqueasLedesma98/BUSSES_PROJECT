@@ -25,13 +25,25 @@ const {
 const app = express();
 
 // Relaciones
-User.hasMany(Multimedia);
-Bus.hasMany(Device);
-Company.hasMany(Bus);
-Multimedia.belongsToMany(Category, { through: "media_categories" });
-Category.belongsToMany(Multimedia, { through: "media_categories" });
-Company.belongsToMany(Promotion, { through: "company_promotions" });
-Promotion.belongsToMany(Company, { through: "company_promotions" });
+User.hasMany(Multimedia, { foreignKey: "UserId", onDelete: "CASCADE" });
+Bus.hasMany(Device, { foreignKey: "BusId", onDelete: "CASCADE" });
+Company.hasMany(Bus, { foreignKey: "CompanyId", onDelete: "CASCADE" });
+Multimedia.belongsToMany(Category, {
+  through: "media_categories",
+  onDelete: "CASCADE",
+});
+Category.belongsToMany(Multimedia, {
+  through: "media_categories",
+  onDelete: "CASCADE",
+});
+Company.belongsToMany(Promotion, {
+  through: "company_promotions",
+  onDelete: "CASCADE",
+});
+Promotion.belongsToMany(Company, {
+  through: "company_promotions",
+  onDelete: "CASCADE",
+});
 
 // Conexión con la base de datos
 initializeDB();

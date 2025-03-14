@@ -1,3 +1,5 @@
+const { Multimedia, Category } = require("../models");
+
 /**
  * @template T
  * @typedef {(
@@ -18,10 +20,46 @@ module.exports = {
    */
   post: async (req, res, next) => {
     try {
-      console.log({ fileName: req.file.originalname });
+      const { title, duration, description = "N/A", categories } = req.body;
+      const { type, lang } = req.params;
 
-      return res.send({ msg: "ok" });
+      const url_path = `/media/${type}/${lang}/${req.file?.filename}`;
+
+      const newMedia = await Multimedia.create({
+        description,
+        duration,
+        lang,
+        title,
+        type,
+        url_path,
+        UserId: req.uid,
+      });
+
+      if (categories && categories.length > 0) {
+        const categoryInstances = await Category.findAll({
+          where: { id: categories },
+        });
+
+        await newMedia.addCategories(categoryInstances);
+      }
+
+      return res
+        .status(201)
+        .json({ msg: "Archivo subido con éxito", media: newMedia });
     } catch (error) {
+      if (req.file) {
+        const filePath = path.join(
+          __dirname,
+          "..",
+          "media",
+          req.params.type,
+          req.params.lang,
+          req.file.filename
+        );
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      }
       next(error);
     }
   },

@@ -10,7 +10,7 @@ const Multimedia = sequelize.define(
       allowNull: false,
       primaryKey: true,
     },
-    title: { type: DataTypes.UUID, allowNull: false },
+    title: { type: DataTypes.STRING, allowNull: false },
     lang: { type: DataTypes.ENUM("esp", "eng") },
     type: { type: DataTypes.ENUM("movie", "music") },
     description: {

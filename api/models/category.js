@@ -11,6 +11,7 @@ const Category = sequelize.define(
       primaryKey: true,
     },
     name: { type: DataTypes.STRING, allowNull: false },
+    lang: { type: DataTypes.ENUM("eng", "esp") },
     description: { type: DataTypes.STRING, allowNull: false },
   },
   { timestamps: true, version: false }
