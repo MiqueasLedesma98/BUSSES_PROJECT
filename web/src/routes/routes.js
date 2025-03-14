@@ -1,11 +1,9 @@
 import { lazy } from "react";
 
+/**
+ * @type {[import('react-router-dom').RouteObject]}
+ */
 const routes = [
-  {
-    path: "/home",
-    component: lazy(() => import("../pages/Home")),
-    requiresAuth: true,
-  },
   {
     path: "/",
     component: lazy(() => import("../pages/Login")),

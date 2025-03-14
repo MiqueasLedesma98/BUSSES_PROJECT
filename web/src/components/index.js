@@ -1,2 +1,2 @@
-export { Card } from "./Card";
-export { SideBar } from "./SideBar";
+export * from "./Card";
+export * from "./SideBar";
