@@ -49,7 +49,8 @@ module.exports = {
         "Content-Range": `bytes ${start}-${end}/${videoSize}`,
         "Accept-Ranges": "bytes",
         "Content-Length": contentLength,
-        "Content-Type": "video/mp4",
+        "Content-Type":
+          req.params.folder === "movies" ? "video/mp4" : "audio/mp3",
       };
 
       // Estado HTTP 206 para Contenido Parcial

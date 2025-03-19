@@ -5,7 +5,7 @@ const { check } = require("express-validator");
 
 const { upload: controller } = require("../controllers");
 
-const { videoUpload } = require("../middlewares");
+const { upload } = require("../middlewares");
 
 router.post(
   "/:type/:lang",
@@ -13,12 +13,30 @@ router.post(
     validateJWT,
     check("type", "Debe ser un tipo válido").isIn(["movie", "music"]),
     check("lang", "Debe ser un lenguaje válido").isIn(["esp", "eng"]),
+    (req, _res, next) => {
+      console.log(req.body.media, req.body.cover);
+      next();
+    },
     validateFields,
-    videoUpload.single("media"),
+    upload.fields([
+      { name: "media", maxCount: 1 },
+      { name: "cover", maxCount: 1 },
+    ]),
   ],
   controller.post
 );
 
-router.put("/:id", [validateJWT], controller.put);
+router.put(
+  "/:id",
+  [
+    validateJWT,
+    check("type", "Debe ser un tipo válido").isIn(["movie", "music"]),
+    check("lang", "Debe ser un lenguaje válido").isIn(["esp", "eng"]),
+    // check("media", "El archivo es obligatorio").not().isEmpty(),
+    validateFields,
+    upload.single("media"),
+  ],
+  controller.put
+);
 
 module.exports = router;

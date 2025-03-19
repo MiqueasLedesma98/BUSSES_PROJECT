@@ -62,3 +62,7 @@ typings/
 
 # Ignorar todos los archivos .mp4 dentro de la carpeta media y sus subcarpetas
 media/**/*.mp4
+media/**/*.mp3
+media/**/*.png
+media/**/*.jpg
+media/**/*.jpeg

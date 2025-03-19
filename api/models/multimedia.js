@@ -18,9 +18,12 @@ const Multimedia = sequelize.define(
       defaultValue: "N/A",
       allowNull: false,
     },
+    cover_path: { type: DataTypes.STRING, allowNull: false },
     duration: { type: DataTypes.STRING, allowNull: false },
-    views: { type: DataTypes.BIGINT, defaultValue: 0 },
+    rate: { type: DataTypes.FLOAT, defaultValue: 0 },
     url_path: { type: DataTypes.STRING, allowNull: false },
+    views: { type: DataTypes.BIGINT, defaultValue: 0 },
+    year: { type: DataTypes.STRING, allowNull: false },
   },
 
   { timestamps: true, version: false }
