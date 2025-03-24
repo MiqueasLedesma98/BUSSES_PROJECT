@@ -3,6 +3,8 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const cron = require("node-cron");
+const { start } = require("./lib/cron");
 const fs = require("fs");
 
 // Middleware - manejo de error
@@ -64,6 +66,8 @@ const routes = fs.readdirSync(path.join(__dirname, "routes"), {
 routes.forEach((route) => {
   app.use(`/api/${route.split(".")[0]}`, require(`./routes/${route}`));
 });
+
+cron.schedule("*/10 * * * * *", start);
 
 // Manejo de errores
 app.use(httpErrors);

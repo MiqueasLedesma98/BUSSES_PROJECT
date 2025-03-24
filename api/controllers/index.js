@@ -3,4 +3,5 @@ module.exports = {
   stream: require("./stream"),
   upload: require("./upload.controller"),
   list: require("./list.controller"),
+  sync: require("./sync.controller"),
 };

@@ -23,6 +23,7 @@ const User = sequelize.define(
       unique: true,
       validate: { isEmail: { msg: "Must be a valid email" } },
     },
+    lastUpdate: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     password: { type: DataTypes.STRING, allowNull: false },
   },
   { timestamps: true, version: false }

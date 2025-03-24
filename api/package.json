@@ -8,6 +8,7 @@
     "seed": "node ./seed/all.seed.js"
   },
   "dependencies": {
+    "axios": "^1.8.4",
     "bcryptjs": "^3.0.2",
     "colors": "^1.4.0",
     "cookie-parser": "~1.4.4",
@@ -21,6 +22,7 @@
     "mongoose": "^8.11.0",
     "morgan": "~1.9.1",
     "multer": "^1.4.5-lts.1",
+    "node-cron": "^3.0.3",
     "nodemon": "^3.1.9",
     "pg": "^8.13.3",
     "sequelize": "^6.37.6",
