@@ -13,6 +13,12 @@ const seedUsers = async () => {
         password,
         role: "admin",
       },
+      {
+        email: "buss1@gmail.com",
+        name: "buss1",
+        password,
+        role: "user",
+      },
     ];
 
     const categories = [

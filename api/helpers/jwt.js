@@ -2,9 +2,12 @@ const { User } = require("../models");
 const jwt = require("jsonwebtoken");
 
 module.exports = {
-  generateJWT: (uid = "") => {
+  generateJWT: ({ uid = "", email = "" }) => {
     return new Promise((resolve, reject) => {
-      const payload = { uid: uid };
+      const payload = {};
+
+      if (uid) payload.uid = uid;
+      if (email) payload.email = email;
 
       jwt.sign(payload, process.env.SECRET_KEY, (err, token) => {
         if (err) {

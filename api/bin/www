@@ -8,6 +8,7 @@ const app = require("../app");
 const debug = require("debug")("api:server");
 const http = require("http");
 require("dotenv").config();
+require("colors");
 
 /**
  * Get port from environment and store in Express.
@@ -83,5 +84,6 @@ function onError(error) {
 function onListening() {
   const addr = server.address();
   const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+  console.log(`Server is running on port ${port}`.green);
   debug("Listening on " + bind);
 }

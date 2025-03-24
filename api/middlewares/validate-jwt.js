@@ -19,26 +19,42 @@ module.exports = {
    * @type {ExpressController<propsType>}
    */
   validateJWT: async (req, res, next) => {
-    const token = req.header("x-token");
-
-    if (!token) return res.status(401).json({ msg: "No autorizado" });
-
     try {
-      const { uid } = jwt.verify(token, process.env.SECRET_KEY);
+      const xtoken = req.header("x-token");
+      const ytoken = req.header("y-token");
 
-      const user = await User.findByPk(uid);
+      if (ytoken) {
+        const { email } = jwt.verify(ytoken, process.env.SECRET_KEY);
 
-      if (!user)
-        return res
-          .status(401)
-          .json({ msg: "El usuario no existe - Contacte a un administrador" });
+        const user = await User.findOne({ where: email });
 
-      req.user = user;
-      req.uid = user.id;
+        if (!user)
+          return res.status(401).json({
+            msg: "El usuario no existe - Contacte a un administrador",
+          });
 
-      next();
+        req.user = user;
+        req.uid = user.id;
+
+        next();
+      } else {
+        if (!xtoken) return res.status(401).json({ msg: "No autorizado" });
+
+        const { uid } = jwt.verify(xtoken, process.env.SECRET_KEY);
+
+        const user = await User.findByPk(uid);
+
+        if (!user)
+          return res.status(401).json({
+            msg: "El usuario no existe - Contacte a un administrador",
+          });
+
+        req.user = user;
+        req.uid = user.id;
+
+        next();
+      }
     } catch (error) {
-      console.log(error.message);
       return res.status(401).json({
         msg: "Token invalido",
       });

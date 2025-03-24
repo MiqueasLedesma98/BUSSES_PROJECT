@@ -7,7 +7,7 @@
  * ) => void} ExpressController
  */
 
-const { User, Multimedia } = require("../models");
+const { Multimedia, Promotion } = require("../models");
 
 /**
  * @typedef {Object} propsType
@@ -19,6 +19,26 @@ module.exports = {
    * @type {ExpressController<propsType>}
    */
   firstSync: async (req, res, next) => {
+    try {
+      const [multimedias, promotions] = await Promise.all([
+        Multimedia.findAll({
+          attributes: ["title", "description", "cover_path", "url_path", "id"],
+        }),
+        Promotion.findAll({
+          attributes: [],
+        }),
+      ]);
+
+      res.send({ multimedias, promotions });
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  },
+  /**
+   * @type {ExpressController<propsType>}
+   */
+  sync: async (req, res, next) => {
     try {
       const result = await Multimedia.findAll({
         attributes: ["title", "description", "cover_path", "url_path", "id"],
