@@ -11,6 +11,7 @@ const Promotion = sequelize.define(
       primaryKey: true,
     },
     path: { type: DataTypes.STRING, allowNull: false },
+    // isBanner: { }, // TODO: agregar propiedad para indicar si es un banner o no, tambien falta el lenguaje de la promoción
     views: { type: DataTypes.BIGINT, defaultValue: 0 },
     description: { type: DataTypes.STRING },
     expirationDate: { type: DataTypes.DATE, allowNull: false },

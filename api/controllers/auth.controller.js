@@ -35,7 +35,7 @@ module.exports = {
       if (!isCorrect)
         return res.status(401).json({ msg: "Contraseña incorrecta" });
 
-      const token = await generateJWT(user.id);
+      const token = await generateJWT({ uid: user.id });
 
       return res.send({ user: user, token });
     } catch (error) {

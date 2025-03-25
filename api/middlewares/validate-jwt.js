@@ -55,6 +55,7 @@ module.exports = {
         next();
       }
     } catch (error) {
+      console.error(error);
       return res.status(401).json({
         msg: "Token invalido",
       });

@@ -67,7 +67,8 @@ routes.forEach((route) => {
   app.use(`/api/${route.split(".")[0]}`, require(`./routes/${route}`));
 });
 
-cron.schedule("*/10 * * * * *", start);
+//TODO: Inicializar las tareas que se ejecutaran constantemente
+// cron.schedule("*/10 * * * * *", start);
 
 // Manejo de errores
 app.use(httpErrors);

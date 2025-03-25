@@ -4,4 +4,5 @@ module.exports = {
   upload: require("./upload.controller"),
   list: require("./list.controller"),
   sync: require("./sync.controller"),
+  promotion: require("./promotion.controller"),
 };
