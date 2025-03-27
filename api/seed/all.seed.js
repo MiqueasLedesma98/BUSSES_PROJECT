@@ -1,4 +1,5 @@
-const { User, Category } = require("../models");
+require("dotenv").config();
+const { User, Category, Company } = require("../models");
 const bcrypt = require("bcryptjs");
 
 const seedUsers = async () => {
@@ -21,6 +22,13 @@ const seedUsers = async () => {
       },
     ];
 
+    const companies = [{ name: "Pantene" }];
+
+    if (process.env.NODE_ENV === "DEV") {
+      await Company.bulkCreate(companies);
+      console.log("✔️ Companias de testeo creadas");
+    }
+
     const categories = [
       { name: "Acción", lang: "esp", description: "N/A" },
       { name: "action", lang: "eng", description: "N/A" },
@@ -34,7 +42,7 @@ const seedUsers = async () => {
 
     process.exit();
   } catch (error) {
-    console.error("❌ Error insertando usuarios:", error);
+    console.error("❌ Error al insertar datos", error);
     process.exit(1);
   }
 };

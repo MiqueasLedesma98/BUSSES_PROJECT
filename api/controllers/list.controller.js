@@ -7,7 +7,7 @@
  * ) => void} ExpressController
  */
 
-const { Multimedia } = require("../models");
+const { Multimedia, Category } = require("../models");
 
 /**
  * @typedef {Object} propsType
@@ -23,16 +23,25 @@ module.exports = {
       const { limit = 10, page = 0 } = req.query;
 
       const results = await Multimedia.findAndCountAll({
-        offset: limit * page,
+        offset: parseInt(limit) * parseInt(page),
         limit: parseInt(limit),
         where: { type, lang },
-        include: ["categories"],
+        include: [
+          {
+            model: Category,
+          },
+        ],
         attributes: {
           exclude: ["createdAt", "updatedAt"],
         },
       });
 
-      return res.send(results);
+      return res.send({
+        total: results.count,
+        results: results.rows,
+        limit,
+        page,
+      });
     } catch (error) {
       next(error);
     }

@@ -16,9 +16,4 @@ router.get(
   controller.list
 );
 
-// TODO: Terminar ruta para traer promociónes.
-router.get("/promotion/:type/:lang", [validateJWT, validateFields], (_, res) =>
-  res.send({ msg: "ok" })
-);
-
 module.exports = router;

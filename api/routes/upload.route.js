@@ -13,10 +13,11 @@ router.post(
     validateJWT,
     check("type", "Debe ser un tipo válido").isIn(["movie", "music"]),
     check("lang", "Debe ser un lenguaje válido").isIn(["esp", "eng"]),
-    (req, _res, next) => {
-      console.log(req.body.media, req.body.cover);
-      next();
-    },
+    // DEBUG
+    // (req, _res, next) => {
+    //   console.log(req.body.media, req.body.cover);
+    //   next();
+    // },
     validateFields,
     upload.fields([
       { name: "media", maxCount: 1 },
