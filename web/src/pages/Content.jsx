@@ -2,6 +2,7 @@ import { Box, Button, Stack, Typography, useTheme } from "@mui/material";
 import React from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Card } from "../components";
+import { useModalStore } from "../store";
 
 const ContentTypeRender = React.memo(
   ({
@@ -12,6 +13,7 @@ const ContentTypeRender = React.memo(
     redirect = "",
   }) => {
     const navigate = useNavigate();
+    const openModal = useModalStore((store) => store.openModal);
 
     console.log({ postUrl, getUrl });
 
@@ -22,7 +24,11 @@ const ContentTypeRender = React.memo(
             {title}
           </Typography>
           <Box sx={{ display: "flex", gap: 1 }}>
-            <Button variant="contained" sx={{ textTransform: "none" }}>
+            <Button
+              onClick={() => openModal("createMovie", true)}
+              variant="contained"
+              sx={{ textTransform: "none" }}
+            >
               {newBtnText}
             </Button>
             <Button

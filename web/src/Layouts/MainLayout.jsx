@@ -1,32 +1,35 @@
 import { Box } from "@mui/material";
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { SideBar } from "../components";
+import { ModalsBarrel, SideBar } from "../components";
 import MainHeader from "../components/MainHeader";
 import Footer from "../components/Footer";
 
 const MainLayout = () => {
   return (
-    <Box
-      sx={{
-        display: "grid",
-        gridTemplateAreas: `
+    <>
+      <ModalsBarrel />
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateAreas: `
           "header header"
           "sidebar main"
           "footer footer"
         `,
-        gridTemplateRows: "4rem 1fr 2rem",
-        gridTemplateColumns: "250px 1fr",
-        maxHeight: "100vh",
-        minHeight: "100vh",
-        overflowY: "hidden",
-      }}
-    >
-      <MainHeader />
-      <SideBar />
-      <Outlet />
-      <Footer />
-    </Box>
+          gridTemplateRows: "4rem 1fr 2rem",
+          gridTemplateColumns: "250px 1fr",
+          maxHeight: "100vh",
+          minHeight: "100vh",
+          overflowY: "hidden",
+        }}
+      >
+        <MainHeader />
+        <SideBar />
+        <Outlet />
+        <Footer />
+      </Box>
+    </>
   );
 };
 
