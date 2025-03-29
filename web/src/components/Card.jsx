@@ -12,6 +12,11 @@ export function Card() {
       sx={{
         width: "350px",
         borderRadius: "20px",
+        transition: "ease-in 100ms",
+        ":hover": {
+          scale: { xs: "1", sm: "1.05" },
+          transition: "ease-in 100ms",
+        },
       }}
     >
       <CardMedia
