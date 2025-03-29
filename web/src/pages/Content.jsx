@@ -18,7 +18,7 @@ const ContentTypeRender = React.memo(
     console.log({ postUrl, getUrl });
 
     return (
-      <Stack direction="column" gap="2rem" mt="2em">
+      <Stack direction="column" gap="2rem" mb="3rem">
         <Box sx={{ display: "flex", placeContent: "space-between" }}>
           <Typography fontWeight={"bold"} fontSize={24} variant="subtitle1">
             {title}

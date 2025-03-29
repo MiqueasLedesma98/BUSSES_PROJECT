@@ -13,10 +13,17 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useModalStore } from "../store";
+import { useFetch } from "../hooks";
 
 const CreateMovieModal = () => {
   const open = useModalStore((store) => store.modals?.createMovie);
   const close = useModalStore((store) => store.closeModal);
+
+  // eslint-disable-next-line no-unused-vars
+  const { data, loading } = useFetch({
+    url: "/categories",
+    shouldFetch: !!open,
+  });
 
   return (
     <Dialog
