@@ -1,5 +1,4 @@
 import { Box, Stack, Typography } from "@mui/material";
-import LogoImg from "../assets/veotrans-logo.png";
 import IconChat from "../assets/icon-chat.png";
 import IconGraph from "../assets/icon-graph.png";
 import IconHelp from "../assets/icon-help.png";
@@ -9,90 +8,77 @@ import IconGraphSelected from "../assets/icon-graph-selected.png";
 import IconHelpSelected from "../assets/icon-help-selected.png";
 import IconMovieSelected from "../assets/icon-movie-selected.png";
 import { NavLink, useLocation } from "react-router-dom";
+import { useMemo } from "react";
+
 export function SideBar() {
   const { pathname } = useLocation();
+
+  /**
+   * @typedef {Object} Route
+   * @property {string} route - La ruta del enlace.
+   * @property {React.ComponentType} icon - El icono que se muestra cuando la ruta no está seleccionada.
+   * @property {React.ComponentType} iconSelected - El icono que se muestra cuando la ruta está seleccionada.
+   * @property {String} name - El nombre que se mostrara en el enlace
+   */
+
+  /**
+   * @type {Route[]}
+   * Un arreglo de objetos de rutas, cada uno contiene la ruta y los iconos asociados.
+   */
+  const routes = useMemo(
+    () => [
+      {
+        route: "/dashboard/content",
+        icon: IconMovie,
+        iconSelected: IconMovieSelected,
+        name: "Contenido",
+      },
+      {
+        route: "/dashboard/advertising",
+        icon: IconChat,
+        iconSelected: IconChatSelected,
+        name: "Publicidad",
+      },
+      {
+        route: "/dashboard/enterprise",
+        icon: IconHelp,
+        iconSelected: IconHelpSelected,
+        name: "Empresa",
+      },
+      {
+        route: "/dashboard/metrics",
+        icon: IconGraph,
+        iconSelected: IconGraphSelected,
+        name: "Metrica",
+      },
+    ],
+    []
+  );
+
   return (
     <Box
+      component={"aside"}
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-        alignItems: "center",
-        paddingTop: "50px",
+        padding: "3rem",
+        placeContent: "flex-start",
+        display: "grid",
+        gridArea: "sidebar",
+        gridTemplateRows: "repeat(auto-fit, minmax(2rem, 3rem))",
       }}
     >
-      <img src={LogoImg} style={{ width: "127px", height: "35px" }} />
-      <Stack
-        sx={{
-          width: "100%",
-          paddingTop: "50px",
-          paddingLeft: "50px",
-          gap: "30px",
-        }}
-      >
-        <Box display={"flex"} gap={2} alignItems={"center"} width={"100%"}>
-          <img
-            src={
-              pathname === "/dashboard" ||
-              pathname === "/dashboard/movies" ||
-              pathname === "/dashboard/musics"
-                ? IconMovieSelected
-                : IconMovie
-            }
-            alt="icon_movie"
-            style={{ width: "25px" }}
-          />
-          <NavLink to={"/dashboard"}>
-            <Typography fontSize={"18px"} sx={{ cursor: "pointer" }}>
-              Contenidos
-            </Typography>
-          </NavLink>
-        </Box>
-        <Box display={"flex"} gap={2} alignItems={"center"}>
-          <img
-            src={
-              pathname === "/dashboard/advertising"
-                ? IconChatSelected
-                : IconChat
-            }
-            alt="icon_movie"
-            style={{ width: "25px" }}
-          />
-          <NavLink to={"/dashboard/advertising"}>
-            <Typography fontSize={"18px"} sx={{ cursor: "pointer" }}>
-              Publicidad
-            </Typography>
-          </NavLink>
-        </Box>
-        <Box display={"flex"} gap={2} alignItems={"center"}>
-          <img
-            src={
-              pathname === "/dashboard/enterprise" ? IconHelpSelected : IconHelp
-            }
-            alt="icon_movie"
-            style={{ width: "25px" }}
-          />
-          <NavLink to={"/dashboard/enterprise"}>
-            <Typography fontSize={"18px"} sx={{ cursor: "pointer" }}>
-              Empresa
-            </Typography>
-          </NavLink>
-        </Box>
-        <Box display={"flex"} gap={2} alignItems={"center"}>
-          <img
-            src={
-              pathname === "/dashboard/metrics" ? IconGraphSelected : IconGraph
-            }
-            alt="icon_movie"
-            style={{ width: "25px" }}
-          />
-          <NavLink to={"/dashboard/metrics"}>
-            <Typography fontSize={"18px"} sx={{ cursor: "pointer" }}>
-              Métricas
-            </Typography>
-          </NavLink>
-        </Box>
-      </Stack>
+      {routes?.map((route) => (
+        <NavLink key={route.route} to={route.route}>
+          <Stack direction={"row"} alignItems={"center"} gap={1}>
+            <img
+              src={
+                pathname.includes(route.route) ? route.iconSelected : route.icon
+              }
+              alt="error..."
+            />
+            <Typography>{route.name}</Typography>
+          </Stack>
+        </NavLink>
+      ))}
     </Box>
   );
 }

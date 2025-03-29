@@ -1,5 +1,5 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
-import { Card, SideBar } from "../components";
+import { Card } from "../components";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
@@ -11,7 +11,6 @@ export default function Dashboard() {
       width={"100vw"}
       height={"100vh"}
     >
-      <SideBar />
       <Box sx={{ backgroundColor: "#f8f8f8", width: "100%" }}>
         <Header />
         <Box

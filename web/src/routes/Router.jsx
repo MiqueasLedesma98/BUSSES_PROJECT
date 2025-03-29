@@ -1,24 +1,22 @@
-import { Suspense } from "react";
+import { useRoutes } from "react-router-dom";
 import { routes } from "./routes.js";
 import ProtectedRoute from "../components/ProtectedRoute";
-import { useRoutes } from "react-router-dom";
+import { Suspense } from "react";
+import SqueletonPage from "../pages/SqueletonPage.jsx";
+
 export default function Router() {
   const generateRoutes = (routes) =>
-    routes?.map((route) => {
-      const element = (
-        <Suspense fallback={<div>Cargando...</div>}>
-          <route.component />
+    routes?.map((route) => ({
+      path: route.path,
+      element: route.requiresAuth ? (
+        <ProtectedRoute>{route.element}</ProtectedRoute>
+      ) : (
+        <Suspense fallback={<SqueletonPage />}>
+          <route.element />
         </Suspense>
-      );
-      return {
-        path: route.path,
-        element: route.requiresAuth ? (
-          <ProtectedRoute>{element}</ProtectedRoute>
-        ) : (
-          element
-        ),
-        children: route.children ? generateRoutes(route.children) : undefined,
-      };
-    });
+      ),
+      children: route.children ? generateRoutes(route.children) : undefined,
+    }));
+
   return useRoutes(generateRoutes(routes));
 }

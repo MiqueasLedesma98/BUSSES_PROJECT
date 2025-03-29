@@ -1,30 +1,30 @@
-import { Box, Typography } from "@mui/material";
-import MovieImg from "../assets/card-img.png"
+import {
+  Card as MuiCard,
+  CardMedia,
+  CardContent,
+  Typography,
+} from "@mui/material";
+import MovieImg from "../assets/card-img.png";
+
 export function Card() {
   return (
-    <Box
+    <MuiCard
       sx={{
         width: "350px",
-        height: "250px",
-        backgroundColor: "white",
-        borderRadius: "0px 0px 20px 20px",
+        borderRadius: "20px",
       }}
     >
-      <Box
+      <CardMedia
+        component="img"
+        height="180"
+        image={MovieImg}
+        alt="Movie Image"
         sx={{
-          height: "180px",
-          width: "100%",
-          backgroundImage: `url(${MovieImg})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          borderRadius: "20px 20px 0px 0px",
+          borderRadius: "20px 20px 0 0",
         }}
-      ></Box>
-      <Box
+      />
+      <CardContent
         sx={{
-          height: "70px",
-          width: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -36,7 +36,7 @@ export function Card() {
           Moda en Parys
         </Typography>
         <Typography variant="body2">2022 | Action comedy</Typography>
-      </Box>
-    </Box>
+      </CardContent>
+    </MuiCard>
   );
 }

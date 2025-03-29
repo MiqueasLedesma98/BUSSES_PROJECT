@@ -1,4 +1,5 @@
 import { lazy } from "react";
+import MainLayout from "../Layouts/MainLayout";
 
 /**
  * @type {Array<import('react-router-dom').RouteObject>}
@@ -10,27 +11,43 @@ const routes = [
   },
   {
     path: "/dashboard",
-    element: lazy(() => import("../pages/Dashboard")),
+    element: MainLayout,
+    children: [
+      {
+        path: "content",
+        element: lazy(() => import("../pages/Content")),
+        children: [
+          {
+            path: "movies",
+            element: lazy(() => import("../pages/Movies")),
+          },
+          {
+            path: "musics",
+            element: lazy(() => import("../pages/Musics")),
+          },
+        ],
+      },
+      {
+        path: "advertising",
+        element: lazy(() => import("../pages/Construction")),
+      },
+      {
+        path: "enterprise",
+        element: lazy(() => import("../pages/Construction")),
+      },
+      {
+        path: "metrics",
+        element: lazy(() => import("../pages/Construction")),
+      },
+      {
+        path: "*",
+        element: lazy(() => import("../pages/NotFound")),
+      },
+    ],
   },
   {
-    path: "/dashboard/movies",
-    element: lazy(() => import("../pages/Movies")),
-  },
-  {
-    path: "/dashboard/musics",
-    element: lazy(() => import("../pages/Musics")),
-  },
-  {
-    path: "/dashboard/advertising",
-    element: lazy(() => import("../pages/Construction")),
-  },
-  {
-    path: "/dashboard/enterprise",
-    element: lazy(() => import("../pages/Construction")),
-  },
-  {
-    path: "/dashboard/metrics",
-    element: lazy(() => import("../pages/Construction")),
+    path: "*",
+    element: lazy(() => import("../pages/NotFound")),
   },
 ];
 

@@ -17,8 +17,7 @@ export default function Login() {
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ values });
-    navigate("/dashboard");
+    navigate("/dashboard/content");
   };
   return (
     <Box
