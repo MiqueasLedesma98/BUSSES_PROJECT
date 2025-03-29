@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cron = require("node-cron");
 const { start } = require("./lib/cron");
+const cors = require("cors");
 const fs = require("fs");
 
 // Middleware - manejo de error
@@ -52,6 +53,7 @@ initializeDB();
 
 // Middlewares
 app.use(logger("dev"));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

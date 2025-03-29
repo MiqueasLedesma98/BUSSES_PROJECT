@@ -11,7 +11,7 @@ const routes = [
   },
   {
     path: "/dashboard",
-    element: MainLayout,
+    element: <MainLayout />,
     children: [
       {
         path: "content",
@@ -44,6 +44,7 @@ const routes = [
         element: lazy(() => import("../pages/NotFound")),
       },
     ],
+    requiresAuth: true,
   },
   {
     path: "*",

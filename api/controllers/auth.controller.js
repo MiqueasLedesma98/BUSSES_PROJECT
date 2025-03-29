@@ -37,7 +37,9 @@ module.exports = {
 
       const token = await generateJWT({ uid: user.id });
 
-      return res.send({ user: user, token });
+      const formatResponse = { id: user.id, email: user.email };
+
+      return res.send({ user: formatResponse, token });
     } catch (error) {
       next(error);
     }

@@ -1,24 +1,12 @@
-import {
-  Typography,
-  Box,
-  Stack,
-  Input,
-  Button,
-  TextField,
-} from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { useFormik } from "formik";
+import { Typography, Box, Stack, TextField, Button } from "@mui/material";
+import { Formik, Form } from "formik";
 import LoginImg from "../assets/img-login.png";
 import LogoImg from "../assets/veotrans-logo.png";
+import { useAuthContext } from "../hooks";
+
 export default function Login() {
-  const { setFieldValue, values } = useFormik({
-    initialValues: { email: "", password: "" },
-  });
-  const navigate = useNavigate();
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    navigate("/dashboard/content");
-  };
+  const { login } = useAuthContext();
+
   return (
     <Box
       sx={{
@@ -48,38 +36,43 @@ export default function Login() {
           >
             Inicia Sesión
           </Typography>
-          <form
-            style={{ display: "flex", flexDirection: "column", gap: "2em" }}
-            onSubmit={handleSubmit}
-          >
-            <Stack>
-              <Typography fontSize={14} fontWeight={400} color="#4B4B4B">
-                Email
-              </Typography>
-              <TextField
-                placeholder="Ingresa tu email"
-                value={values.email}
-                onChange={({ target }) => setFieldValue("email", target.value)}
-              />
-            </Stack>
-            <Stack>
-              <Typography fontSize={14} fontWeight={400} color="#4B4B4B">
-                Contraseña
-              </Typography>
-              <TextField
-                placeholder="********"
-                type="password"
-                value={values.password}
-                onChange={({ target }) =>
-                  setFieldValue("password", target.value)
-                }
-              />
-            </Stack>
-            <Button variant="contained" type="submit">
-              {" "}
-              Iniciar Sesión
-            </Button>
-          </form>
+
+          {/* Envolver todo dentro de Formik */}
+          <Formik initialValues={{ email: "", password: "" }} onSubmit={login}>
+            {({ values, handleChange, handleSubmit }) => (
+              <Form
+                onSubmit={handleSubmit}
+                style={{ display: "flex", flexDirection: "column", gap: "2em" }}
+              >
+                <Stack>
+                  <Typography fontSize={14} fontWeight={400} color="#4B4B4B">
+                    Email
+                  </Typography>
+                  <TextField
+                    placeholder="Ingresa tu email"
+                    name="email"
+                    value={values.email}
+                    onChange={handleChange}
+                  />
+                </Stack>
+                <Stack>
+                  <Typography fontSize={14} fontWeight={400} color="#4B4B4B">
+                    Contraseña
+                  </Typography>
+                  <TextField
+                    placeholder="********"
+                    type="password"
+                    name="password"
+                    value={values.password}
+                    onChange={handleChange}
+                  />
+                </Stack>
+                <Button variant="contained" type="submit">
+                  Iniciar Sesión
+                </Button>
+              </Form>
+            )}
+          </Formik>
         </Stack>
       </Box>
       <Box

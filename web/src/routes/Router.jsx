@@ -1,5 +1,5 @@
 import { useRoutes } from "react-router-dom";
-import { routes } from "./routes.js";
+import { routes } from "./routes.jsx";
 import ProtectedRoute from "../components/ProtectedRoute";
 import { Suspense } from "react";
 import SqueletonPage from "../pages/SqueletonPage.jsx";
