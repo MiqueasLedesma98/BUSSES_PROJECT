@@ -1,7 +1,6 @@
-const path = require("path");
 const _ = require("lodash");
-const fs = require("fs");
 const { Multimedia, Category } = require("../models");
+const { deleteUploadedFiles } = require("../helpers");
 
 /**
  * @template T
@@ -70,23 +69,7 @@ module.exports = {
       });
     } catch (error) {
       // Eliminar archivos en caso de error
-      if (req.files) {
-        ["media", "cover"].forEach((key) => {
-          if (req.files[key]) {
-            req.files[key].forEach((file) => {
-              const filePath = path.join(
-                __dirname,
-                "..",
-                "media",
-                req.params.type,
-                req.params.lang,
-                file.filename
-              );
-              if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-            });
-          }
-        });
-      }
+      deleteUploadedFiles(req);
       next(error);
     }
   },
@@ -130,23 +113,7 @@ module.exports = {
       });
     } catch (error) {
       // Eliminar archivos en caso de error
-      if (req.files) {
-        ["media", "cover"].forEach((key) => {
-          if (req.files[key]) {
-            req.files[key].forEach((file) => {
-              const filePath = path.join(
-                __dirname,
-                "..",
-                "media",
-                req.params.type,
-                req.params.lang,
-                file.filename
-              );
-              if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-            });
-          }
-        });
-      }
+      deleteUploadedFiles(req);
       next(error);
     }
   },

@@ -17,6 +17,8 @@ router.post(
   controller.new_promotion
 );
 
+router.put("/:id", [validateJWT], controller.update_promotion);
+
 router.put(
   "/",
   [

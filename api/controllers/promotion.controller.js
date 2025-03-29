@@ -1,4 +1,6 @@
+const { deleteUploadedFiles } = require("../helpers");
 const { Promotion, Company } = require("../models");
+const _ = require("lodash");
 
 /**
  * @template T
@@ -51,8 +53,41 @@ module.exports = {
    */
   update_promotion: async (req, res, next) => {
     try {
-      return res.send({ msg: "ok" });
+      const { id } = req.params;
+
+      const {
+        type,
+        lang,
+        description,
+        expirationDate: date,
+        isActive,
+      } = req.body;
+
+      let expirationDate;
+
+      if (date) {
+        expirationDate = new Date(date);
+      }
+
+      const promotion = await Promotion.findByPk(id);
+
+      if (req.files?.media) {
+        const mediaPath = `/media/${type}/${lang}/${req.files.media[0]?.filename}`;
+        promotion.set("path", mediaPath);
+      }
+
+      const updateData = _.pickBy(
+        { type, lang, views, description, expirationDate, isActive },
+        (value) => value !== undefined && value !== null
+      );
+
+      promotion.set(updateData);
+      await promotion.save();
+
+      return res.send({ msg: "Actualizado correctamente", promotion });
     } catch (error) {
+      // Eliminar archivos en caso de error
+      deleteUploadedFiles(req);
       next(error);
     }
   },
