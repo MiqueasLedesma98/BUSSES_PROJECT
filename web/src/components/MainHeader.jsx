@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 import { useLocation } from "react-router-dom";
 import LogoImg from "../assets/veotrans-logo.png";
+import { UserAvatar } from "./UserAvatar";
 
 const title = {
   "/dashboard/content": "Contenidos",
@@ -40,15 +41,7 @@ const MainHeader = () => {
           {title[pathname]}
         </Typography>
       </Box>
-      <Box
-        sx={{
-          display: "gird",
-          gridTemplateRows: "1fr 1fr",
-        }}
-      >
-        <Typography variant="subtitle2">Admin</Typography>
-        <Typography variant="body2">admin@admin.com</Typography>
-      </Box>
+      <UserAvatar />
     </Box>
   );
 };

@@ -14,7 +14,7 @@ const SqueletonPage = () => {
       alignContent={"center"}
       gap={2}
     >
-      {Array.from({ length: 6 }).map((_, index) => (
+      {Array.from({ length: 12 }).map((_, index) => (
         <Box key={index}>
           <Skeleton variant="rectangular" width={350} height={250} />
         </Box>
