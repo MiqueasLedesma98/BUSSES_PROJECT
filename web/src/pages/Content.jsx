@@ -47,8 +47,11 @@ const ContentTypeRender = React.memo(
             gap: "2rem",
             placeContent: "center",
             gridTemplateColumns: "repeat(auto-fill, minmax(350px, 350px))",
+            paddingBottom: "1rem", // Add padding for better UX
           }}
         >
+          <Card />
+          <Card />
           <Card />
           <Card />
           <Card />
