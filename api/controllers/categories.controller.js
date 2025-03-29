@@ -1,5 +1,3 @@
-const { Multimedia, Category } = require("../models");
-
 /**
  * @template T
  * @typedef {(
@@ -9,39 +7,29 @@ const { Multimedia, Category } = require("../models");
  * ) => void} ExpressController
  */
 
+const { Category } = require("../models");
+
 /**
  * @typedef {Object} propsType
  * @property {string} [customProperty] // Añade propiedades
  */
+
 module.exports = {
   /**
    * @type {ExpressController<propsType>}
    */
   list: async (req, res, next) => {
     try {
-      const { type, lang } = req.params;
+      const { lang } = req.params;
       const { limit = 10, page = 0 } = req.query;
 
-      const results = await Multimedia.findAndCountAll({
-        offset: parseInt(limit) * parseInt(page),
+      const { count, rows } = await Category.findAndCountAll({
+        where: { lang },
         limit: parseInt(limit),
-        where: { type, lang },
-        include: [
-          {
-            model: Category,
-          },
-        ],
-        attributes: {
-          exclude: ["createdAt", "updatedAt"],
-        },
+        offset: parseInt(page) * parseInt(limit),
       });
 
-      return res.send({
-        total: results.count,
-        results: results.rows,
-        limit,
-        page,
-      });
+      return res.send({ total: count, results: rows, limit, page });
     } catch (error) {
       next(error);
     }

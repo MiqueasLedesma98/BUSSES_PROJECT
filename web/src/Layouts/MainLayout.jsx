@@ -15,7 +15,7 @@ const MainLayout = () => {
           gridTemplateAreas: `
           "header header"
           "sidebar main"
-          "footer footer"
+          "sidebar footer"
         `,
           gridTemplateRows: "4rem 1fr 2rem",
           gridTemplateColumns: "250px 1fr",

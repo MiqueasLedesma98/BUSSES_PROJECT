@@ -5,4 +5,5 @@ module.exports = {
   list: require("./list.controller"),
   sync: require("./sync.controller"),
   promotion: require("./promotion.controller"),
+  categories: require("./categories.controller"),
 };
