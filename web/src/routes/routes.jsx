@@ -20,6 +20,10 @@ const routes = [
           {
             path: "movies",
             element: lazy(() => import("../pages/Movies")),
+            loader: async ({ ...props }) => {
+              console.log(props);
+              return { msg: true };
+            },
           },
           {
             path: "musics",

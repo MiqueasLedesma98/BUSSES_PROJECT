@@ -10,20 +10,67 @@ import {
   MenuItem,
   Box,
   LinearProgress,
+  Card,
+  CardHeader,
+  CardContent,
 } from "@mui/material";
-import React from "react";
+import { AttachFile, Close, Delete } from "@mui/icons-material";
+import React, { useCallback, useMemo, useState } from "react";
 import { useModalStore } from "../store";
 import { useFetch } from "../hooks";
+import { useDropzone } from "react-dropzone";
 
 const CreateMovieModal = () => {
   const open = useModalStore((store) => store.modals?.createMovie);
   const close = useModalStore((store) => store.closeModal);
+  const [file, setFile] = useState();
 
   // eslint-disable-next-line no-unused-vars
   const { data, loading } = useFetch({
     url: "/categories",
     shouldFetch: !!open,
   });
+
+  const onDrop = useCallback((acceptedFiles) => {
+    if (acceptedFiles.length > 0) {
+      setFile(acceptedFiles[0]); // Guardamos el archivo en el estado
+    }
+  }, []);
+
+  const { getRootProps } = useDropzone({
+    accept: { "video/mp4": [] },
+    onDrop,
+  });
+
+  const removeFile = () => {
+    setFile(null); // Eliminamos el archivo del estado
+  };
+
+  const renderFile = useMemo(() => {
+    return file ? (
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          p: 2,
+        }}
+      >
+        <video
+          src={URL.createObjectURL(file)}
+          controls
+          style={{ width: "100%", borderRadius: 8, marginBottom: 8 }}
+        />
+        <CardContent>
+          <Button variant="contained" endIcon={<Delete />} onClick={removeFile}>
+            {file.name}
+          </Button>
+        </CardContent>
+      </Card>
+    ) : (
+      <Typography>Suelta aquí los archivos</Typography>
+    );
+  }, [file]);
 
   return (
     <Dialog
@@ -43,7 +90,7 @@ const CreateMovieModal = () => {
           Paso 1: Carga tu archivo en español
         </Typography>
         <Button variant="text" onClick={() => close("createMovie")}>
-          Cerrar
+          <Close />
         </Button>
       </DialogTitle>
 
@@ -53,10 +100,11 @@ const CreateMovieModal = () => {
 
         {/* Área de Carga */}
         <Box
+          {...getRootProps({ className: "dropzone" })}
           sx={{
             border: "2px dashed #aaa",
             borderRadius: 2,
-            height: 120,
+            minHeight: 180,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -65,7 +113,23 @@ const CreateMovieModal = () => {
             mb: 3,
           }}
         >
-          <Typography>Suelta aquí los archivos</Typography>
+          {renderFile}
+        </Box>
+
+        <Box sx={{ display: "grid", placeContent: "center" }}>
+          <input
+            accept="video/mp4"
+            style={{ display: "none" }}
+            id="file"
+            type="file"
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+          <Button
+            sx={{ mb: 3 }}
+            onClick={() => document.getElementById("file").click()}
+          >
+            <AttachFile />
+          </Button>
         </Box>
 
         {/* Inputs */}

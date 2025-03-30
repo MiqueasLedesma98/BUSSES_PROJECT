@@ -15,6 +15,7 @@ export default function Router() {
           <route.element />
         </Suspense>
       ),
+      loader: route.loader,
       children: route.children ? generateRoutes(route.children) : undefined,
     }));
 

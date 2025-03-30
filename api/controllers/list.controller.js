@@ -20,10 +20,12 @@ module.exports = {
   list: async (req, res, next) => {
     try {
       const { type, lang } = req.params;
-      const { limit = 10, page = 0 } = req.query;
+      const { limit = 10, page = 1 } = req.query;
+
+      const formatPage = parseInt(page) - 1;
 
       const results = await Multimedia.findAndCountAll({
-        offset: parseInt(limit) * parseInt(page),
+        offset: parseInt(limit) * formatPage,
         limit: parseInt(limit),
         where: { type, lang },
         include: [
