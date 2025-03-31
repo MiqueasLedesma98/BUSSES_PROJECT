@@ -1,6 +1,6 @@
 const { Sequelize } = require("sequelize");
 
-const sequelize = new Sequelize("VeoTrans", "postgres", null, {
+const sequelize = new Sequelize("VeoTrans", "postgres", "postgres", {
   host: "localhost",
   dialect: "postgres",
   logging: false,

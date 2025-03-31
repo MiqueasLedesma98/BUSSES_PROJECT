@@ -10,6 +10,7 @@ export const ModalsBarrel = () => {
   return (
     <Suspense fallback={<LinearProgress />}>
       {modals.createMovie && <CreateMovieModal value={modals.createMovie} />}
+      {modals.createMusic && <CreateMovieModal value={modals.createMusic} />}
     </Suspense>
   );
 };

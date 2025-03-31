@@ -14,6 +14,7 @@ export function Card() {
         borderRadius: "20px",
         transition: "ease-in 100ms",
         ":hover": {
+          zIndex: 0,
           scale: { xs: "1", sm: "1.05" },
           transition: "ease-in 100ms",
         },

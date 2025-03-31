@@ -23,7 +23,7 @@ const Footer = () => {
         variant="body2"
         color="textSecondary"
       >
-        Hecho por <strong style={{ margin: "0 4px" }}>make money team</strong>
+        Demo <strong style={{ margin: "0 4px" }}>VeoTrans 4.0</strong>
         <FavoriteIcon fontSize="small" color="error" />
       </Typography>
     </Box>

@@ -1,4 +1,3 @@
-const { Multimedia } = require("../models");
 const { axios } = require("./axios");
 
 let isRunning = false;

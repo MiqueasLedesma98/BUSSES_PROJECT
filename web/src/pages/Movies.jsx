@@ -1,7 +1,6 @@
-import { Box, Button, useTheme } from "@mui/material";
-import { Card } from "../components/index.js";
-import CustomPagination from "../components/CustomPagination.jsx";
-import { useModalStore } from "../store/index.js";
+import { Box } from "@mui/material";
+import { CardsContainer } from "../components/CardsContainer.jsx";
+import { StickyButton } from "../components/StickyButton.jsx";
 
 export default function Movies() {
   return (
@@ -14,59 +13,8 @@ export default function Movies() {
         overflow: "auto",
       }}
     >
-      <SearchBar />
+      <StickyButton btnText="Crear Pelicula" />
       <CardsContainer />
     </Box>
   );
 }
-
-const SearchBar = () => {
-  const { palette } = useTheme();
-
-  const openModal = useModalStore((store) => store.openModal);
-
-  return (
-    <Box
-      sx={{
-        position: "sticky",
-        top: "-1rem",
-        zIndex: 1,
-        marginBottom: "1.5rem",
-        padding: "5px 0",
-        display: "flex",
-        justifyContent: "flex-end",
-        bgcolor: palette.grey["100"],
-      }}
-    >
-      <Button
-        sx={{ ml: 2 }}
-        variant="contained"
-        onClick={() => openModal("createMovie", true)}
-      >
-        Nueva película
-      </Button>
-    </Box>
-  );
-};
-
-const CardsContainer = () => {
-  return (
-    <>
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 350px))",
-          justifyContent: "space-around",
-          gap: "2rem",
-        }}
-      >
-        {Array.from({ length: 20 })
-          .fill({})
-          .map((_, i) => (
-            <Card key={i} />
-          ))}
-      </Box>
-      <CustomPagination count={10} page={1} />
-    </>
-  );
-};
