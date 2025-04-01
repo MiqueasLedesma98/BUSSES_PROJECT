@@ -24,10 +24,15 @@ module.exports = {
 
       const formatPage = parseInt(page) - 1;
 
+      const where = {
+        type,
+        lang: lang === "all" ? ["esp", "eng"] : lang,
+      };
+
       const results = await Multimedia.findAndCountAll({
         offset: parseInt(limit) * formatPage,
         limit: parseInt(limit),
-        where: { type, lang },
+        where,
         include: [
           {
             model: Category,

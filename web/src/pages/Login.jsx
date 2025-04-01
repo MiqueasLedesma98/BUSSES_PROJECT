@@ -37,7 +37,6 @@ export default function Login() {
             Inicia Sesión
           </Typography>
 
-          {/* Envolver todo dentro de Formik */}
           <Formik initialValues={{ email: "", password: "" }} onSubmit={login}>
             {({ values, handleChange, handleSubmit }) => (
               <Form

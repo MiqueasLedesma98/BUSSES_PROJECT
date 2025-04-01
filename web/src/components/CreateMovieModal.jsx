@@ -10,67 +10,25 @@ import {
   MenuItem,
   Box,
   LinearProgress,
-  Card,
-  CardHeader,
-  CardContent,
+  useTheme,
+  CircularProgress,
 } from "@mui/material";
-import { AttachFile, Close, Delete } from "@mui/icons-material";
-import React, { useCallback, useMemo, useState } from "react";
+import { Close, Folder, Image } from "@mui/icons-material";
+import React, { useState } from "react";
 import { useModalStore } from "../store";
-import { useFetch } from "../hooks";
-import { useDropzone } from "react-dropzone";
+import { Form, Formik } from "formik";
+import { DropZone } from "./DropZone";
+import { useQuery } from "@tanstack/react-query";
+import { getCategories } from "../services/list.query";
 
-const CreateMovieModal = () => {
+const CreateMovieModal = ({}) => {
   const open = useModalStore((store) => store.modals?.createMovie);
   const close = useModalStore((store) => store.closeModal);
-  const [file, setFile] = useState();
 
-  // eslint-disable-next-line no-unused-vars
-  const { data, loading } = useFetch({
-    url: "/categories",
-    shouldFetch: !!open,
+  const { data, isLoading } = useQuery({
+    queryKey: ["esp"],
+    queryFn: getCategories,
   });
-
-  const onDrop = useCallback((acceptedFiles) => {
-    if (acceptedFiles.length > 0) {
-      setFile(acceptedFiles[0]); // Guardamos el archivo en el estado
-    }
-  }, []);
-
-  const { getRootProps } = useDropzone({
-    accept: { "video/mp4": [] },
-    onDrop,
-  });
-
-  const removeFile = () => {
-    setFile(null); // Eliminamos el archivo del estado
-  };
-
-  const renderFile = useMemo(() => {
-    return file ? (
-      <Card
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          p: 2,
-        }}
-      >
-        <video
-          src={URL.createObjectURL(file)}
-          controls
-          style={{ width: "100%", borderRadius: 8, marginBottom: 8 }}
-        />
-        <CardContent>
-          <Button variant="contained" endIcon={<Delete />} onClick={removeFile}>
-            {file.name}
-          </Button>
-        </CardContent>
-      </Card>
-    ) : (
-      <Typography>Suelta aquí los archivos</Typography>
-    );
-  }, [file]);
 
   return (
     <Dialog
@@ -86,7 +44,7 @@ const CreateMovieModal = () => {
           alignItems: "center",
         }}
       >
-        <Typography variant="h6" fontWeight={600}>
+        <Typography variant="h6" fontWeight={600} component="span">
           Paso 1: Carga tu archivo en español
         </Typography>
         <Button variant="text" onClick={() => close("createMovie")}>
@@ -94,80 +52,153 @@ const CreateMovieModal = () => {
         </Button>
       </DialogTitle>
 
-      <DialogContent>
-        {/* Barra de Progreso */}
-        <LinearProgress variant="determinate" value={30} sx={{ mb: 2 }} />
+      <Formik
+        initialValues={{
+          title: "",
+          description: "",
+          duration: "",
+          categories: "",
+          year: "",
+          rate: "",
+          file: "",
+          cover: null,
+        }}
+        onSubmit={(values) => console.log({ values })}
+      >
+        {({ values, handleChange, handleSubmit, setFieldValue }) => (
+          <Form onSubmit={handleSubmit}>
+            <DialogContent>
+              {/* Barra de Progreso */}
+              <LinearProgress variant="determinate" value={30} sx={{ mb: 2 }} />
 
-        {/* Área de Carga */}
-        <Box
-          {...getRootProps({ className: "dropzone" })}
-          sx={{
-            border: "2px dashed #aaa",
-            borderRadius: 2,
-            minHeight: 180,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "#aaa",
-            textAlign: "center",
-            mb: 3,
-          }}
-        >
-          {renderFile}
-        </Box>
+              {/* Área de Carga */}
+              <DropZone file={values.media} setFieldValue={setFieldValue} />
 
-        <Box sx={{ display: "grid", placeContent: "center" }}>
-          <input
-            accept="video/mp4"
-            style={{ display: "none" }}
-            id="file"
-            type="file"
-            onChange={(e) => setFile(e.target.files[0])}
-          />
-          <Button
-            sx={{ mb: 3 }}
-            onClick={() => document.getElementById("file").click()}
-          >
-            <AttachFile />
-          </Button>
-        </Box>
+              <Box sx={{ display: "grid", placeContent: "center" }}>
+                <input
+                  accept="video/mp4"
+                  style={{ display: "none" }}
+                  id="file"
+                  type="file"
+                  onChange={(e) => setFieldValue("media", e.target.files[0])}
+                />
+                <Button
+                  sx={{ mb: 3 }}
+                  onClick={() => document.getElementById("file").click()}
+                >
+                  <Folder />
+                </Button>
+              </Box>
 
-        {/* Inputs */}
-        <TextField
-          fullWidth
-          label="Nombre de la película"
-          variant="outlined"
-          sx={{ mb: 2 }}
-        />
+              <Box
+                sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}
+              >
+                <input
+                  required
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  id="cover"
+                  type="file"
+                  onChange={(e) => setFieldValue("cover", e.target.files[0])}
+                />
+                <Button
+                  variant="outlined"
+                  onClick={() => document.getElementById("cover").click()}
+                  startIcon={<Image />}
+                >
+                  Subir Cover
+                </Button>
 
-        <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-          <Select fullWidth defaultValue="Drama">
-            <MenuItem value="Drama">Drama</MenuItem>
-            <MenuItem value="Acción">Acción</MenuItem>
-            <MenuItem value="Comedia">Comedia</MenuItem>
-          </Select>
+                {values.cover && (
+                  <Box
+                    component="img"
+                    src={URL.createObjectURL(values.cover)}
+                    sx={{
+                      width: 300,
+                      height: 80,
+                      objectFit: "cover",
+                      borderRadius: 1,
+                    }}
+                  />
+                )}
+              </Box>
 
-          <TextField fullWidth label="Año" type="number" variant="outlined" />
-        </Box>
+              {/* Inputs */}
+              <TextField
+                name="title"
+                value={values.title}
+                onChange={handleChange}
+                fullWidth
+                label="Nombre de la película"
+                variant="outlined"
+                sx={{ mb: 2 }}
+              />
 
-        <TextField
-          fullWidth
-          label="Descripción"
-          variant="outlined"
-          multiline
-          rows={3}
-        />
-      </DialogContent>
+              <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+                <Select
+                  startAdornment={isLoading && <CircularProgress size={15} />}
+                  fullWidth
+                  value={values.categories || ""}
+                  onChange={handleChange}
+                  displayEmpty
+                >
+                  <MenuItem value="" disabled>
+                    Categoría
+                  </MenuItem>
+                  {data?.map((category) => (
+                    <MenuItem key={category.id} value={category.name}>
+                      {category.name}
+                    </MenuItem>
+                  ))}
+                </Select>
 
-      <DialogActions sx={{ pb: 3, px: 3 }}>
-        <Button
-          fullWidth
-          variant="contained"
-          sx={{ backgroundColor: "#A5C9FF", color: "#fff" }}
-        >
-          Ir a paso 2
-        </Button>
-      </DialogActions>
+                <TextField
+                  name="year"
+                  value={values.year}
+                  fullWidth
+                  label="Año"
+                  type="number"
+                  variant="outlined"
+                />
+              </Box>
+
+              <TextField
+                sx={{ mb: 2 }}
+                type="number"
+                name="duration"
+                placeholder="En minutos"
+                onChange={handleChange}
+                value={values.duration}
+                variant="outlined"
+                fullWidth
+                label="Duración"
+              />
+
+              <TextField
+                name="description"
+                value={values.description}
+                onChange={handleChange}
+                fullWidth
+                label="Descripción"
+                variant="outlined"
+                multiline
+                rows={3}
+              />
+            </DialogContent>
+
+            <DialogActions sx={{ pb: 3, px: 3 }}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ backgroundColor: "#A5C9FF", color: "#fff" }}
+              >
+                Ir a paso 2
+              </Button>
+            </DialogActions>
+          </Form>
+        )}
+      </Formik>
     </Dialog>
   );
 };

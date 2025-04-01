@@ -1,11 +1,13 @@
-import React, { useCallback, useState } from "react";
+import React, { useState, useCallback } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import api from "../api";
+import { useMutation } from "@tanstack/react-query";
+import { authenticateUser } from "../services/auth";
 
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
+  // Estado de autenticación
   const [authState, setAuthState] = useState(() => {
     const user = localStorage.getItem("user");
 
@@ -15,38 +17,53 @@ export const AuthProvider = ({ children }) => {
     };
   });
 
-  const login = useCallback(
-    async (form) => {
-      try {
-        const { data } = await api.post("/auth/login", form);
-
-        const { user, token } = data;
-        localStorage.setItem("x-token", token);
-        localStorage.setItem("user", JSON.stringify(user));
-
-        setAuthState(() => ({ user, auth: true }));
-        navigate("/dashboard/content", { replace: true });
-      } catch (error) {
-        console.log(error);
-      }
+  // Mutación para login
+  const loginMutation = useMutation({
+    mutationFn: async (form) => {
+      const { data } = await authenticateUser(form);
+      console.log({ data });
+      return data;
     },
-    [navigate]
+    onSuccess: ({ user, token }) => {
+      // Guardar en localStorage
+      localStorage.setItem("x-token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      // Actualizar estado global
+      setAuthState({ user, auth: true });
+
+      // Redirigir al usuario
+      navigate("/dashboard/content", { replace: true });
+    },
+    onError: (error) => {
+      console.error("Error en login:", error);
+    },
+  });
+
+  // Función de login usando la mutación
+  const login = useCallback(
+    (form) => {
+      loginMutation.mutate(form);
+    },
+    [loginMutation]
   );
 
-  const logout = useCallback(async () => {
-    try {
-      localStorage.clear();
-      setAuthState({ auth: false, user: null });
-    } catch (error) {
-      console.log(error);
-    }
+  // Logout sin necesidad de mutación
+  const logout = useCallback(() => {
+    localStorage.clear();
+    setAuthState({ auth: false, user: null });
   }, []);
 
   return (
-    <AuthContext.Provider value={{ login, logout, ...authState }}>
+    <AuthContext.Provider
+      value={{
+        login,
+        logout,
+        isLoading: loginMutation.isPending,
+        ...authState,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
-
-// Removed useAuthContext to comply with react-refresh rules.

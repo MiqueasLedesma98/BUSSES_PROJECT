@@ -1,8 +1,42 @@
 import { Box } from "@mui/material";
 import { CardsContainer } from "../components/CardsContainer.jsx";
 import { StickyButton } from "../components/StickyButton.jsx";
+import {
+  keepPreviousData,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { useSearchParams } from "react-router-dom";
+import { getMovies } from "../services/list.query.js";
+import CustomPagination from "../components/CustomPagination.jsx";
+import { useEffect } from "react";
 
 export default function Movies() {
+  const queryClient = useQueryClient();
+  const [searchParams] = useSearchParams();
+
+  const page = parseInt(searchParams.get("page") || "1", 10);
+
+  // Obtener datos de la API
+  const { data, isFetching, isPlaceholderData, isPending } = useQuery({
+    queryKey: ["movies", page],
+    placeholderData: keepPreviousData,
+    queryFn: () => getMovies(page),
+  });
+
+  // Calcular total de páginas
+  const totalPages = Math.ceil((data?.total || 1) / (data?.limit || 10));
+
+  // Pre-fetch de la siguiente página si existe
+  useEffect(() => {
+    if (!isPlaceholderData && page < totalPages) {
+      queryClient.prefetchQuery({
+        queryKey: ["movies", page + 1],
+        queryFn: () => getMovies(page + 1),
+      });
+    }
+  }, [page, queryClient, isPlaceholderData, totalPages]);
+
   return (
     <Box
       sx={{
@@ -14,7 +48,11 @@ export default function Movies() {
       }}
     >
       <StickyButton btnText="Crear Pelicula" />
-      <CardsContainer />
+      <CardsContainer
+        data={data?.results || []}
+        isLoading={isFetching || isPending}
+      />
+      <CustomPagination count={totalPages} page={page} />
     </Box>
   );
 }

@@ -23,6 +23,11 @@ module.exports = {
       const { lang } = req.params;
       const { limit = 10, page = 0 } = req.query;
 
+      const where = {};
+
+      if (lang === "all") where.lang = ["esp", "eng"];
+      else where.lang = lang;
+
       const { count, rows } = await Category.findAndCountAll({
         where: { lang },
         limit: parseInt(limit),

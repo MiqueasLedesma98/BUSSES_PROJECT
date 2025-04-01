@@ -10,7 +10,7 @@ router.get(
   [
     validateJWT,
     check("type", "No es un tipo válido").isIn(["movie", "music"]),
-    check("lang", "No es una lenguaje válido").isIn(["esp", "eng"]),
+    check("lang", "No es una lenguaje válido").isIn(["esp", "eng", "all"]),
     validateFields,
   ],
   controller.list

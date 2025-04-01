@@ -30,7 +30,7 @@ module.exports = {
         description = "N/A",
         categories,
         year,
-        rate,
+        rate = 0,
       } = req.body;
       const { type, lang } = req.params;
 
