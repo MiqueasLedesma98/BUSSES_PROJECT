@@ -1,3 +1,6 @@
+const { Op } = require("sequelize");
+const { Category } = require("../models");
+
 /**
  * @template T
  * @typedef {(
@@ -6,8 +9,6 @@
  *   next: import('express').NextFunction
  * ) => void} ExpressController
  */
-
-const { Category } = require("../models");
 
 /**
  * @typedef {Object} propsType
@@ -25,11 +26,14 @@ module.exports = {
 
       const where = {};
 
-      if (lang === "all") where.lang = ["esp", "eng"];
+      if (lang === "all")
+        where.lang = {
+          [Op.in]: ["esp", "eng"],
+        };
       else where.lang = lang;
 
       const { count, rows } = await Category.findAndCountAll({
-        where: { lang },
+        where,
         limit: parseInt(limit),
         offset: parseInt(page) * parseInt(limit),
       });

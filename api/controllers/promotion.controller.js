@@ -77,9 +77,11 @@ module.exports = {
       }
 
       const updateData = _.pickBy(
-        { type, lang, views, description, expirationDate, isActive },
+        { type, lang, description, expirationDate, isActive },
         (value) => value !== undefined && value !== null
       );
+
+      console.log(updateData);
 
       promotion.set(updateData);
       await promotion.save();
