@@ -12,6 +12,15 @@ const Promotion = sequelize.define(
     },
     path: { type: DataTypes.STRING, allowNull: false },
     type: { type: DataTypes.ENUM(["banner", "video"]), allowNull: false },
+    type_banner: {
+      type: DataTypes.ENUM([
+        "welcome_banner",
+        "bottom_bar",
+        "left_bar",
+        "carousel_banner",
+      ]),
+      allowNull: false,
+    },
     lang: { type: DataTypes.ENUM(["esp", "eng"]) },
     views: { type: DataTypes.BIGINT, defaultValue: 0 },
     description: { type: DataTypes.STRING },
