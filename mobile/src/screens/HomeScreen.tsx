@@ -2,18 +2,19 @@ import BannerBottom from "@/components/BannerBottom";
 import BannerWelcome from "@/components/BannerWelcome";
 import HomeLinks from "@/components/HomeLinks";
 import React from "react";
-import {ScrollView, Text, View} from "tamagui";
+import {ScrollView} from "tamagui";
 
-const Home = () => {
+import {NavigationProp} from "@react-navigation/native";
+
+const Home = ({navigation}: {navigation: NavigationProp<any>}) => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       flex={1}
-      padding={15}
       height={"100%"}
       backgroundColor={"rgba(0,0,0,0)"}>
       <BannerWelcome />
-      <HomeLinks />
+      <HomeLinks navigation={navigation} />
       <BannerBottom />
     </ScrollView>
   );

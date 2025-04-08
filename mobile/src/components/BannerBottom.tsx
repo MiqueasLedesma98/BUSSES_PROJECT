@@ -8,9 +8,10 @@ const BannerBottom = () => {
       width={"100%"}
       backgroundColor="rgba(255, 255, 255, 0.5)"
       borderTopLeftRadius={25}
+      marginTop={15}
       borderTopRightRadius={25}>
       <Text color="white" textAlign="center" marginTop={35}>
-        Este es un banner negro con opacidad 0.5
+        Esto es un banner
       </Text>
     </View>
   );

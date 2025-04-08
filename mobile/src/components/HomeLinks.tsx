@@ -1,13 +1,43 @@
-import {View, Text} from "react-native";
+import {useWindowDimensions} from "react-native";
 import React from "react";
 import {Button, XStack} from "tamagui";
-import {Music4} from "@tamagui/lucide-icons";
+import {ArrowRight, Film, Music4} from "@tamagui/lucide-icons";
+import type {NavigationProp} from "@react-navigation/native";
 
-const HomeLinks = () => {
+interface HomeLinksProps {
+  navigation: NavigationProp<any>;
+}
+
+const HomeLinks = ({navigation}: HomeLinksProps) => {
+  const {width} = useWindowDimensions();
+
   return (
-    <XStack marginVertical={25}>
-      <Button transparent>Películas</Button>
-      <Button icon={Music4}>Música</Button>
+    <XStack
+      justifyContent={"space-between"}
+      alignItems="center"
+      maxWidth="100%">
+      <Button
+        onPress={() => navigation.navigate("Movie")}
+        margin={12.5}
+        color={"white"}
+        backgroundColor={"rgba(255,255,255, .5)"}
+        width={width * 0.5 - 25}
+        size={100}
+        icon={Film}
+        iconAfter={ArrowRight}>
+        Películas
+      </Button>
+      <Button
+        onPress={() => navigation.navigate("Music")}
+        margin={12.5}
+        color={"white"}
+        backgroundColor={"rgba(255,255,255, .5)"}
+        width={width * 0.5 - 25}
+        size={100}
+        icon={Music4}
+        iconAfter={ArrowRight}>
+        Música
+      </Button>
     </XStack>
   );
 };
