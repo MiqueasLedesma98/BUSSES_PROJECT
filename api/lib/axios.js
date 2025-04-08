@@ -1,5 +1,6 @@
 require("dotenv").config();
 const axios = require("axios");
+
 const { generateJWT } = require("../helpers/jwt");
 
 const instance = axios.create({

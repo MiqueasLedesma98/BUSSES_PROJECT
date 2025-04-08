@@ -3,6 +3,7 @@ import React from "react";
 import {Button, XStack} from "tamagui";
 import {ArrowRight, Film, Music4} from "@tamagui/lucide-icons";
 import type {NavigationProp} from "@react-navigation/native";
+import {useI18nStore} from "@/stores/i18nStore";
 
 interface HomeLinksProps {
   navigation: NavigationProp<any>;
@@ -10,6 +11,7 @@ interface HomeLinksProps {
 
 const HomeLinks = ({navigation}: HomeLinksProps) => {
   const {width} = useWindowDimensions();
+  const t = useI18nStore(s => s.t);
 
   return (
     <XStack
@@ -25,7 +27,7 @@ const HomeLinks = ({navigation}: HomeLinksProps) => {
         size={100}
         icon={Film}
         iconAfter={ArrowRight}>
-        Películas
+        {t("home.movie-btn")}
       </Button>
       <Button
         onPress={() => navigation.navigate("Music")}
@@ -36,7 +38,7 @@ const HomeLinks = ({navigation}: HomeLinksProps) => {
         size={100}
         icon={Music4}
         iconAfter={ArrowRight}>
-        Música
+        {t("home.music-btn")}
       </Button>
     </XStack>
   );
