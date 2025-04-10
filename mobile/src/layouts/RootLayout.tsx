@@ -1,4 +1,4 @@
-import BannerBottom from "@/components/BannerBottom";
+import GradientBackground from "@/components/GradientBackground";
 import NavOptions from "@/components/NavOptions";
 import React from "react";
 import {Image, View, XStack} from "tamagui";
@@ -9,7 +9,7 @@ interface RootLayoutProps {
 
 const RootLayout: React.FC<RootLayoutProps> = ({children}) => {
   return (
-    <View flex={1} backgroundColor={"darkblue"}>
+    <View flex={1}>
       <XStack padding={15} width={"100%"} justifyContent="space-between">
         <Image
           source={require("../assets/veotrans-logo.png")}
@@ -18,6 +18,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({children}) => {
         <NavOptions />
       </XStack>
       {children}
+      <GradientBackground />
     </View>
   );
 };

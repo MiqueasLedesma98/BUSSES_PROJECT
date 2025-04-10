@@ -1,17 +1,20 @@
+import {useI18nStore} from "@/stores/i18nStore";
 import React from "react";
 import CountryFlag from "react-native-country-flag";
-import {Button, H1, H2, Image, Text, XStack} from "tamagui";
+import {Button, H2, Image, Text, XStack} from "tamagui";
 
 const NavOptions = () => {
+  const setLocale = useI18nStore(s => s.setLocale);
+
   return (
     <XStack gap={15}>
-      <Button transparent>
+      <Button transparent onPress={() => setLocale("es")}>
         <XStack gap={5}>
           <CountryFlag isoCode="es" size={25} />
           <Text color={"white"}>Español</Text>
         </XStack>
       </Button>
-      <Button transparent>
+      <Button transparent onPress={() => setLocale("en")}>
         <XStack gap={5}>
           <CountryFlag isoCode="us" size={25} />
           <Text color={"white"}>English</Text>

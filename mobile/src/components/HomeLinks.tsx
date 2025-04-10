@@ -12,6 +12,7 @@ interface HomeLinksProps {
 const HomeLinks = ({navigation}: HomeLinksProps) => {
   const {width} = useWindowDimensions();
   const t = useI18nStore(s => s.t);
+  const locale = useI18nStore(s => s.locale);
 
   return (
     <XStack
@@ -27,7 +28,7 @@ const HomeLinks = ({navigation}: HomeLinksProps) => {
         size={100}
         icon={Film}
         iconAfter={ArrowRight}>
-        {t("home.movie-btn")}
+        {t("home.movie-btn", {locale})}
       </Button>
       <Button
         onPress={() => navigation.navigate("Music")}
@@ -38,7 +39,7 @@ const HomeLinks = ({navigation}: HomeLinksProps) => {
         size={100}
         icon={Music4}
         iconAfter={ArrowRight}>
-        {t("home.music-btn")}
+        {t("home.music-btn", {locale})}
       </Button>
     </XStack>
   );

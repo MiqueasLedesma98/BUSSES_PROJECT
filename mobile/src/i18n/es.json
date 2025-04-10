@@ -2,5 +2,6 @@
   "home": {
     "movie-btn": "Películas",
     "music-btn": "Música"
-  }
+  },
+  "select-lang-header": "Seleccione idioma"
 }

@@ -6,7 +6,7 @@ import es from "@/i18n/es.json";
 const i18n = new I18n({en, es});
 i18n.defaultLocale = "es";
 
-type Language = "en" | "es";
+export type Language = "en" | "es";
 
 interface I18nStore {
   locale: Language;
