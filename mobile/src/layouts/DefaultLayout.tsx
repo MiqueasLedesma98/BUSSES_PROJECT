@@ -1,7 +1,10 @@
 import CountrySelect from "@/components/CountrySelect";
 import GradientBackground from "@/components/GradientBackground";
 import {useI18nStore} from "@/stores/i18nStore";
-import {NativeStackNavigationProp} from "@react-navigation/native-stack";
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack";
 import {ArrowRight, Film, Music4} from "@tamagui/lucide-icons";
 import React from "react";
 import {TouchableWithoutFeedback} from "react-native";
