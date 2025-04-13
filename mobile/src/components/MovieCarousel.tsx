@@ -1,3 +1,4 @@
+import {useI18nStore} from "@/stores/i18nStore";
 import React from "react";
 import Carousel from "react-native-reanimated-carousel";
 import {Button, View} from "tamagui";
@@ -12,6 +13,9 @@ const defaultDataWith6Colors = [
 ];
 
 const MovieCarousel = () => {
+  const t = useI18nStore(s => s.t);
+  const locale = useI18nStore(s => s.locale);
+
   return (
     <View marginBottom={10}>
       <Carousel
@@ -36,7 +40,7 @@ const MovieCarousel = () => {
               position="absolute"
               bottom={10}
               right={10}>
-              Ver ahora
+              {t("see", {locale})}
             </Button>
           </View>
         )}

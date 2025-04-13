@@ -42,12 +42,16 @@ const CountrySelect = () => {
         />
         <Sheet.Handle />
         <Sheet.Frame backgroundColor={"#333"} flex={1}>
-          <YGroup alignSelf="center" width={"100%"} size="$4">
+          <YGroup
+            alignSelf="center"
+            width={"100%"}
+            paddingHorizontal={10}
+            size="$4">
             <H4 color={"white"}>{t("select-lang-header", {locale})}</H4>
             {countries.map(country => (
               <YGroup.Item key={country.code}>
                 <ListItem
-                  height={45}
+                  // height={45}
                   onPress={() => {
                     setOpen(() => false);
                     setValue(() => country.code);

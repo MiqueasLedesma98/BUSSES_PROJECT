@@ -3,5 +3,9 @@
     "movie-btn": "Películas",
     "music-btn": "Música"
   },
-  "select-lang-header": "Seleccione idioma"
+  "movie": {
+    "title": "Películas"
+  },
+  "select-lang-header": "Seleccione idioma",
+  "see": "Ver ahora"
 }

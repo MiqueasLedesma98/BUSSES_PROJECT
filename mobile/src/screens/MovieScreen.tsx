@@ -14,7 +14,7 @@ const MovieScreen = () => {
           flexDirection="row"
           flexWrap="wrap"
           justifyContent="center"
-          gap={10}
+          gap={15}
           padding={10}>
           <CardMovie />
           <CardMovie />

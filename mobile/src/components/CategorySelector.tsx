@@ -1,8 +1,10 @@
-import {View, Text} from "react-native";
 import React from "react";
 import {Button, H4, XStack} from "tamagui";
+import {useI18nStore} from "@/stores/i18nStore";
 
 const CategorySelector = () => {
+  const t = useI18nStore(s => s.t);
+  const locale = useI18nStore(s => s.locale);
   return (
     <XStack
       paddingHorizontal={25}
@@ -10,7 +12,7 @@ const CategorySelector = () => {
       alignItems="center"
       gap={10}>
       <H4 color={"white"} fontWeight={"bold"}>
-        Películas
+        {t("movie.title", {locale})}
       </H4>
       <Button
         borderColor={"white"}

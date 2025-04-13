@@ -3,5 +3,9 @@
     "movie-btn": "Movies",
     "music-btn": "Music"
   },
-  "select-lang-header": "Select language"
+  "movie": {
+    "title": "Movies"
+  },
+  "select-lang-header": "Select language",
+  "see": "See now"
 }
