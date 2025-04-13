@@ -1,3 +1,4 @@
+import {IMovie} from "@/interfaces/IFetch";
 import React from "react";
 import {
   Card,
@@ -9,21 +10,7 @@ import {
   YStack,
 } from "tamagui";
 
-interface CardProps {
-  id: string;
-  title: string;
-  lang?: "esp" | "eng";
-  type?: "movie" | "music";
-  description?: string;
-  cover_path?: string;
-  duration?: string;
-  rate?: number;
-  url_path?: string;
-  views?: number;
-  year?: string;
-}
-
-const CardMovie = () => {
+const CardMovie = (props: IMovie) => {
   return (
     <Card width={250} height={250} overflow="hidden">
       <CardBackground>
