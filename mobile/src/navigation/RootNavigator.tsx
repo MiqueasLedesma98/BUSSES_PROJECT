@@ -4,6 +4,7 @@ import MovieScreen from "@/screens/MovieScreen";
 import MusicScreen from "@/screens/MusicScreen";
 import RootLayout from "@/layouts/RootLayout";
 import DefaultLayout from "@/layouts/DefaultLayout";
+import MediaPlayer from "@/screens/MediaPlayer";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +35,7 @@ const RootNavigator = () => (
       )}
       component={MovieScreen}
     />
+    <Stack.Screen name="Media-Player" component={MediaPlayer} />
   </Stack.Navigator>
 );
 

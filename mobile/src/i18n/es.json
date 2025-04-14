@@ -7,5 +7,6 @@
     "title": "Películas"
   },
   "select-lang-header": "Seleccione idioma",
-  "see": "Ver ahora"
+  "see": "Ver ahora",
+  "not-found-movies": "No se encuentran películas"
 }
