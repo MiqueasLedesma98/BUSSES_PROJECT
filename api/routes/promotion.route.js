@@ -11,6 +11,12 @@ router.post(
     validateJWT,
     check("type", "Debe ser un tipo válido").isIn(["banner", "video"]),
     check("lang", "Debe ser un idioma válido").isIn(["eng", "esp"]),
+    check("type_banner", "Debe ser un tipo válido").isIn([
+      "welcome_banner",
+      "bottom_bar",
+      "left_bar",
+      "carousel_banner",
+    ]),
     validateFields,
     upload.fields([{ name: "media", maxCount: 1 }]),
   ],
@@ -29,6 +35,17 @@ router.put(
   controller.update_promotion
 );
 
-router.get("/:type/:lang", [validateJWT, validateFields], controller.list);
+router.get(
+  "/list/:type/:lang",
+  [
+    validateJWT,
+    check("type", "Debe ser un tipo válido").isIn(["banner", "video"]),
+    check("lang", "Debe ser un lenguaje").isIn(["esp", "lang"]),
+    validateFields,
+  ],
+  controller.list
+);
+
+router.get("/random/:type/:lang", [validateJWT], controller.random);
 
 module.exports = router;

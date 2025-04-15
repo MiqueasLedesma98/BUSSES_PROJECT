@@ -22,7 +22,7 @@ module.exports = {
    */
   new_promotion: async (req, res, next) => {
     try {
-      const { description, expirationDate, company } = req.body;
+      const { description, expirationDate, company, type_banner } = req.body;
       const { type, lang } = req.params;
 
       const { media } = req.files;
@@ -34,6 +34,7 @@ module.exports = {
         type,
         lang,
         expirationDate: new Date(expirationDate),
+        type_banner,
         description,
       });
 
@@ -99,7 +100,8 @@ module.exports = {
   list: async (req, res, next) => {
     try {
       const { type, lang } = req.params;
-      const { limit = 10, skip: page = 0 } = req.query;
+
+      const { limit = 10, page = 0 } = req.query;
 
       const results = await Promotion.findAndCountAll({
         where: { type, lang },
@@ -113,6 +115,28 @@ module.exports = {
         limit: parseInt(limit),
         page: parseInt(page),
       });
+    } catch (error) {
+      next(error);
+    }
+  },
+  /**
+   * @type {ExpressController<propsType>}
+   */
+  random: async (req, res, next) => {
+    try {
+      const { type, lang } = req.params;
+
+      const results = await Promotion.findAll({ where: { type, lang } });
+
+      const randomPromotion =
+        results[Math.floor(Math.random() * results.length)];
+
+      if (!randomPromotion) {
+        return res
+          .status(404)
+          .send({ msg: "No se encontró ninguna promoción" });
+      }
+      return res.send(randomPromotion);
     } catch (error) {
       next(error);
     }
