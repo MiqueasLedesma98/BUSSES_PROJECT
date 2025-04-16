@@ -6,14 +6,20 @@ const { list: controller } = require("../controllers");
 const { validateJWT, validateFields } = require("../middlewares");
 
 router.get(
-  "/:type/:lang",
+  "/media/:type/:lang",
   [
     validateJWT,
     check("type", "No es un tipo válido").isIn(["movie", "music"]),
     check("lang", "No es una lenguaje válido").isIn(["esp", "eng", "all"]),
     validateFields,
   ],
-  controller.list
+  controller.media
+);
+
+router.get(
+  "/promotion/:type/:lang",
+  [validateJWT, validateFields],
+  controller.promotion
 );
 
 module.exports = router;

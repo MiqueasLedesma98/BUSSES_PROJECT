@@ -1,3 +1,4 @@
+const { Sequelize } = require("sequelize");
 const { deleteUploadedFiles } = require("../helpers");
 const { Promotion, Company } = require("../models");
 const _ = require("lodash");
@@ -115,28 +116,6 @@ module.exports = {
         limit: parseInt(limit),
         page: parseInt(page),
       });
-    } catch (error) {
-      next(error);
-    }
-  },
-  /**
-   * @type {ExpressController<propsType>}
-   */
-  random: async (req, res, next) => {
-    try {
-      const { type, lang } = req.params;
-
-      const results = await Promotion.findAll({ where: { type, lang } });
-
-      const randomPromotion =
-        results[Math.floor(Math.random() * results.length)];
-
-      if (!randomPromotion) {
-        return res
-          .status(404)
-          .send({ msg: "No se encontró ninguna promoción" });
-      }
-      return res.send(randomPromotion);
     } catch (error) {
       next(error);
     }

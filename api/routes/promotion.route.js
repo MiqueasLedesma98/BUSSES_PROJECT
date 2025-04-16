@@ -23,10 +23,8 @@ router.post(
   controller.new_promotion
 );
 
-router.put("/:id", [validateJWT], controller.update_promotion);
-
 router.put(
-  "/",
+  "/:id",
   [
     validateJWT,
     validateFields,
@@ -34,18 +32,5 @@ router.put(
   ],
   controller.update_promotion
 );
-
-router.get(
-  "/list/:type/:lang",
-  [
-    validateJWT,
-    check("type", "Debe ser un tipo válido").isIn(["banner", "video"]),
-    check("lang", "Debe ser un lenguaje").isIn(["esp", "lang"]),
-    validateFields,
-  ],
-  controller.list
-);
-
-router.get("/random/:type/:lang", [validateJWT], controller.random);
 
 module.exports = router;
