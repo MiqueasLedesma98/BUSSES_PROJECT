@@ -1,7 +1,9 @@
 import axios from "axios";
 
+export const baseUrl = "https://nhvdt5z3-3000.brs.devtunnels.ms/api";
+
 const api = axios.create({
-  baseURL: "https://nhvdt5z3-3000.brs.devtunnels.ms/api",
+  baseURL: baseUrl,
 });
 
 api.interceptors.request.use(async config => {

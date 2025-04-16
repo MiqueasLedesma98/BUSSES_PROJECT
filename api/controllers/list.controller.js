@@ -98,8 +98,8 @@ module.exports = {
 
       if (parseInt(limit)) {
         options.limit = parseInt(limit, 10);
-        const randomPromotions = await Promotion.findAll(options);
-        return res.send(randomPromotions);
+        const { count, rows } = await Promotion.findAndCountAll(options);
+        return res.send({ total: count, results: rows, limit, page });
       } else {
         const randomPromotion = await Promotion.findOne(options);
         return res.send(randomPromotion);

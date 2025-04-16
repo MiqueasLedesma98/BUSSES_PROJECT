@@ -1,19 +1,49 @@
-import React from "react";
-import {Text, View} from "tamagui";
+import {baseUrl} from "@/axios.config";
+import {IFetchResponse, IPromotion} from "@/interfaces/IFetch";
+import {getPromotion, TPromotionMeta} from "@/services/list.querys";
+import {useI18nStore} from "@/stores/i18nStore";
+import {useQuery} from "@tanstack/react-query";
+import React, {useMemo} from "react";
+import {ActivityIndicator} from "react-native";
+import {Image, Text, View} from "tamagui";
+
+const lang = {
+  es: "esp",
+  en: "en",
+};
 
 const BannerBottom = () => {
+  const locale = useI18nStore(s => s.locale) ?? "es";
+
+  const {data, isLoading} = useQuery<IPromotion>({
+    queryKey: ["banner", lang[locale]],
+    meta: {
+      lang: lang[locale],
+      limit: 0,
+      page: 1,
+      type: "banner",
+      type_banner: "bottom_bar",
+    } as TPromotionMeta,
+    queryFn: getPromotion,
+  });
+
+  const imgPath = useMemo(() => {
+    if (data) return baseUrl + data.path;
+    else return undefined;
+  }, [data, isLoading]);
+
+  console.log({data, imgPath});
+
   return (
-    <View
+    <Image
+      source={{uri: imgPath}}
       height={80}
       width={"100%"}
       backgroundColor="rgba(255, 255, 255, 0.5)"
       borderTopLeftRadius={25}
       marginTop={15}
-      borderTopRightRadius={25}>
-      <Text color="white" textAlign="center" marginTop={35}>
-        Esto es un banner
-      </Text>
-    </View>
+      borderTopRightRadius={25}
+    />
   );
 };
 
