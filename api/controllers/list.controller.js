@@ -57,9 +57,6 @@ module.exports = {
             model: Category,
           },
         ],
-        attributes: {
-          exclude: ["createdAt", "updatedAt"],
-        },
       });
 
       return res.send({

@@ -6,7 +6,7 @@ export const getMovies: QueryFunction<IFetchResponse<IMovie>> = async ({
   meta,
 }) => {
   try {
-    const {data} = await api.get("/list/movie/all", {
+    const {data} = await api.get("/list/media/movie/all", {
       params: meta,
     });
     return data;
