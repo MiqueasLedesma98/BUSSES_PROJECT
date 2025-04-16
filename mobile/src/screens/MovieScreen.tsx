@@ -33,7 +33,7 @@ const MovieScreen = ({navigation}: {navigation: NavigationProp<any>}) => {
         <YStack
           flexDirection="row"
           flexWrap="wrap"
-          justifyContent="center"
+          // justifyContent="center"
           gap={15}
           padding={10}>
           {isLoading ? (

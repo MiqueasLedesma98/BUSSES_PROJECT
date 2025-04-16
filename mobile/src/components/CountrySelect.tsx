@@ -20,8 +20,10 @@ const CountrySelect = () => {
   return (
     <>
       <Button
-        backgroundColor={"rgba(255,255,255,.5)"}
+        backgroundColor={"rgba(255,255,255,.0)"}
         width={180}
+        color={"white"}
+        fontSize={"$6"}
         onPress={() => setOpen(prev => !prev)}
         iconAfter={ChevronDown}>
         <CountryFlag isoCode={value} size={22} />

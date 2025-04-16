@@ -5,14 +5,20 @@ import {Button, Image, Text, View, YStack} from "tamagui";
 import {ArrowRight, Film, Music4} from "@tamagui/lucide-icons";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import CountrySelect from "./CountrySelect";
+import {ParamListBase, RouteProp, useRoute} from "@react-navigation/native";
 
 type TSidebar = {
   navigation: NativeStackNavigationProp<any>;
 };
 
+const isBold = (route: RouteProp<ParamListBase>, name: string): string =>
+  route.name === name ? "800" : "100";
+
 const SideBar = ({navigation}: TSidebar) => {
   const t = useI18nStore(s => s.t);
   const locale = useI18nStore(s => s.locale);
+
+  const route = useRoute();
 
   return (
     <YStack alignItems="center" gap={10} width={200}>
@@ -24,23 +30,29 @@ const SideBar = ({navigation}: TSidebar) => {
         />
       </TouchableWithoutFeedback>
       <Button
+        color={"white"}
+        fontSize={"$6"}
         icon={Film}
         iconAfter={ArrowRight}
+        fontWeight={isBold(route, "Movie")}
         width={180}
-        backgroundColor={"rgba(255,255,255,.5)"}
+        backgroundColor={"rgba(255,255,255, 0)"}
         onPress={() => navigation.navigate("Movie")}>
         {t("home.movie-btn", {locale})}
       </Button>
       <Button
+        color={"white"}
+        fontSize={"$6"}
         icon={Music4}
         iconAfter={ArrowRight}
+        fontWeight={isBold(route, "Music")}
         width={180}
-        backgroundColor={"rgba(255,255,255,.5)"}
+        backgroundColor={"rgba(255,255,255, 0)"}
         onPress={() => navigation.navigate("Music")}>
         {t("home.music-btn", {locale})}
       </Button>
       <View
-        backgroundColor={"rgba(255,255,255,.5)"}
+        backgroundColor={"rgba(255,255,255, 0.5)"}
         height={250}
         width={180}
         justifyContent="center"
