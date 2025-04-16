@@ -12,7 +12,7 @@ const lang = {
   en: "eng",
 };
 
-const BannerBottom = () => {
+const BannerBottom = ({height}: {height?: number}) => {
   const locale = useI18nStore(s => s.locale) ?? "es";
 
   const {data, isLoading} = useQuery<IPromotion>({
@@ -36,7 +36,7 @@ const BannerBottom = () => {
     <Image
       source={{uri: imgPath}}
       resizeMode="stretch"
-      height={80}
+      height={height}
       width={"100%"}
       backgroundColor="rgba(255, 255, 255, 0.5)"
       borderTopLeftRadius={25}

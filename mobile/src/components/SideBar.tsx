@@ -1,11 +1,20 @@
 import {TouchableWithoutFeedback} from "react-native";
-import React from "react";
+import React, {useMemo} from "react";
 import {useI18nStore} from "@/stores/i18nStore";
 import {Button, Image, Text, View, YStack} from "tamagui";
 import {ArrowRight, Film, Music4} from "@tamagui/lucide-icons";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import CountrySelect from "./CountrySelect";
 import {ParamListBase, RouteProp, useRoute} from "@react-navigation/native";
+import {IPromotion} from "@/interfaces/IFetch";
+import {useQuery} from "@tanstack/react-query";
+import {getPromotion, TPromotionMeta} from "@/services/list.querys";
+import {baseUrl} from "@/axios.config";
+
+const lang = {
+  es: "esp",
+  en: "eng",
+};
 
 type TSidebar = {
   navigation: NativeStackNavigationProp<any>;
@@ -17,6 +26,23 @@ const isBold = (route: RouteProp<ParamListBase>, name: string): string =>
 const SideBar = ({navigation}: TSidebar) => {
   const t = useI18nStore(s => s.t);
   const locale = useI18nStore(s => s.locale);
+
+  const {data, isLoading} = useQuery<IPromotion>({
+    queryKey: ["left-banner", lang[locale]],
+    meta: {
+      lang: lang[locale],
+      limit: 0,
+      page: 1,
+      type: "banner",
+      type_banner: "left_bar",
+    } as TPromotionMeta,
+    queryFn: getPromotion,
+  });
+
+  const imgPath = useMemo(() => {
+    if (data) return baseUrl + data?.path;
+    else return undefined;
+  }, [data, isLoading]);
 
   const route = useRoute();
 
@@ -51,15 +77,16 @@ const SideBar = ({navigation}: TSidebar) => {
         onPress={() => navigation.navigate("Music")}>
         {t("home.music-btn", {locale})}
       </Button>
-      <View
-        backgroundColor={"rgba(255,255,255, 0.5)"}
+
+      <Image
+        backgroundColor={"rgba(255,255,255, 0.2)"}
+        source={{uri: imgPath}}
+        resizeMode="stretch"
         height={250}
         width={180}
-        justifyContent="center"
-        alignItems="center"
-        borderRadius={"$6"}>
-        <Text>Banner Left</Text>
-      </View>
+        borderRadius={25}
+      />
+
       <CountrySelect />
     </YStack>
   );

@@ -1,3 +1,4 @@
+import BannerBottom from "@/components/BannerBottom";
 import CountrySelect from "@/components/CountrySelect";
 import GradientBackground from "@/components/GradientBackground";
 import SideBar from "@/components/SideBar";
@@ -31,7 +32,8 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({
         {children}
       </XStack>
 
-      <View
+      <BannerBottom height={50} />
+      {/* <View
         borderTopEndRadius={25}
         borderTopStartRadius={25}
         backgroundColor={"rgba(255,255,255,.1)"}
@@ -39,7 +41,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({
         justifyContent="center"
         alignItems="center">
         <Text color="white">Banner</Text>
-      </View>
+      </View> */}
     </YStack>
   );
 };

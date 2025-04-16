@@ -15,7 +15,7 @@ const Home = ({navigation}: {navigation: NavigationProp<any>}) => {
       backgroundColor={"rgba(0,0,0,0)"}>
       <BannerWelcome />
       <HomeLinks navigation={navigation} />
-      <BannerBottom />
+      <BannerBottom height={80} />
     </ScrollView>
   );
 };
