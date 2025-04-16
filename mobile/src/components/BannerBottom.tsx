@@ -9,7 +9,7 @@ import {Image, Text, View} from "tamagui";
 
 const lang = {
   es: "esp",
-  en: "en",
+  en: "eng",
 };
 
 const BannerBottom = () => {
@@ -32,11 +32,10 @@ const BannerBottom = () => {
     else return undefined;
   }, [data, isLoading]);
 
-  console.log({data, imgPath});
-
   return (
     <Image
       source={{uri: imgPath}}
+      resizeMode="stretch"
       height={80}
       width={"100%"}
       backgroundColor="rgba(255, 255, 255, 0.5)"

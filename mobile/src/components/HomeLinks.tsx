@@ -18,12 +18,16 @@ const HomeLinks = ({navigation}: HomeLinksProps) => {
     <XStack
       justifyContent={"space-between"}
       alignItems="center"
-      maxWidth="100%">
+      maxWidth="100%"
+      alignSelf="center">
       <Button
+        fontSize={"$8"}
         onPress={() => navigation.navigate("Movie")}
         margin={12.5}
         color={"white"}
-        backgroundColor={"rgba(255,255,255, .5)"}
+        backgroundColor={"rgba(255,255,255, .2)"}
+        borderWidth={2}
+        borderColor={"white"}
         width={width * 0.5 - 25}
         size={100}
         icon={Film}
@@ -31,10 +35,13 @@ const HomeLinks = ({navigation}: HomeLinksProps) => {
         {t("home.movie-btn", {locale})}
       </Button>
       <Button
+        fontSize={"$8"}
         onPress={() => navigation.navigate("Music")}
         margin={12.5}
         color={"white"}
-        backgroundColor={"rgba(255,255,255, .5)"}
+        backgroundColor={"rgba(255,255,255, .2)"}
+        borderWidth={2}
+        borderColor={"white"}
         width={width * 0.5 - 25}
         size={100}
         icon={Music4}

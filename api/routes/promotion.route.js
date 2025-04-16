@@ -11,12 +11,12 @@ router.post(
     validateJWT,
     check("type", "Debe ser un tipo válido").isIn(["banner", "video"]),
     check("lang", "Debe ser un idioma válido").isIn(["eng", "esp"]),
-    check("type_banner", "Debe ser un tipo válido").isIn([
-      "welcome_banner",
-      "bottom_bar",
-      "left_bar",
-      "carousel_banner",
-    ]),
+    // check("type_banner", "Debe ser un tipo válido").isIn([
+    //   "welcome_banner",
+    //   "bottom_bar",
+    //   "left_bar",
+    //   "carousel_banner",
+    // ]),
     validateFields,
     upload.fields([{ name: "media", maxCount: 1 }]),
   ],
