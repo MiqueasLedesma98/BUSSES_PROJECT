@@ -31,9 +31,20 @@ const CardMovie = (props: IMovie) => {
           source={{uri: baseUrl + props.cover_path}}
         />
       </CardBackground>
-      <CardFooter backgroundColor={"rgba(255,255,255, 0.8)"}>
+      <CardFooter
+        maxHeight={90}
+        padding={"$2"}
+        backgroundColor={"rgba(255,255,255, 0.7)"}>
         <YStack paddingLeft={10}>
-          <H4 fontWeight={"bold"}>{props.title}</H4>
+          <Text
+            fontSize={18}
+            fontWeight={"bold"}
+            maxInlineSize={200}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            textAlign="left">
+            {props.title}
+          </Text>
           <Text fontSize={16} fontWeight={"normal"}>
             {props.year} | Genero
           </Text>

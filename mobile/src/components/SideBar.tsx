@@ -47,7 +47,7 @@ const SideBar = ({navigation}: TSidebar) => {
   const route = useRoute();
 
   return (
-    <YStack alignItems="center" gap={10} width={200}>
+    <YStack alignItems="center" gap={8} width={200}>
       <TouchableWithoutFeedback onPress={() => navigation.replace("Home")}>
         <Image
           width={150}

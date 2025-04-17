@@ -29,7 +29,7 @@ const MovieCarousel = ({navigation}: {navigation: NavigationProp<any>}) => {
         style={{zIndex: -1, position: "relative"}}
         width={800}
         loop={true}
-        height={200}
+        height={300}
         autoPlayInterval={5000}
         snapEnabled
         autoPlay

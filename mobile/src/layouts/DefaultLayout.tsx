@@ -26,7 +26,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({
         {children}
       </XStack>
 
-      <BannerBottom height={50} />
+      <BannerBottom height={60} />
     </YStack>
   );
 };
