@@ -1,20 +1,27 @@
+import {IFetchResponse, IMovie, TMovieQuery} from "@/interfaces/IFetch";
+import {getMovies} from "@/services/list.querys";
 import {useI18nStore} from "@/stores/i18nStore";
+import {useQuery} from "@tanstack/react-query";
 import React from "react";
 import Carousel from "react-native-reanimated-carousel";
-import {Button, View} from "tamagui";
+import {View} from "tamagui";
+import CarouselItem from "./CarouselItem";
+import {NavigationProp} from "@react-navigation/native";
 
-const defaultDataWith6Colors = [
-  "#B0604D",
-  "#899F9C",
-  "#B3C680",
-  "#5C6265",
-  "#F5D399",
-  "#F1F1F1",
-];
+const lang = {
+  es: "esp",
+  en: "eng",
+};
 
-const MovieCarousel = () => {
+const MovieCarousel = ({navigation}: {navigation: NavigationProp<any>}) => {
   const t = useI18nStore(s => s.t);
   const locale = useI18nStore(s => s.locale);
+
+  const {data, isLoading} = useQuery<IFetchResponse<IMovie>>({
+    queryKey: ["carousel-movies", locale],
+    meta: {lang: lang[locale], limit: 5, page: 1} as TMovieQuery,
+    queryFn: getMovies,
+  });
 
   return (
     <View marginBottom={10}>
@@ -23,26 +30,16 @@ const MovieCarousel = () => {
         width={800}
         loop={true}
         height={200}
+        autoPlayInterval={5000}
         snapEnabled
-        data={defaultDataWith6Colors}
+        autoPlay
+        data={data?.results || []}
         onConfigurePanGesture={(g: {enabled: (arg0: boolean) => any}) => {
           "worklet";
           g.enabled(false);
         }}
-        renderItem={({item, index}) => (
-          <View key={index} backgroundColor={item} height={200} width={"100%"}>
-            <Button
-              fontWeight={"normal"}
-              fontSize={18}
-              color="white"
-              backgroundColor={"#2988C8"}
-              zIndex={200}
-              position="absolute"
-              bottom={10}
-              right={10}>
-              {t("see", {locale})}
-            </Button>
-          </View>
+        renderItem={({item}) => (
+          <CarouselItem navigation={navigation} key={item.id} {...item} />
         )}
       />
     </View>

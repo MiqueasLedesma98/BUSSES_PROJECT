@@ -5,6 +5,12 @@ export interface IFetchResponse<T> {
   page: number;
 }
 
+export type TMovieQuery = {
+  lang: "esp" | "eng";
+  limit?: number;
+  page?: 1;
+};
+
 export interface IMovie {
   id: string;
   title: string;

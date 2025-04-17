@@ -1,17 +1,11 @@
 import BannerBottom from "@/components/BannerBottom";
-import CountrySelect from "@/components/CountrySelect";
 import GradientBackground from "@/components/GradientBackground";
 import SideBar from "@/components/SideBar";
-import {useI18nStore} from "@/stores/i18nStore";
-import {
-  NativeStackNavigationProp,
-  NativeStackScreenProps,
-} from "@react-navigation/native-stack";
-import {ArrowRight, Film, Music4} from "@tamagui/lucide-icons";
-import React from "react";
-import {TouchableWithoutFeedback} from "react-native";
+import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 
-import {Button, Image, Text, View, XStack, YStack} from "tamagui";
+import React from "react";
+
+import {XStack, YStack} from "tamagui";
 
 interface DefaultLayoutProps {
   children: React.ReactNode;
@@ -33,15 +27,6 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({
       </XStack>
 
       <BannerBottom height={50} />
-      {/* <View
-        borderTopEndRadius={25}
-        borderTopStartRadius={25}
-        backgroundColor={"rgba(255,255,255,.1)"}
-        height={50}
-        justifyContent="center"
-        alignItems="center">
-        <Text color="white">Banner</Text>
-      </View> */}
     </YStack>
   );
 };

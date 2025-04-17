@@ -28,7 +28,7 @@ const MovieScreen = ({navigation}: {navigation: NavigationProp<any>}) => {
   return (
     <ScrollView>
       <YStack gap={10}>
-        <MovieCarousel />
+        <MovieCarousel navigation={navigation} />
         <CategorySelector />
         <YStack
           flexDirection="row"

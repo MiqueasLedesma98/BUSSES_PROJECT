@@ -1,11 +1,10 @@
 import {baseUrl} from "@/axios.config";
-import {IFetchResponse, IPromotion} from "@/interfaces/IFetch";
+import {IPromotion} from "@/interfaces/IFetch";
 import {getPromotion, TPromotionMeta} from "@/services/list.querys";
 import {useI18nStore} from "@/stores/i18nStore";
 import {useQuery} from "@tanstack/react-query";
 import React, {useMemo} from "react";
-import {ActivityIndicator} from "react-native";
-import {Image, Text, View} from "tamagui";
+import {Image, Spinner} from "tamagui";
 
 const lang = {
   es: "esp",
@@ -32,7 +31,7 @@ const BannerBottom = ({height}: {height?: number}) => {
     else return undefined;
   }, [data, isLoading]);
 
-  return (
+  return !isLoading ? (
     <Image
       source={{uri: imgPath}}
       resizeMode="stretch"
@@ -43,6 +42,8 @@ const BannerBottom = ({height}: {height?: number}) => {
       marginTop={15}
       borderTopRightRadius={25}
     />
+  ) : (
+    <Spinner size="large" color="gray" />
   );
 };
 

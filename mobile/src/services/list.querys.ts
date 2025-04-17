@@ -1,27 +1,26 @@
 import api from "@/axios.config";
-import {IFetchResponse, IMovie, IPromotion} from "@/interfaces/IFetch";
+import {
+  IFetchResponse,
+  IMovie,
+  IPromotion,
+  TMovieQuery,
+} from "@/interfaces/IFetch";
 import {QueryFunction} from "@tanstack/react-query";
 
 export const getMovies: QueryFunction<IFetchResponse<IMovie>> = async ({
   meta,
 }) => {
   try {
-    const {data} = await api.get("/list/media/movie/all", {
-      params: meta,
+    const {lang, limit, page} = meta as TMovieQuery;
+
+    const {data} = await api.get(`/list/media/movie/${lang}`, {
+      params: {limit, page},
     });
     return data;
   } catch (error) {
     console.log(error);
     return error;
   }
-};
-
-export const getMusics = async ({page = 1}) => await api.get("/list/music/all");
-
-export const getCategories = async ({queryKey}: {queryKey: string}) => {
-  const {data} = await api.get(`/categories/${queryKey[0]}`);
-
-  return data?.results;
 };
 
 export type TPromotionMeta = {

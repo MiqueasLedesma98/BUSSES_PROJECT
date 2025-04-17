@@ -1,7 +1,7 @@
 import {TouchableWithoutFeedback} from "react-native";
 import React, {useMemo} from "react";
 import {useI18nStore} from "@/stores/i18nStore";
-import {Button, Image, Text, View, YStack} from "tamagui";
+import {Button, Image, Spinner, Text, View, YStack} from "tamagui";
 import {ArrowRight, Film, Music4} from "@tamagui/lucide-icons";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import CountrySelect from "./CountrySelect";
@@ -78,14 +78,18 @@ const SideBar = ({navigation}: TSidebar) => {
         {t("home.music-btn", {locale})}
       </Button>
 
-      <Image
-        backgroundColor={"rgba(255,255,255, 0.2)"}
-        source={{uri: imgPath}}
-        resizeMode="stretch"
-        height={250}
-        width={180}
-        borderRadius={25}
-      />
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <Image
+          backgroundColor={"rgba(255,255,255, 0.2)"}
+          source={{uri: imgPath}}
+          resizeMode="stretch"
+          height={250}
+          width={180}
+          borderRadius={25}
+        />
+      )}
 
       <CountrySelect />
     </YStack>
