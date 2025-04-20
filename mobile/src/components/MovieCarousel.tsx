@@ -16,6 +16,11 @@ const lang = {
   en: "eng",
 };
 
+const queryKeySelect = {
+  movie: "movie-carousel",
+  music: "music-carousel",
+};
+
 interface IProps {
   navigation: NavigationProp<any>;
   type: "music" | "movie";
@@ -25,7 +30,7 @@ const MovieCarousel = ({navigation, type}: IProps) => {
   const locale = useI18nStore(s => s.locale);
 
   const {data, isLoading} = useQuery<IFetchResponse<IMovie>>({
-    queryKey: ["carousel-movies", locale],
+    queryKey: [queryKeySelect[type ?? "movie"], locale],
     meta: {lang: lang[locale], limit: 5, page: 1, type} as TMovieQuery,
     queryFn: getMovies,
   });

@@ -12,7 +12,7 @@ import {NavigationProp} from "@react-navigation/native";
 
 const lang = {
   es: "esp",
-  en: "en",
+  en: "eng",
 };
 
 interface IProps {
@@ -38,7 +38,7 @@ const MovieScreen = ({navigation}: IProps) => {
     <ScrollView>
       <YStack gap={10}>
         <MovieCarousel type="movie" navigation={navigation} />
-        <CategorySelector />
+        <CategorySelector type="movie" />
         <YStack flexDirection="row" flexWrap="wrap" gap={15} padding={10}>
           {isLoading ? (
             <Spinner size="large" color={"#2988C8"} />

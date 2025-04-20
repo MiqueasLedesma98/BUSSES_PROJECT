@@ -6,6 +6,9 @@
   "movie": {
     "title": "Movies"
   },
+  "music": {
+    "title": "Musics"
+  },
   "select-lang-header": "Select language",
   "see": "See now",
   "not-found-movies": "Movies not found"

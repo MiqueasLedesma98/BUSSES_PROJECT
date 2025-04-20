@@ -12,6 +12,11 @@ export type TMovieQuery = {
   page?: 1;
 };
 
+export type TCategory = {
+  lang: "esp" | "eng";
+  type: "movie" | "music";
+};
+
 export interface IMovie {
   id: string;
   title: string;
@@ -34,8 +39,13 @@ export interface IPromotion {
   lang: "esp" | "eng";
   views: number;
   description?: string | null;
-  expirationDate: string; // En frontend generalmente las fechas vienen como string ISO
+  expirationDate: string;
   isActive: boolean;
-  createdAt: string; // Sequelize timestamp
-  updatedAt: string; // Sequelize timestamp
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ICategory {
+  id: string;
+  name: string;
 }

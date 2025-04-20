@@ -1,10 +1,34 @@
 import React from "react";
 import {Button, H4, XStack} from "tamagui";
 import {useI18nStore} from "@/stores/i18nStore";
+import {useQuery} from "@tanstack/react-query";
+import {ICategory, IFetchResponse, TMovieQuery} from "@/interfaces/IFetch";
+import {getCategories} from "@/services/list.querys";
 
-const CategorySelector = () => {
+const lang = {
+  es: "esp",
+  en: "eng",
+};
+
+const queryKeySelect = {
+  movie: "movie-category",
+  music: "music-category",
+};
+
+interface IProps {
+  type?: "music" | "movie";
+}
+
+const CategorySelector = (props: IProps) => {
   const t = useI18nStore(s => s.t);
   const locale = useI18nStore(s => s.locale);
+
+  const {data} = useQuery<IFetchResponse<ICategory>>({
+    queryKey: [queryKeySelect[props.type ?? "movie"], locale],
+    meta: {lang: lang[locale], type: props.type} as TMovieQuery,
+    queryFn: getCategories,
+  });
+
   return (
     <XStack
       paddingHorizontal={25}
@@ -12,26 +36,30 @@ const CategorySelector = () => {
       alignItems="center"
       gap={10}>
       <H4 color={"white"} fontWeight={"bold"}>
-        {t("movie.title", {locale})}
+        {props?.type === "movie"
+          ? t("movie.title", {locale})
+          : t("music.title", {locale})}
       </H4>
-      <Button
-        borderColor={"white"}
-        backgroundColor={"white"}
-        color={"#2988C8"}
-        variant="outlined">
-        Acción
-      </Button>
-      <Button borderColor={"white"} color={"white"} variant="outlined">
-        Acción
-      </Button>
-      <Button borderColor={"white"} color={"white"} variant="outlined">
-        Acción
-      </Button>
-      <Button borderColor={"white"} color={"white"} variant="outlined">
-        Acción
-      </Button>
+
+      {data?.results?.map(ct => (
+        <CatBtn {...ct} active={true} key={ct.id} />
+      ))}
     </XStack>
   );
 };
+
+interface ICatBtn extends ICategory {
+  active?: boolean;
+}
+
+const CatBtn = (props: ICatBtn) => (
+  <Button
+    borderColor={"white"}
+    backgroundColor={props.active ? "white" : "unset"}
+    color={props.active ? "#2988C8" : "white"}
+    variant="outlined">
+    {props.name}
+  </Button>
+);
 
 export default CategorySelector;

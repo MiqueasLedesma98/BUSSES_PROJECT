@@ -1,3 +1,4 @@
+import CategorySelector from "@/components/CategorySelector";
 import MovieCarousel from "@/components/MovieCarousel";
 import {NavigationProp} from "@react-navigation/native";
 import React from "react";
@@ -8,6 +9,7 @@ const MusicScreen = ({navigation}: {navigation: NavigationProp<any>}) => {
     <ScrollView>
       <YStack gap={10}>
         <MovieCarousel navigation={navigation} type="music" />
+        <CategorySelector type="music" />
       </YStack>
     </ScrollView>
   );

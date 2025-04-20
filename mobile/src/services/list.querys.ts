@@ -1,8 +1,10 @@
 import api from "@/axios.config";
 import {
+  ICategory,
   IFetchResponse,
   IMovie,
   IPromotion,
+  TCategory,
   TMovieQuery,
 } from "@/interfaces/IFetch";
 import {QueryFunction} from "@tanstack/react-query";
@@ -41,6 +43,23 @@ export const getPromotion: QueryFunction<IPromotion> = async ({meta}) => {
     const {data} = await api.get(`/list/promotion/${type}/${lang}`, {
       params: rest,
     });
+    return data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+export const getCategories: QueryFunction<IFetchResponse<ICategory>> = async ({
+  meta,
+}) => {
+  try {
+    const {lang, type} = meta as TCategory;
+
+    const {data} = await api.get(`/list/category/${type}/${lang}`, {
+      params: meta,
+    });
+
     return data;
   } catch (error) {
     console.log(error);
