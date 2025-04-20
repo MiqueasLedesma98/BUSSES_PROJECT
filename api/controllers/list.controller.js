@@ -122,6 +122,7 @@ module.exports = {
       const results = await Category.findAndCountAll({
         where,
         attributes: ["id", "name"],
+        order: Sequelize.literal("RANDOM()"),
       });
 
       return res.send(handleList({ results }));
