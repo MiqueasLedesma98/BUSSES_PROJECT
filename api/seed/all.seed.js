@@ -30,8 +30,8 @@ const seedUsers = async () => {
     }
 
     const categories = [
-      { name: "Acción", lang: "esp", description: "N/A" },
-      { name: "action", lang: "eng", description: "N/A" },
+      { name: "Acción", lang: "esp", description: "N/A", type: "movie" },
+      { name: "action", lang: "eng", description: "N/A", type: "movie" },
     ];
 
     await User.bulkCreate(users);
