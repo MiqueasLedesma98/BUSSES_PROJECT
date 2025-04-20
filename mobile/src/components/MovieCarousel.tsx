@@ -4,7 +4,7 @@ import {useI18nStore} from "@/stores/i18nStore";
 import {useQuery} from "@tanstack/react-query";
 import React from "react";
 import Carousel from "react-native-reanimated-carousel";
-import {View} from "tamagui";
+import {Text, View} from "tamagui";
 import CarouselItem from "./CarouselItem";
 import {NavigationProp} from "@react-navigation/native";
 import {Dimensions} from "react-native";
@@ -27,6 +27,7 @@ interface IProps {
 }
 
 const MovieCarousel = ({navigation, type}: IProps) => {
+  const t = useI18nStore(s => s.t);
   const locale = useI18nStore(s => s.locale);
 
   const {data, isLoading} = useQuery<IFetchResponse<IMovie>>({
@@ -35,13 +36,27 @@ const MovieCarousel = ({navigation, type}: IProps) => {
     queryFn: getMovies,
   });
 
+  if (!data?.results?.length && !isLoading) {
+    return (
+      <View
+        width={width * 0.8}
+        backgroundColor={"rgba(0,0,0,.5)"}
+        marginBottom={10}
+        alignItems="center"
+        justifyContent="center"
+        height={height * 0.45}>
+        <Text color="white">{t("not-found", {locale})}</Text>
+      </View>
+    );
+  }
+
   return (
     <View marginBottom={10}>
       <Carousel
         autoPlay
         autoPlayInterval={5000}
         data={data?.results || []}
-        height={height * 0.5}
+        height={height * 0.45}
         loop={true}
         snapEnabled
         style={{zIndex: -1, position: "relative"}}
