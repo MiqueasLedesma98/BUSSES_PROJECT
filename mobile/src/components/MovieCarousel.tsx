@@ -7,33 +7,40 @@ import Carousel from "react-native-reanimated-carousel";
 import {View} from "tamagui";
 import CarouselItem from "./CarouselItem";
 import {NavigationProp} from "@react-navigation/native";
+import {Dimensions} from "react-native";
+
+const {width, height} = Dimensions.get("screen");
 
 const lang = {
   es: "esp",
   en: "eng",
 };
 
-const MovieCarousel = ({navigation}: {navigation: NavigationProp<any>}) => {
-  const t = useI18nStore(s => s.t);
+interface IProps {
+  navigation: NavigationProp<any>;
+  type: "music" | "movie";
+}
+
+const MovieCarousel = ({navigation, type}: IProps) => {
   const locale = useI18nStore(s => s.locale);
 
   const {data, isLoading} = useQuery<IFetchResponse<IMovie>>({
     queryKey: ["carousel-movies", locale],
-    meta: {lang: lang[locale], limit: 5, page: 1} as TMovieQuery,
+    meta: {lang: lang[locale], limit: 5, page: 1, type} as TMovieQuery,
     queryFn: getMovies,
   });
 
   return (
     <View marginBottom={10}>
       <Carousel
-        style={{zIndex: -1, position: "relative"}}
-        width={800}
-        loop={true}
-        height={300}
-        autoPlayInterval={5000}
-        snapEnabled
         autoPlay
+        autoPlayInterval={5000}
         data={data?.results || []}
+        height={height * 0.5}
+        loop={true}
+        snapEnabled
+        style={{zIndex: -1, position: "relative"}}
+        width={width * 0.8}
         onConfigurePanGesture={(g: {enabled: (arg0: boolean) => any}) => {
           "worklet";
           g.enabled(false);

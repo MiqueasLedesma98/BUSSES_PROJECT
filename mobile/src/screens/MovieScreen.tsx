@@ -5,7 +5,7 @@ import MovieCarousel from "@/components/MovieCarousel";
 import CategorySelector from "@/components/CategorySelector";
 import {useQuery} from "@tanstack/react-query";
 import {getMovies} from "@/services/list.querys";
-import {IFetchResponse, IMovie} from "@/interfaces/IFetch";
+import {IFetchResponse, IMovie, TMovieQuery} from "@/interfaces/IFetch";
 import {useI18nStore} from "@/stores/i18nStore";
 import MovieDetail from "@/components/MovieDetail";
 import {NavigationProp} from "@react-navigation/native";
@@ -15,27 +15,31 @@ const lang = {
   en: "en",
 };
 
-const MovieScreen = ({navigation}: {navigation: NavigationProp<any>}) => {
+interface IProps {
+  navigation: NavigationProp<any>;
+}
+
+const MovieScreen = ({navigation}: IProps) => {
   const t = useI18nStore(s => s.t);
   const locale = useI18nStore(s => s.locale);
 
   const {data, isLoading} = useQuery<IFetchResponse<IMovie>>({
     queryKey: ["movies", locale],
-    meta: {limit: 50, page: 1, lang: lang[locale]},
+    meta: {
+      limit: 50,
+      page: 1,
+      lang: lang[locale],
+      type: "movie",
+    } as TMovieQuery,
     queryFn: getMovies,
   });
 
   return (
     <ScrollView>
       <YStack gap={10}>
-        <MovieCarousel navigation={navigation} />
+        <MovieCarousel type="movie" navigation={navigation} />
         <CategorySelector />
-        <YStack
-          flexDirection="row"
-          flexWrap="wrap"
-          // justifyContent="center"
-          gap={15}
-          padding={10}>
+        <YStack flexDirection="row" flexWrap="wrap" gap={15} padding={10}>
           {isLoading ? (
             <Spinner size="large" color={"#2988C8"} />
           ) : (

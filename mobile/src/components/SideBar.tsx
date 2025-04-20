@@ -1,4 +1,4 @@
-import {TouchableWithoutFeedback} from "react-native";
+import {Dimensions, TouchableWithoutFeedback} from "react-native";
 import React, {useMemo} from "react";
 import {useI18nStore} from "@/stores/i18nStore";
 import {Button, Image, Spinner, Text, View, YStack} from "tamagui";
@@ -10,6 +10,8 @@ import {IPromotion} from "@/interfaces/IFetch";
 import {useQuery} from "@tanstack/react-query";
 import {getPromotion, TPromotionMeta} from "@/services/list.querys";
 import {baseUrl} from "@/axios.config";
+
+const {width} = Dimensions.get("screen");
 
 const lang = {
   es: "esp",
@@ -47,7 +49,7 @@ const SideBar = ({navigation}: TSidebar) => {
   const route = useRoute();
 
   return (
-    <YStack alignItems="center" gap={8} width={200}>
+    <YStack alignItems="center" gap={8} width={width * 0.2}>
       <TouchableWithoutFeedback onPress={() => navigation.replace("Home")}>
         <Image
           width={150}

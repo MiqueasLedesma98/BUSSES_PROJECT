@@ -7,6 +7,7 @@ export interface IFetchResponse<T> {
 
 export type TMovieQuery = {
   lang: "esp" | "eng";
+  type: "movie" | "music";
   limit?: number;
   page?: 1;
 };
