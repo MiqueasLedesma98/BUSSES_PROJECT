@@ -14,6 +14,7 @@ const MovieDetail = ({navigation}: {navigation: NavigationProp<any>}) => {
   const {width} = useWindowDimensions();
 
   const data = useModalStore(s => s.getModalData("movieDetail"));
+
   const closeModal = useModalStore(s => s.closeModal);
 
   return (
@@ -73,8 +74,9 @@ const MovieDetail = ({navigation}: {navigation: NavigationProp<any>}) => {
 
             <Button
               marginTop={"$6"}
-              onPressOut={() => {
+              onPressOut={async () => {
                 navigation.navigate("Media-Player", data);
+                setTimeout(() => closeModal("movieDetail"), 1000);
               }}
               backgroundColor={"#2988C8"}
               color="white"
