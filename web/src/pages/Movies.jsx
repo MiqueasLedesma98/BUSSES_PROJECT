@@ -33,7 +33,8 @@ export default function Movies() {
     if (!isPlaceholderData && page < totalPages) {
       queryClient.prefetchQuery({
         queryKey: ["movies", page + 1],
-        queryFn: () => getMovies(page + 1),
+        meta: { type: "movie", lang: "all", page: page + 1, limit: 20 },
+        queryFn: getMedia,
       });
     }
   }, [page, queryClient, isPlaceholderData, totalPages]);

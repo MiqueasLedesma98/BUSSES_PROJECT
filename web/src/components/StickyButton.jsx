@@ -17,7 +17,7 @@ export const StickyButton = ({ modal = "createMovie", btnText = "Crear" }) => {
         padding: "5px 0",
         display: "flex",
         justifyContent: "flex-end",
-        bgcolor: palette.grey["100"],
+        height: 40,
       }}
     >
       <Button
