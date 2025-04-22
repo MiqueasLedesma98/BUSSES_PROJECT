@@ -17,6 +17,7 @@ const MediaPlayer = () => {
   const navigation = useNavigation();
   const movie = route.params;
   const [closeBtn, setCloseBtn] = useState(true);
+  const [isAdPlaying, setIsAdPlaying] = useState(true);
 
   const videoRef = useRef<VideoRef>(null);
 
@@ -28,7 +29,7 @@ const MediaPlayer = () => {
           zIndex={10}
           position="absolute"
           top={"$4"}
-          right={"$4"}
+          left={"$4"}
           variant="outlined">
           <X color={"red"} />
         </Button>

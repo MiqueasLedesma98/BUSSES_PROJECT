@@ -21,11 +21,9 @@ export const CardsContainer = React.memo(({ data = [], isLoading }) => {
         gap: "2rem",
       }}
     >
-      {Array.from({ length: 20 })
-        .fill({})
-        .map((_, i) => (
-          <Card key={i} />
-        ))}
+      {data?.map((c) => (
+        <Card key={c.id} />
+      ))}
     </Box>
   );
 });

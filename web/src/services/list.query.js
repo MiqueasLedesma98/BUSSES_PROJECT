@@ -1,13 +1,29 @@
 import api from "../api";
 
-export const getMovies = async ({ page = 1 }) =>
-  await api.get("/list/movie/all", { params: { page } });
+export const getMedia = async ({ meta }) => {
+  try {
+    const { lang, limit, page, type } = meta;
 
-export const getMusics = async ({ page = 1 }) =>
-  await api.get("/list/music/all", { params: { page } });
+    const { data } = await api.get(`/list/media/${type}/${lang}`, {
+      params: { limit, page },
+    });
 
-export const getCategories = async ({ queryKey }) => {
-  const { data } = await api.get(`/categories/${queryKey[0]}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
 
-  return data?.results;
+export const getCategories = async ({ meta }) => {
+  try {
+    const { data } = await api.get(`/list/category/${meta.type}/${meta.lang}`, {
+      params: meta,
+    });
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
 };
