@@ -10,11 +10,10 @@ import {
   MenuItem,
   Box,
   LinearProgress,
-  useTheme,
   CircularProgress,
 } from "@mui/material";
 import { Close, Folder, Image } from "@mui/icons-material";
-import React, { useState } from "react";
+import React from "react";
 import { useModalStore } from "../store";
 import { Form, Formik } from "formik";
 import { DropZone } from "./DropZone";
@@ -26,7 +25,8 @@ const CreateMovieModal = ({}) => {
   const close = useModalStore((store) => store.closeModal);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["esp"],
+    queryKey: ["categories"],
+    meta: { type: "movie", lang: "esp" },
     queryFn: getCategories,
   });
 
@@ -60,7 +60,7 @@ const CreateMovieModal = ({}) => {
           categories: "",
           year: "",
           rate: "",
-          file: "",
+          media: null,
           cover: null,
         }}
         onSubmit={(values) => console.log({ values })}
@@ -70,11 +70,31 @@ const CreateMovieModal = ({}) => {
             <DialogContent>
               {/* Barra de Progreso */}
               <LinearProgress variant="determinate" value={30} sx={{ mb: 2 }} />
-
+              {values.cover && (
+                <Box
+                  component="img"
+                  src={URL.createObjectURL(values.cover)}
+                  sx={{
+                    width: "100%",
+                    height: 180,
+                    objectFit: "cover",
+                    mb: 2,
+                    borderRadius: 1,
+                  }}
+                />
+              )}
               {/* Área de Carga */}
               <DropZone file={values.media} setFieldValue={setFieldValue} />
 
-              <Box sx={{ display: "grid", placeContent: "center" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 1,
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <input
                   accept="video/mp4"
                   style={{ display: "none" }}
@@ -83,24 +103,12 @@ const CreateMovieModal = ({}) => {
                   onChange={(e) => setFieldValue("media", e.target.files[0])}
                 />
                 <Button
-                  sx={{ mb: 3 }}
+                  variant="outlined"
                   onClick={() => document.getElementById("file").click()}
+                  startIcon={<Folder />}
                 >
-                  <Folder />
+                  Video
                 </Button>
-              </Box>
-
-              <Box
-                sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}
-              >
-                <input
-                  required
-                  accept="image/*"
-                  style={{ display: "none" }}
-                  id="cover"
-                  type="file"
-                  onChange={(e) => setFieldValue("cover", e.target.files[0])}
-                />
                 <Button
                   variant="outlined"
                   onClick={() => document.getElementById("cover").click()}
@@ -108,19 +116,18 @@ const CreateMovieModal = ({}) => {
                 >
                   Subir Cover
                 </Button>
+              </Box>
 
-                {values.cover && (
-                  <Box
-                    component="img"
-                    src={URL.createObjectURL(values.cover)}
-                    sx={{
-                      width: 300,
-                      height: 80,
-                      objectFit: "cover",
-                      borderRadius: 1,
-                    }}
-                  />
-                )}
+              <Box
+                sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}
+              >
+                <input
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  id="cover"
+                  type="file"
+                  onChange={(e) => setFieldValue("cover", e.target.files[0])}
+                />
               </Box>
 
               {/* Inputs */}
@@ -139,13 +146,13 @@ const CreateMovieModal = ({}) => {
                   startAdornment={isLoading && <CircularProgress size={15} />}
                   fullWidth
                   value={values.categories || ""}
-                  onChange={handleChange}
+                  onChange={(e) => setFieldValue("categories", e.target.value)}
                   displayEmpty
                 >
                   <MenuItem value="" disabled>
                     Categoría
                   </MenuItem>
-                  {data?.map((category) => (
+                  {data?.results?.map((category) => (
                     <MenuItem key={category.id} value={category.name}>
                       {category.name}
                     </MenuItem>
@@ -157,6 +164,7 @@ const CreateMovieModal = ({}) => {
                   value={values.year}
                   fullWidth
                   label="Año"
+                  onChange={handleChange}
                   type="number"
                   variant="outlined"
                 />
@@ -164,9 +172,8 @@ const CreateMovieModal = ({}) => {
 
               <TextField
                 sx={{ mb: 2 }}
-                type="number"
                 name="duration"
-                placeholder="En minutos"
+                placeholder="1h:30m"
                 onChange={handleChange}
                 value={values.duration}
                 variant="outlined"

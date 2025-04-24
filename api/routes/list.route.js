@@ -18,8 +18,19 @@ router.get(
 
 router.get(
   "/promotion/:type/:lang",
-  [validateJWT, validateFields],
+  [
+    validateJWT,
+    check("type", "No es un tipo válido").isIn(["banner", "video"]),
+    check("lang", "No es una lenguaje válido").isIn(["esp", "eng", "all"]),
+    validateFields,
+  ],
   controller.promotion
+);
+
+router.get(
+  "/category/:type/:lang",
+  [validateJWT, validateFields],
+  controller.category
 );
 
 module.exports = router;

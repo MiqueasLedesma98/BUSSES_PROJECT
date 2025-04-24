@@ -1,21 +1,28 @@
-import { Box, Button, Stack, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import React from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Card } from "../components";
 import { useModalStore } from "../store";
+import { useQuery } from "@tanstack/react-query";
+import { getMedia } from "../services/list.query";
 
 const ContentTypeRender = React.memo(
-  ({
-    title = "",
-    newBtnText = "",
-    postUrl = "/",
-    getUrl = "/",
-    redirect = "",
-  }) => {
+  ({ title = "", newBtnText = "", redirect = "", type = "" }) => {
     const navigate = useNavigate();
     const openModal = useModalStore((store) => store.openModal);
 
-    console.log({ postUrl, getUrl });
+    const { data, isLoading } = useQuery({
+      queryKey: [`home-cards-${type}`],
+      meta: { page: 1, limit: 5, type, lang: "all" },
+      queryFn: getMedia,
+    });
 
     return (
       <Stack direction="column" gap="2rem" mb="3rem">
@@ -50,11 +57,10 @@ const ContentTypeRender = React.memo(
             paddingBottom: "1rem", // Add padding for better UX
           }}
         >
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
+          {isLoading ? <CircularProgress variant="indeterminate" /> : null}
+          {data?.results.map((c) => (
+            <Card key={c.id} />
+          ))}
         </Box>
       </Stack>
     );
@@ -82,16 +88,14 @@ const Content = () => {
           title="Películas"
           redirect="/movies"
           newBtnText="Nueva película"
-          postUrl="/"
-          getUrl="/"
+          type="movie"
         />
 
         <ContentTypeRender
           title="Música"
           redirect="/musics"
           newBtnText="Nueva canción"
-          postUrl="/"
-          getUrl="/"
+          type="music"
         />
       </Box>
     );

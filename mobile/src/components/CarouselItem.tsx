@@ -15,19 +15,19 @@ import {
   Text,
 } from "tamagui";
 
-const {width} = Dimensions.get("screen");
+const {width, height} = Dimensions.get("screen");
 
 const CarouselItem = (data: IMovie & {navigation: NavigationProp<any>}) => {
   const t = useI18nStore(s => s.t);
   const locale = useI18nStore(s => s.locale);
 
   return (
-    <Card borderWidth={0} height={300}>
+    <Card borderWidth={0} height={height * 0.45}>
       <Card.Background>
         <Image
           source={{uri: baseUrl + data?.cover_path}}
           resizeMode="stretch"
-          height={300}
+          height={height * 0.45}
           width={"100%"}
         />
       </Card.Background>

@@ -10,9 +10,10 @@ const Category = sequelize.define(
       allowNull: false,
       primaryKey: true,
     },
-    name: { type: DataTypes.STRING, allowNull: false },
-    lang: { type: DataTypes.ENUM("eng", "esp") },
     description: { type: DataTypes.STRING, allowNull: false },
+    lang: { type: DataTypes.ENUM("eng", "esp") },
+    name: { type: DataTypes.STRING, allowNull: false },
+    type: { type: DataTypes.ENUM("music", "movie") },
   },
   { timestamps: true, version: false }
 );

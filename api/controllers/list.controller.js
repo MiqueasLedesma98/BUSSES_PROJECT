@@ -1,5 +1,6 @@
-const { Sequelize } = require("sequelize");
+const { Sequelize, Op } = require("sequelize");
 const { Multimedia, Category, Promotion } = require("../models");
+const { handleList } = require("../helpers");
 
 /**
  * @template T
@@ -59,12 +60,7 @@ module.exports = {
         ],
       });
 
-      return res.send({
-        total: results.count,
-        results: results.rows,
-        limit: parsedLimit,
-        page: parseInt(page),
-      });
+      return res.send(handleList({ limit, page, results }));
     } catch (error) {
       next(error);
     }
@@ -104,6 +100,32 @@ module.exports = {
         const randomPromotion = await Promotion.findOne(options);
         return res.send(randomPromotion);
       }
+    } catch (error) {
+      next(error);
+    }
+  },
+  /**
+   * @type {ExpressController<propsType>}
+   */
+  category: async (req, res, next) => {
+    try {
+      const { type, lang } = req.params;
+      const { name } = req.query;
+
+      const where = {
+        type,
+        lang,
+      };
+
+      if (name) where.name = Op.iLike(name);
+
+      const results = await Category.findAndCountAll({
+        where,
+        attributes: ["id", "name"],
+        order: Sequelize.literal("RANDOM()"),
+      });
+
+      return res.send(handleList({ results }));
     } catch (error) {
       next(error);
     }

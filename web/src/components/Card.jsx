@@ -11,6 +11,7 @@ export function Card() {
     <MuiCard
       sx={{
         width: "350px",
+        height: "260px",
         borderRadius: "20px",
         transition: "ease-in 100ms",
         ":hover": {

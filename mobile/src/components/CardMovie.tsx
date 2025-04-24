@@ -1,31 +1,30 @@
+import {baseUrl} from "@/axios.config";
 import {IMovie} from "@/interfaces/IFetch";
 import {useModalStore} from "@/stores/modalStore";
 import React from "react";
-import {
-  Card,
-  CardBackground,
-  CardFooter,
-  H4,
-  Image,
-  Text,
-  YStack,
-} from "tamagui";
+import {Dimensions} from "react-native";
+import {Card, CardBackground, CardFooter, Image, Text, YStack} from "tamagui";
 
-const baseUrl = "https://nhvdt5z3-3000.brs.devtunnels.ms/api";
+const {width, height} = Dimensions.get("screen");
+
+const cardHeight = height * 0.45;
+
+const cardWidth = width * 0.25;
 
 const CardMovie = (props: IMovie) => {
   const openModal = useModalStore(s => s.openModal);
 
   return (
     <Card
-      width={250}
-      height={250}
+      margin={"$2"}
+      width={cardWidth}
+      height={cardHeight}
       overflow="hidden"
       onPress={() => openModal("movieDetail", props)}>
       <CardBackground>
         <Image
-          width={250}
-          height={250}
+          width={cardWidth}
+          height={cardHeight}
           alignSelf="center"
           resizeMode="cover"
           source={{uri: baseUrl + props.cover_path}}

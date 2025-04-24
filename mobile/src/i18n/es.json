@@ -6,7 +6,12 @@
   "movie": {
     "title": "Películas"
   },
+  "music": {
+    "title": "Musicas"
+  },
   "select-lang-header": "Seleccione idioma",
   "see": "Ver ahora",
-  "not-found-movies": "No se encuentran películas"
+  "not-found-movies": "No se encuentran películas",
+  "not-found-musics": "No se encuentran canciones",
+  "not-found": "Sin elementos"
 }

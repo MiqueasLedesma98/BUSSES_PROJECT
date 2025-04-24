@@ -7,7 +7,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
-import { getMovies } from "../services/list.query.js";
+import { getMedia } from "../services/list.query.js";
 import CustomPagination from "../components/CustomPagination.jsx";
 import { useEffect } from "react";
 
@@ -20,8 +20,9 @@ export default function Movies() {
   // Obtener datos de la API
   const { data, isFetching, isPlaceholderData, isPending } = useQuery({
     queryKey: ["movies", page],
+    meta: { type: "movie", lang: "all", page, limit: 20 },
     placeholderData: keepPreviousData,
-    queryFn: () => getMovies(page),
+    queryFn: getMedia,
   });
 
   // Calcular total de páginas
@@ -32,7 +33,8 @@ export default function Movies() {
     if (!isPlaceholderData && page < totalPages) {
       queryClient.prefetchQuery({
         queryKey: ["movies", page + 1],
-        queryFn: () => getMovies(page + 1),
+        meta: { type: "movie", lang: "all", page: page + 1, limit: 20 },
+        queryFn: getMedia,
       });
     }
   }, [page, queryClient, isPlaceholderData, totalPages]);

@@ -35,7 +35,11 @@ const RootNavigator = () => (
       )}
       component={MovieScreen}
     />
-    <Stack.Screen name="Media-Player" component={MediaPlayer} />
+    <Stack.Screen
+      name="Media-Player"
+      options={{contentStyle: {backgroundColor: "#000"}}}
+      component={MediaPlayer}
+    />
   </Stack.Navigator>
 );
 
