@@ -12,15 +12,45 @@ import {
   LinearProgress,
   CircularProgress,
 } from "@mui/material";
-import { Close, Folder, Image } from "@mui/icons-material";
+import { Close, Folder, Image, Upload } from "@mui/icons-material";
 import React from "react";
 import { useModalStore } from "../store";
 import { Form, Formik } from "formik";
 import { DropZone } from "./DropZone";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCategories } from "../services/list.query";
+import api from "../api";
 
-const CreateMovieModal = ({}) => {
+const uploadMovie = async (values) => {
+  try {
+    const formData = new FormData();
+
+    formData.append("title", values.title);
+    formData.append("description", values.description);
+    formData.append("duration", values.duration);
+    formData.append("categories", values.categories);
+    // formData.append("lang", values.lang);
+    formData.append("year", values.year);
+    formData.append("rate", values.rate);
+
+    formData.append("media", values.media);
+    formData.append("cover", values.cover);
+
+    await api.post(`/upload/movie/${values.lang}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      method: "post",
+      maxBodyLength: Infinity,
+      data: formData,
+    });
+    return true;
+  } catch (error) {
+    return error;
+  }
+};
+
+const CreateMovieModal = ({ type = "movie" }) => {
   const open = useModalStore((store) => store.modals?.createMovie);
   const close = useModalStore((store) => store.closeModal);
 
@@ -28,6 +58,18 @@ const CreateMovieModal = ({}) => {
     queryKey: ["categories"],
     meta: { type: "movie", lang: "esp" },
     queryFn: getCategories,
+  });
+
+  const { refetchQueries } = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: [`upload-${type}`],
+    mutationFn: uploadMovie,
+    onSuccess: () => {
+      refetchQueries({ queryKey: ["home-cards-movie", "home-cards-music"] });
+      close("createMovie");
+    },
+    onError: (error) => alert(error.message),
   });
 
   return (
@@ -58,14 +100,15 @@ const CreateMovieModal = ({}) => {
           description: "",
           duration: "",
           categories: "",
+          lang: "",
           year: "",
           rate: "",
           media: null,
           cover: null,
         }}
-        onSubmit={(values) => console.log({ values })}
+        onSubmit={mutate}
       >
-        {({ values, handleChange, handleSubmit, setFieldValue }) => (
+        {({ values, handleChange, handleSubmit, setFieldValue, resetForm }) => (
           <Form onSubmit={handleSubmit}>
             <DialogContent>
               {/* Barra de Progreso */}
@@ -132,6 +175,7 @@ const CreateMovieModal = ({}) => {
 
               {/* Inputs */}
               <TextField
+                required
                 name="title"
                 value={values.title}
                 onChange={handleChange}
@@ -143,6 +187,7 @@ const CreateMovieModal = ({}) => {
 
               <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
                 <Select
+                  required
                   startAdornment={isLoading && <CircularProgress size={15} />}
                   fullWidth
                   value={values.categories || ""}
@@ -153,13 +198,14 @@ const CreateMovieModal = ({}) => {
                     Categoría
                   </MenuItem>
                   {data?.results?.map((category) => (
-                    <MenuItem key={category.id} value={category.name}>
+                    <MenuItem key={category.id} value={category.id}>
                       {category.name}
                     </MenuItem>
                   ))}
                 </Select>
 
                 <TextField
+                  required
                   name="year"
                   value={values.year}
                   fullWidth
@@ -171,6 +217,7 @@ const CreateMovieModal = ({}) => {
               </Box>
 
               <TextField
+                required
                 sx={{ mb: 2 }}
                 name="duration"
                 placeholder="1h:30m"
@@ -182,6 +229,7 @@ const CreateMovieModal = ({}) => {
               />
 
               <TextField
+                required
                 name="description"
                 value={values.description}
                 onChange={handleChange}
@@ -190,17 +238,65 @@ const CreateMovieModal = ({}) => {
                 variant="outlined"
                 multiline
                 rows={3}
+                sx={{ mb: 2 }}
+                error={values.description?.length >= 250}
+                helperText={
+                  values.description.length >= 250
+                    ? "Maxímo 250 caracteres"
+                    : ""
+                }
               />
+
+              <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+                <Select
+                  value={values.lang}
+                  onChange={(e) => setFieldValue("lang", e.target.value)}
+                  name="lang"
+                  size="small"
+                  required
+                  fullWidth
+                  displayEmpty
+                >
+                  <MenuItem disabled value="">
+                    Idioma
+                  </MenuItem>
+                  {[
+                    { label: "Español", value: "esp" },
+                    { label: "Ingles", value: "eng" },
+                  ].map((item) => (
+                    <MenuItem key={item.value} value={item.value}>
+                      {item.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <TextField
+                  name="rate"
+                  label="Puntuación"
+                  type="number"
+                  placeholder="1 - 10"
+                  fullWidth
+                  onChange={handleChange}
+                  error={values.rate > 10 || values.rate === 0}
+                  helperText={
+                    values.rate > 10 || values.rate === 0
+                      ? "Solo valores entre 1 y 10"
+                      : ""
+                  }
+                />
+              </Box>
             </DialogContent>
 
             <DialogActions sx={{ pb: 3, px: 3 }}>
               <Button
+                disabled={isPending}
+                startIcon={isPending ? <CircularProgress size={15} /> : null}
+                endIcon={<Upload />}
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ backgroundColor: "#A5C9FF", color: "#fff" }}
+                sx={{ color: "#fff" }}
               >
-                Ir a paso 2
+                Enviar
               </Button>
             </DialogActions>
           </Form>

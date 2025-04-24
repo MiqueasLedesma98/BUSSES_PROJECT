@@ -20,7 +20,7 @@ const ContentTypeRender = React.memo(
 
     const { data, isLoading } = useQuery({
       queryKey: [`home-cards-${type}`],
-      meta: { page: 1, limit: 5, type, lang: "all" },
+      meta: { page: 1, limit: 20, type, lang: "all" },
       queryFn: getMedia,
     });
 
