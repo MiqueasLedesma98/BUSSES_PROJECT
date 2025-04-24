@@ -33,7 +33,7 @@ const routes = [
       },
       {
         path: "advertising",
-        element: lazy(() => import("../pages/Construction")),
+        element: lazy(() => import("../pages/Advertising")),
       },
       {
         path: "enterprise",
