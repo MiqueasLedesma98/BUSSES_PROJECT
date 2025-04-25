@@ -5,11 +5,13 @@ import {
   Typography,
 } from "@mui/material";
 import { baseURL } from "../api";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export function Card({ title, cover_path, url_path, year }) {
   const [showVideo, setShowVideo] = useState(false);
   const hoverTimeout = useRef(null);
+
+  const videoRef = useRef(null);
 
   const handleMouseEnter = () => {
     hoverTimeout.current = setTimeout(() => {
@@ -21,6 +23,21 @@ export function Card({ title, cover_path, url_path, year }) {
     clearTimeout(hoverTimeout.current);
     setShowVideo(false);
   };
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video && showVideo) {
+      const handleTimeUpdate = () => {
+        if (video.currentTime >= 10) {
+          video.currentTime = 0;
+          video.play();
+        }
+      };
+
+      video.addEventListener("timeupdate", handleTimeUpdate);
+      return () => video.removeEventListener("timeupdate", handleTimeUpdate);
+    }
+  }, [showVideo]);
 
   return (
     <MuiCard
@@ -40,6 +57,7 @@ export function Card({ title, cover_path, url_path, year }) {
     >
       {showVideo ? (
         <CardMedia
+          ref={videoRef}
           component="video"
           src={baseURL + url_path}
           autoPlay
