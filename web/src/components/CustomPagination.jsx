@@ -18,10 +18,11 @@ const CustomPagination = ({ count = 10 }) => {
   return (
     <Box
       sx={{
+        position: "sticky",
+        bottom: 0,
         display: "grid",
         placeContent: "center",
         placeItems: "center",
-        mt: "2rem",
       }}
     >
       <Pagination

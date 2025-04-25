@@ -34,8 +34,8 @@ const CreateMovieModal = ({ type = "movie" }) => {
   const { mutate, isPending } = useMutation({
     mutationKey: [`upload-${type}`],
     mutationFn: uploadMovie,
-    onSuccess: () => {
-      queryClient.refetchQueries({
+    onSuccess: async () => {
+      await queryClient.refetchQueries({
         queryKey: ["home-cards-movie", "home-cards-music"],
       });
       close("createMovie");

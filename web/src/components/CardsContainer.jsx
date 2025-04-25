@@ -17,12 +17,12 @@ export const CardsContainer = React.memo(({ data = [], isLoading }) => {
       sx={{
         display: "grid",
         gridTemplateColumns: "repeat(auto-fit, minmax(250px, 350px))",
-        justifyContent: "space-around",
+        minHeight: 750,
         gap: "2rem",
       }}
     >
       {data?.map((c) => (
-        <Card key={c.id} />
+        <Card key={c.id} {...c} />
       ))}
     </Box>
   );

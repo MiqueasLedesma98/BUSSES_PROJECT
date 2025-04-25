@@ -43,10 +43,12 @@ export default function Movies() {
     <Box
       sx={{
         gridArea: "main",
-        padding: "1rem 2rem 2rem 2rem",
+        padding: "2rem",
         display: "grid",
         backgroundColor: "#f8f8f8",
         overflow: "auto",
+        alignContent: "flex-start",
+        gap: 2,
       }}
     >
       <StickyButton btnText="Crear Pelicula" />
