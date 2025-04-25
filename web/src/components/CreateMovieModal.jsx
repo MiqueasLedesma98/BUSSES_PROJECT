@@ -9,7 +9,6 @@ import {
   Select,
   MenuItem,
   Box,
-  LinearProgress,
   CircularProgress,
 } from "@mui/material";
 import { Close, Folder, Image, Upload } from "@mui/icons-material";
@@ -18,41 +17,13 @@ import { useModalStore } from "../store";
 import { Form, Formik } from "formik";
 import { DropZone } from "./DropZone";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getCategories } from "../services/list.query";
-import api from "../api";
-
-const uploadMovie = async (values) => {
-  try {
-    const formData = new FormData();
-
-    formData.append("title", values.title);
-    formData.append("description", values.description);
-    formData.append("duration", values.duration);
-    formData.append("categories", values.categories);
-    // formData.append("lang", values.lang);
-    formData.append("year", values.year);
-    formData.append("rate", values.rate);
-
-    formData.append("media", values.media);
-    formData.append("cover", values.cover);
-
-    await api.post(`/upload/movie/${values.lang}`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      method: "post",
-      maxBodyLength: Infinity,
-      data: formData,
-    });
-    return true;
-  } catch (error) {
-    return error;
-  }
-};
+import { uploadMovie, getCategories } from "../services";
 
 const CreateMovieModal = ({ type = "movie" }) => {
   const open = useModalStore((store) => store.modals?.createMovie);
   const close = useModalStore((store) => store.closeModal);
+
+  const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
     queryKey: ["categories"],
@@ -60,16 +31,16 @@ const CreateMovieModal = ({ type = "movie" }) => {
     queryFn: getCategories,
   });
 
-  const { refetchQueries } = useQueryClient();
-
   const { mutate, isPending } = useMutation({
     mutationKey: [`upload-${type}`],
     mutationFn: uploadMovie,
     onSuccess: () => {
-      refetchQueries({ queryKey: ["home-cards-movie", "home-cards-music"] });
+      queryClient.refetchQueries({
+        queryKey: ["home-cards-movie", "home-cards-music"],
+      });
       close("createMovie");
     },
-    onError: (error) => alert(error.message),
+    onError: console.log,
   });
 
   return (
@@ -87,7 +58,7 @@ const CreateMovieModal = ({ type = "movie" }) => {
         }}
       >
         <Typography variant="h6" fontWeight={600} component="span">
-          Paso 1: Carga tu archivo en español
+          Paso 1: Carga tu archivo
         </Typography>
         <Button variant="text" onClick={() => close("createMovie")}>
           <Close />
@@ -108,11 +79,9 @@ const CreateMovieModal = ({ type = "movie" }) => {
         }}
         onSubmit={mutate}
       >
-        {({ values, handleChange, handleSubmit, setFieldValue, resetForm }) => (
+        {({ values, handleChange, handleSubmit, setFieldValue }) => (
           <Form onSubmit={handleSubmit}>
-            <DialogContent>
-              {/* Barra de Progreso */}
-              <LinearProgress variant="determinate" value={30} sx={{ mb: 2 }} />
+            <DialogContent dividers>
               {values.cover && (
                 <Box
                   component="img"

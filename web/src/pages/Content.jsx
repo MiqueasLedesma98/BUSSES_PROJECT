@@ -59,7 +59,7 @@ const ContentTypeRender = React.memo(
         >
           {isLoading ? <CircularProgress variant="indeterminate" /> : null}
           {data?.results.map((c) => (
-            <Card key={c.id} />
+            <Card key={c.id} {...c} />
           ))}
         </Box>
       </Stack>
