@@ -36,7 +36,7 @@ const CreateMovieModal = ({ type = "movie" }) => {
     mutationFn: uploadMovie,
     onSuccess: async () => {
       await queryClient.refetchQueries({
-        queryKey: ["home-cards-movie", "home-cards-music"],
+        queryKey: ["home-cards-movie", "home-cards-music", "movies"],
       });
       close("createMovie");
     },
