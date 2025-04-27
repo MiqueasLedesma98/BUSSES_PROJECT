@@ -47,6 +47,7 @@ export function Card({ title, cover_path, url_path, year }) {
         borderRadius: "20px",
         transition: "ease-in 100ms",
         ":hover": {
+          cursor: "pointer",
           zIndex: 0,
           scale: { xs: "1", sm: "1.05" },
           transition: "ease-in 100ms",

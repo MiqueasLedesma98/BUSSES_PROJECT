@@ -58,7 +58,7 @@ const CreateMovieModal = ({ type = "movie" }) => {
         }}
       >
         <Typography variant="h6" fontWeight={600} component="span">
-          Paso 1: Carga tu archivo
+          Carga tu archivo
         </Typography>
         <Button variant="text" onClick={() => close("createMovie")}>
           <Close />
