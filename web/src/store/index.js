@@ -8,3 +8,4 @@ export const useModalStore = create((set) => ({
     set((state) => ({ modals: { ...state.modals, [key]: false } })),
   isModalOpen: (key) => (state) => !!state.modals[key],
 }));
+useModalStore;

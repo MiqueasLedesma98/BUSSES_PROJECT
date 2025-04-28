@@ -67,7 +67,7 @@ export function SideBar() {
       }}
     >
       {routes?.map((route) => (
-        <NavLink key={route.route} to={route.route}>
+        <NavLink className="navlink" key={route.route} to={route.route}>
           <Stack direction={"row"} alignItems={"center"} gap={1}>
             <img
               src={

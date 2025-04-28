@@ -20,8 +20,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { uploadMovie, getCategories } from "../services";
 
 const CreateMovieModal = ({ type = "movie" }) => {
-  const open = useModalStore((store) => store.modals?.createMovie);
-  const close = useModalStore((store) => store.closeModal);
+  const open = useModalStore((s) => s.modals?.createMovie);
+  const close = useModalStore((s) => s.closeModal);
+  const openModal = useModalStore((s) => s.openModal);
 
   const queryClient = useQueryClient();
 
@@ -37,6 +38,10 @@ const CreateMovieModal = ({ type = "movie" }) => {
     onSuccess: async () => {
       await queryClient.refetchQueries({
         queryKey: ["home-cards-movie", "home-cards-music", "movies"],
+      });
+      openModal("success", {
+        redir: "/dashboard/content/movies",
+        text: "Ir a películas",
       });
       close("createMovie");
     },

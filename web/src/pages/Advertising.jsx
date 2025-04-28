@@ -2,6 +2,7 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import ImagenBienvenida from "../assets/barra-bienvenida.png";
 import RectanguloBienvenida from "../assets/rectangulo-bienvenida.png";
 import { Card } from "../components";
+import { useModalStore } from "../store";
 export default function Advertising() {
   return (
     <Stack
@@ -107,11 +108,18 @@ export default function Advertising() {
   );
 }
 
-const CambiarButton = () => (
-  <Button
-    variant="contained"
-    sx={{ width: "196px", height: "54px", borderRadius: "14px" }}
-  >
-    Cambiar contenido
-  </Button>
-);
+const CambiarButton = ({ data }) => {
+
+  const open = useModalStore('createAds', data )
+
+  return (
+
+
+    <Button
+      variant="contained"
+      sx={{ width: "196px", height: "54px", borderRadius: "14px" }}
+    >
+      Cambiar contenido
+    </Button>
+  )
+};
