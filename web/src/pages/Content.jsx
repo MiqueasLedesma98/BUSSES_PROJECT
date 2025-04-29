@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   CircularProgress,
@@ -48,20 +49,24 @@ const ContentTypeRender = React.memo(
           </Box>
         </Box>
 
-        <Box
-          sx={{
-            display: "grid",
-            gap: "2rem",
-            placeContent: "center",
-            gridTemplateColumns: "repeat(auto-fill, minmax(350px, 350px))",
-            paddingBottom: "1rem", // Add padding for better UX
-          }}
-        >
-          {isLoading ? <CircularProgress variant="indeterminate" /> : null}
-          {data?.results.map((c) => (
-            <Card key={c.id} {...c} />
-          ))}
-        </Box>
+        {!data?.results?.length ? (
+          <Alert severity="info">No se encuentran registros</Alert>
+        ) : (
+          <Box
+            sx={{
+              display: "grid",
+              gap: "2rem",
+              placeContent: "center",
+              gridTemplateColumns: "repeat(auto-fill, minmax(350px, 350px))",
+              paddingBottom: "1rem", // Add padding for better UX
+            }}
+          >
+            {isLoading ? <CircularProgress variant="indeterminate" /> : null}
+            {data?.results.map((c) => (
+              <Card key={c.id} {...c} />
+            ))}
+          </Box>
+        )}
       </Stack>
     );
   }

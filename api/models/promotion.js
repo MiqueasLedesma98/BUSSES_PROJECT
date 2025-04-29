@@ -19,7 +19,7 @@ const Promotion = sequelize.define(
         "left_bar",
         "carousel_banner",
       ]),
-      allowNull: false,
+      allowNull: true,
     },
     lang: { type: DataTypes.ENUM(["esp", "eng"]) },
     views: { type: DataTypes.BIGINT, defaultValue: 0 },

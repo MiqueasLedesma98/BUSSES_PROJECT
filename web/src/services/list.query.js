@@ -27,3 +27,17 @@ export const getCategories = async ({ meta }) => {
     return error;
   }
 };
+
+export const getPromotion = async ({ meta }) => {
+  try {
+    const { type = "banner", lang = "esp", ...rest } = meta;
+
+    const { data } = await api.get(`/list/promotion/${type}/${lang}`, {
+      params: rest,
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};

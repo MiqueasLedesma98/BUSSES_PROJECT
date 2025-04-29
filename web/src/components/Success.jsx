@@ -58,11 +58,11 @@ const Success = () => {
           variant="contained"
           color="primary"
           onClick={async () => {
-            await navigate(open.redir);
+            await navigate(open?.redir || "/dashboard");
             handleClose();
           }}
         >
-          {open.text}
+          {open?.text}
         </Button>
       </DialogActions>
     </Dialog>
