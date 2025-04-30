@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { baseURL } from "../api";
+import { useModalStore } from "../store";
 
 export const UploadBannerCard = ({
   lang = "esp",
@@ -19,6 +20,8 @@ export const UploadBannerCard = ({
   type_banner = "welcome_banner",
   title = "Banner pantalla de bienvenida",
 }) => {
+  const openModal = useModalStore((s) => s.openModal);
+
   const { isFetching, data } = useQuery({
     queryKey: ["welcome-banner", lang, type, type_banner],
     queryFn: getPromotion,
@@ -57,7 +60,11 @@ export const UploadBannerCard = ({
       )}
 
       <CardActions sx={{ display: "flex", justifyContent: "center" }}>
-        <Button variant="contained" color="primary">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => openModal("createPromotion", { type, type_banner, title })}
+        >
           Cambiar contenido
         </Button>
       </CardActions>

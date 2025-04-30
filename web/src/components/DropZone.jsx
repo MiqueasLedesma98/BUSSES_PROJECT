@@ -3,17 +3,25 @@ import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import React, { useCallback, useMemo } from "react";
 import { useDropzone } from "react-dropzone";
 
-export const DropZone = ({ file, setFieldValue }) => {
+export const DropZone = ({
+  fieldKey = "media",
+  file,
+  setFieldValue,
+  accept = { "video/mp4": [] },
+}) => {
   const onDrop = useCallback((acceptedFiles) => {
     if (acceptedFiles.length > 0) {
-      setFieldValue("media", acceptedFiles[0]); // Guardamos el archivo en el estado
+      setFieldValue(fieldKey, acceptedFiles[0]);
     }
   }, []);
 
   const { getRootProps } = useDropzone({
-    accept: { "video/mp4": [] },
+    accept,
     onDrop,
   });
+
+  const url = file && URL.createObjectURL(file);
+  const isImage = file?.type?.startsWith("image/");
 
   const renderFile = useMemo(
     () =>
@@ -26,16 +34,34 @@ export const DropZone = ({ file, setFieldValue }) => {
             p: 2,
           }}
         >
-          <video
-            src={URL.createObjectURL(file)}
-            controls
-            style={{ width: "100%", borderRadius: 8, marginBottom: 8 }}
-          />
+          {isImage ? (
+            <img
+              src={url}
+              alt="preview"
+              style={{
+                maxWidth: "100%",
+                maxHeight: 250,
+                borderRadius: 8,
+                marginBottom: 8,
+                objectFit: "contain",
+              }}
+            />
+          ) : (
+            <video
+              src={url}
+              controls
+              style={{
+                width: "100%",
+                borderRadius: 8,
+                marginBottom: 8,
+              }}
+            />
+          )}
           <CardContent>
             <Button
               variant="contained"
               endIcon={<Delete />}
-              onClick={() => setFieldValue("media", null)}
+              onClick={() => setFieldValue(fieldKey, null)}
             >
               {file.name}
             </Button>

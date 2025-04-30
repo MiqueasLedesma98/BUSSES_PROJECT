@@ -4,14 +4,16 @@ import { LinearProgress } from "@mui/material";
 
 const Success = lazy(() => import("./Success"));
 const CreateMovieModal = lazy(() => import("./CreateMovieModal"));
+const CreatePromotionModal = lazy(() => import("./CreatePromotionModal"));
 
 export const ModalsBarrel = () => {
   const modals = useModalStore((store) => store.modals);
 
   return (
     <Suspense fallback={<LinearProgress />}>
-      {modals.createMovie && <CreateMovieModal value={modals.createMovie} />}
-      {modals.createMusic && <CreateMovieModal value={modals.createMusic} />}
+      {modals.createPromotion && <CreatePromotionModal />}
+      {modals.createMovie && <CreateMovieModal />}
+      {modals.createMusic && <CreateMovieModal />}
       {modals.success && <Success />}
     </Suspense>
   );
