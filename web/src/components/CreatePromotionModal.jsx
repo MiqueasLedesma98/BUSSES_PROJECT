@@ -14,12 +14,30 @@ import {
 import { Form, Formik } from "formik";
 import { DropZone } from "./DropZone";
 import { Close, FileUpload } from "@mui/icons-material";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { uploadPromotion } from "../services";
 
 const CreatePromotionModal = () => {
   const data = useModalStore((s) => s.modals?.createPromotion);
   const close = useModalStore((s) => s.closeModal);
+  const openModal = useModalStore((s) => s.openModal);
 
   const handleClose = () => close("createPromotion");
+
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: uploadPromotion,
+    mutationKey: [data?.type, data?.type_banner],
+    meta: data,
+    onSuccess: (_, { values, data }) => {
+      openModal("success", { redir: "/dashboard/advertising" });
+      queryClient.refetchQueries({
+        queryKey: [values.lang, data.type, data.type_banner],
+      });
+    },
+    onError: console.log,
+  });
 
   return (
     <Dialog open={!!data} onClose={handleClose}>
@@ -34,8 +52,8 @@ const CreatePromotionModal = () => {
       />
 
       <Formik
-        initialValues={{ lang: "", file: "", description: "" }}
-        onSubmit={(props) => console.log(props)}
+        initialValues={{ lang: "", file: "", description: "", title: "" }}
+        onSubmit={(values) => mutate({ values, data })}
       >
         {({ handleChange, values, handleSubmit, setFieldValue }) => (
           <Form onSubmit={handleSubmit}>
@@ -62,6 +80,15 @@ const CreatePromotionModal = () => {
                   </MenuItem>
                 ))}
               </Select>
+              <TextField
+                fullWidth
+                size="small"
+                sx={{ mb: 2 }}
+                name="title"
+                placeholder="Titulo de la publicidad"
+                label="Titulo"
+                onChange={handleChange}
+              />
               <TextField
                 size="small"
                 fullWidth

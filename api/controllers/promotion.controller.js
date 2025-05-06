@@ -23,7 +23,8 @@ module.exports = {
    */
   new_promotion: async (req, res, next) => {
     try {
-      const { description, expirationDate, company, type_banner } = req.body;
+      const { description, expirationDate, company, type_banner, title } =
+        req.body;
       const { type, lang } = req.params;
 
       const { media } = req.files;
@@ -34,7 +35,10 @@ module.exports = {
         path: filePath,
         type,
         lang,
-        expirationDate: new Date(expirationDate),
+        title,
+        expirationDate: expirationDate
+          ? new Date(expirationDate)
+          : new Date(new Date().setFullYear(new Date().getFullYear() + 1000)),
         type_banner,
         description,
       });

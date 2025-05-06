@@ -23,7 +23,7 @@ export const UploadBannerCard = ({
   const openModal = useModalStore((s) => s.openModal);
 
   const { isFetching, data } = useQuery({
-    queryKey: ["welcome-banner", lang, type, type_banner],
+    queryKey: [lang, type, type_banner],
     queryFn: getPromotion,
     meta: { type: "banner", lang, type_banner },
   });
@@ -63,7 +63,9 @@ export const UploadBannerCard = ({
         <Button
           variant="contained"
           color="primary"
-          onClick={() => openModal("createPromotion", { type, type_banner, title })}
+          onClick={() =>
+            openModal("createPromotion", { type, type_banner, title })
+          }
         >
           Cambiar contenido
         </Button>

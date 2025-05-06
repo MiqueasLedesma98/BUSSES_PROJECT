@@ -5,6 +5,7 @@ const Promotion = sequelize.define(
   "Promotion",
   {
     id: {
+      title: { allowNull: true, type: DataTypes.STRING },
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
