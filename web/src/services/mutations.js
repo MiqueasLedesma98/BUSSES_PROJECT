@@ -12,7 +12,7 @@ export const uploadMovie = async (values) => {
   formData.append("media", values.media);
   formData.append("cover", values.cover);
 
-  await api.post(`/upload/movie/${values.lang}`, formData, {
+  await api.post(`/upload/${values.type}/${values.lang}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

@@ -9,11 +9,13 @@ const CreatePromotionModal = lazy(() => import("./CreatePromotionModal"));
 export const ModalsBarrel = () => {
   const modals = useModalStore((store) => store.modals);
 
+  console.log(modals.createMusic, "music");
+
   return (
     <Suspense fallback={<LinearProgress />}>
       {modals.createPromotion && <CreatePromotionModal />}
-      {modals.createMovie && <CreateMovieModal />}
-      {modals.createMusic && <CreateMovieModal />}
+      {modals.createMovie && <CreateMovieModal type="movie" />}
+      {modals.createMusic && <CreateMovieModal type="music" />}
       {modals.success && <Success />}
     </Suspense>
   );

@@ -33,7 +33,12 @@ const ContentTypeRender = React.memo(
           </Typography>
           <Box sx={{ display: "flex", gap: 1 }}>
             <Button
-              onClick={() => openModal("createMovie", true)}
+              onClick={() =>
+                openModal(
+                  type === "music" ? "createMusic" : "createMovie",
+                  true
+                )
+              }
               variant="contained"
               sx={{ textTransform: "none" }}
             >

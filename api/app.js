@@ -3,13 +3,11 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-const cron = require("node-cron");
-const { start } = require("./lib/cron");
 const cors = require("cors");
 const fs = require("fs");
 
 // Middleware - manejo de error
-const { httpErrors } = require("./middlewares");
+const { httpErrors, countViews } = require("./middlewares");
 
 // DB - Config
 const { initializeDB } = require("./config/db");
@@ -68,9 +66,6 @@ const routes = fs.readdirSync(path.join(__dirname, "routes"), {
 routes.forEach((route) => {
   app.use(`/api/${route.split(".")[0]}`, require(`./routes/${route}`));
 });
-
-//TODO: Inicializar las tareas que se ejecutaran constantemente
-// cron.schedule("*/10 * * * * *", start);
 
 // Manejo de errores
 app.use(httpErrors);

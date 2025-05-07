@@ -7,16 +7,18 @@ import {
 import { baseURL } from "../api";
 import { useState, useRef, useEffect } from "react";
 
-export function Card({ title, cover_path, url_path, year }) {
+export function Card({ title, cover_path, url_path, year, type }) {
+  const isMusic = type === "music";
   const [showVideo, setShowVideo] = useState(false);
   const hoverTimeout = useRef(null);
-
   const videoRef = useRef(null);
 
   const handleMouseEnter = () => {
-    hoverTimeout.current = setTimeout(() => {
-      setShowVideo(true);
-    }, 1000);
+    if (!isMusic) {
+      hoverTimeout.current = setTimeout(() => {
+        setShowVideo(true);
+      }, 1000);
+    }
   };
 
   const handleMouseLeave = () => {
@@ -56,7 +58,7 @@ export function Card({ title, cover_path, url_path, year }) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {showVideo ? (
+      {showVideo && !isMusic ? (
         <CardMedia
           ref={videoRef}
           component="video"
@@ -72,7 +74,7 @@ export function Card({ title, cover_path, url_path, year }) {
           component="img"
           height="180"
           image={baseURL + cover_path}
-          alt="Movie Cover"
+          alt="Cover"
           sx={{ borderRadius: "20px 20px 0 0" }}
         />
       )}
@@ -89,7 +91,9 @@ export function Card({ title, cover_path, url_path, year }) {
         <Typography variant="subtitle2" fontWeight={700}>
           {title}
         </Typography>
-        <Typography variant="body2">{year} | Action comedy</Typography>
+        <Typography variant="body2">
+          {year} | {isMusic ? "Music" : "Action comedy"}
+        </Typography>
       </CardContent>
     </MuiCard>
   );

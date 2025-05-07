@@ -20,7 +20,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { uploadMovie, getCategories } from "../services";
 
 const CreateMovieModal = ({ type = "movie" }) => {
-  const open = useModalStore((s) => s.modals?.createMovie);
+  const strModal = type === "music" ? "createMusic" : "createMovie";
+  const isMovie = type === "movie";
+  const open = useModalStore((s) => s.modals[strModal]);
   const close = useModalStore((s) => s.closeModal);
   const openModal = useModalStore((s) => s.openModal);
 
@@ -28,7 +30,7 @@ const CreateMovieModal = ({ type = "movie" }) => {
 
   const { data, isLoading } = useQuery({
     queryKey: ["categories"],
-    meta: { type: "movie", lang: "esp" },
+    meta: { type, lang: "esp" },
     queryFn: getCategories,
   });
 
@@ -40,21 +42,16 @@ const CreateMovieModal = ({ type = "movie" }) => {
         queryKey: ["home-cards-movie", "home-cards-music", "movies"],
       });
       openModal("success", {
-        redir: "/dashboard/content/movies",
-        text: "Ir a películas",
+        redir: `/dashboard/content/${isMovie ? "movies" : "musics"}`,
+        text: `Ir a ${isMovie ? "Peliculas" : "Musicas"}`,
       });
-      close("createMovie");
+      close(strModal);
     },
     onError: console.log,
   });
 
   return (
-    <Dialog
-      open={open}
-      onClose={() => close("createMovie")}
-      maxWidth="sm"
-      fullWidth
-    >
+    <Dialog open={open} onClose={() => close(strModal)} maxWidth="sm" fullWidth>
       <DialogTitle
         sx={{
           display: "flex",
@@ -65,7 +62,7 @@ const CreateMovieModal = ({ type = "movie" }) => {
         <Typography variant="h6" fontWeight={600} component="span">
           Carga tu archivo
         </Typography>
-        <Button variant="text" onClick={() => close("createMovie")}>
+        <Button variant="text" onClick={() => close(strModal)}>
           <Close />
         </Button>
       </DialogTitle>
@@ -81,6 +78,7 @@ const CreateMovieModal = ({ type = "movie" }) => {
           rate: "",
           media: null,
           cover: null,
+          type,
         }}
         onSubmit={mutate}
       >
@@ -101,7 +99,11 @@ const CreateMovieModal = ({ type = "movie" }) => {
                 />
               )}
               {/* Área de Carga */}
-              <DropZone file={values.media} setFieldValue={setFieldValue} />
+              <DropZone
+                file={values.media}
+                setFieldValue={setFieldValue}
+                accept={isMovie ? "video/mp4" : "audio/mp4"}
+              />
 
               <Box
                 sx={{
@@ -113,7 +115,7 @@ const CreateMovieModal = ({ type = "movie" }) => {
                 }}
               >
                 <input
-                  accept="video/mp4"
+                  accept={isMovie ? "video/mp4" : "audio/mp3"}
                   style={{ display: "none" }}
                   id="file"
                   type="file"
@@ -124,7 +126,7 @@ const CreateMovieModal = ({ type = "movie" }) => {
                   onClick={() => document.getElementById("file").click()}
                   startIcon={<Folder />}
                 >
-                  Video
+                  {type === "music" ? "Canción" : "Video"}
                 </Button>
                 <Button
                   variant="outlined"
