@@ -26,6 +26,7 @@ const isBold = (route: RouteProp<ParamListBase>, name: string): string =>
   route.name === name ? "800" : "100";
 
 const SideBar = ({navigation}: TSidebar) => {
+  const focus = navigation.isFocused();
   const t = useI18nStore(s => s.t);
   const locale = useI18nStore(s => s.locale);
 
@@ -93,7 +94,7 @@ const SideBar = ({navigation}: TSidebar) => {
         />
       )}
 
-      <CountrySelect />
+      {focus && <CountrySelect />}
     </YStack>
   );
 };

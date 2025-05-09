@@ -21,20 +21,8 @@ const RootNavigator = () => (
       options={{contentStyle: {backgroundColor: "darkblue"}}}
       component={HomeScreen}
     />
-    <Stack.Screen
-      name="Music"
-      layout={({children, navigation}) => (
-        <DefaultLayout navigation={navigation}>{children}</DefaultLayout>
-      )}
-      component={MusicScreen}
-    />
-    <Stack.Screen
-      name="Movie"
-      layout={({children, navigation}) => (
-        <DefaultLayout navigation={navigation}>{children}</DefaultLayout>
-      )}
-      component={MovieScreen}
-    />
+    <Stack.Screen name="Music" layout={DefaultLayout} component={MusicScreen} />
+    <Stack.Screen name="Movie" layout={DefaultLayout} component={MovieScreen} />
     <Stack.Screen
       name="Media-Player"
       options={{contentStyle: {backgroundColor: "#000"}}}
