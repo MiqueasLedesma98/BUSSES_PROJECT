@@ -3,6 +3,7 @@ import {create} from "zustand";
 
 type ModalTypes = {
   movieDetail: IMovie;
+  "lang-select": boolean;
   // agregar otros modales aquí con sus tipos:
   // settings: ISettings;
   // userProfile: IUser;
