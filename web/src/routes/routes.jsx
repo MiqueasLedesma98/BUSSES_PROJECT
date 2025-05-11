@@ -41,7 +41,7 @@ const routes = [
       },
       {
         path: "metrics",
-        element: lazy(() => import("../pages/Construction")),
+        element: lazy(() => import("../pages/Metrics")),
       },
       {
         path: "*",
