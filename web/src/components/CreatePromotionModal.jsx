@@ -52,34 +52,17 @@ const CreatePromotionModal = () => {
       />
 
       <Formik
-        initialValues={{ lang: "", file: "", description: "", title: "" }}
+        initialValues={{
+          lang: data.lang,
+          file: "",
+          description: "",
+          title: "",
+        }}
         onSubmit={(values) => mutate({ values, data })}
       >
         {({ handleChange, values, handleSubmit, setFieldValue }) => (
           <Form onSubmit={handleSubmit}>
             <DialogContent dividers>
-              <Select
-                sx={{ mb: 2 }}
-                value={values.lang}
-                onChange={(e) => setFieldValue("lang", e.target.value)}
-                name="lang"
-                size="small"
-                required
-                fullWidth
-                displayEmpty
-              >
-                <MenuItem disabled value="">
-                  Idioma
-                </MenuItem>
-                {[
-                  { label: "Español", value: "esp" },
-                  { label: "Ingles", value: "eng" },
-                ].map((item) => (
-                  <MenuItem key={item.value} value={item.value}>
-                    {item.label}
-                  </MenuItem>
-                ))}
-              </Select>
               <TextField
                 fullWidth
                 size="small"

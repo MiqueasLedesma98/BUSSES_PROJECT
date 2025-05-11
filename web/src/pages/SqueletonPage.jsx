@@ -10,14 +10,21 @@ const SqueletonPage = () => {
         sm: "repeat(2, 1fr)",
         md: "repeat(3, 1fr)",
       }}
-      justifyContent={"center"}
-      alignContent={"center"}
+      justifyItems="center"
       gap={2}
+      px={2}
+      maxWidth="1200px"
+      mx="auto"
+      mt={4}
     >
       {Array.from({ length: 12 }).map((_, index) => (
-        <Box key={index}>
-          <Skeleton variant="rectangular" width={350} height={250} />
-        </Box>
+        <Skeleton
+          key={index}
+          variant="rectangular"
+          width={300}
+          height={200}
+          sx={{ borderRadius: 2 }}
+        />
       ))}
     </Box>
   );

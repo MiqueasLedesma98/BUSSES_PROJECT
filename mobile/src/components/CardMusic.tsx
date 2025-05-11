@@ -4,7 +4,7 @@ import {useModalStore} from "@/stores/modalStore";
 import {Card, Text, XStack, YStack} from "tamagui";
 import {SquarePlay} from "@tamagui/lucide-icons";
 import {Dimensions} from "react-native";
-const {width, height} = Dimensions.get("screen");
+const {width} = Dimensions.get("window");
 
 const CardMusic = (props: IMovie) => {
   const openModal = useModalStore(s => s.openModal);
@@ -28,7 +28,7 @@ const CardMusic = (props: IMovie) => {
           <Text fontWeight={"bold"} fontSize={"$4"} color={"white"}>
             {props.title}
           </Text>
-          <Text color={"white"}>{props.description}</Text>
+          <Text color={"white"}>{props.duration}</Text>
         </YStack>
       </XStack>
     </Card>
