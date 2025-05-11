@@ -8,6 +8,8 @@ export interface IFetchResponse<T> {
 export type TMovieQuery = {
   lang: "esp" | "eng";
   type: "movie" | "music";
+  category?: string;
+  search?: string;
   limit?: number;
   page?: 1;
 };
@@ -26,6 +28,7 @@ export interface IMovie {
   cover_path?: string;
   duration?: string;
   rate?: number;
+  Categories?: [ICategory];
   url_path?: string;
   views?: number;
   year?: string;
@@ -45,7 +48,12 @@ export interface IPromotion {
   updatedAt: string;
 }
 
+type TMediaCategory = {
+  MediumId: string;
+  CategoryId: string;
+};
 export interface ICategory {
   id: string;
   name: string;
+  media_categories?: TMediaCategory;
 }

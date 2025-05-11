@@ -4,6 +4,7 @@ import {useI18nStore} from "@/stores/i18nStore";
 import {useQuery} from "@tanstack/react-query";
 import {ICategory, IFetchResponse, TMovieQuery} from "@/interfaces/IFetch";
 import {getCategories} from "@/services/list.querys";
+import {FilterMovieTypes, useMovieFilterStore} from "@/stores/MovieFilterStore";
 
 const lang = {
   es: "esp",
@@ -42,24 +43,28 @@ const CategorySelector = (props: IProps) => {
       </H4>
 
       {data?.results?.map(ct => (
-        <CatBtn {...ct} active={true} key={ct.id} />
+        <CatBtn {...ct} key={ct.id} />
       ))}
     </XStack>
   );
 };
 
-interface ICatBtn extends ICategory {
-  active?: boolean;
-}
+const CatBtn = (props: ICategory) => {
+  const setFilter = useMovieFilterStore(s => s.setFilter);
+  const filter = useMovieFilterStore(s => s.filters);
 
-const CatBtn = (props: ICatBtn) => (
-  <Button
-    borderColor={"white"}
-    backgroundColor={props.active ? "white" : "unset"}
-    color={props.active ? "#2988C8" : "white"}
-    variant="outlined">
-    {props.name}
-  </Button>
-);
+  const isActive = filter.category === props.id;
+
+  return (
+    <Button
+      onPress={() => setFilter("category", isActive ? "" : props.id)}
+      borderColor={"white"}
+      backgroundColor={isActive ? "white" : "unset"}
+      color={isActive ? "#2988C8" : "white"}
+      variant="outlined">
+      {props.name}
+    </Button>
+  );
+};
 
 export default CategorySelector;

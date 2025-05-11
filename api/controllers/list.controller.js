@@ -22,16 +22,32 @@ module.exports = {
   media: async (req, res, next) => {
     try {
       const { type, lang } = req.params;
-      const { limit = 10, page = 1, sort = "createdAt:DESC" } = req.query;
+      const {
+        limit = 10,
+        page = 1,
+        sort = "createdAt:DESC",
+        search,
+        category,
+      } = req.query;
 
       const formatPage = parseInt(page) - 1;
+
       const where = {
         type,
         lang: lang === "all" ? ["esp", "eng"] : lang,
       };
 
+      const nestedWhere = {};
+
       const parsedLimit = parseInt(limit);
       let order;
+
+      if (search)
+        where.title = {
+          [Op.iLike]: `%${search}%`,
+        };
+
+      if (category) nestedWhere.id = category;
 
       if (sort) {
         const [field, direction = "ASC"] = sort.split(":");
@@ -56,6 +72,8 @@ module.exports = {
         include: [
           {
             model: Category,
+            attributes: ["id", "name"],
+            where: nestedWhere,
           },
         ],
       });

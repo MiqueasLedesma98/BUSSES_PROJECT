@@ -13,10 +13,10 @@ export const getMovies: QueryFunction<IFetchResponse<IMovie>> = async ({
   meta,
 }) => {
   try {
-    const {lang, limit, page, type} = meta as TMovieQuery;
+    const {lang, limit, page, type, category, search} = meta as TMovieQuery;
 
     const {data} = await api.get(`/list/media/${type}/${lang}`, {
-      params: {limit, page},
+      params: {limit, page, category, search},
     });
     return data;
   } catch (error) {

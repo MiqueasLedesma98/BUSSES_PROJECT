@@ -55,7 +55,11 @@ const MovieDetail = ({navigation}: {navigation: NavigationProp<any>}) => {
           </XStack>
 
           <Text fontSize={18} color={"white"}>
-            {data?.year} $Category {data?.duration}
+            {data?.year}{" "}
+            {data?.Categories && data?.Categories[0]
+              ? data?.Categories[0].name
+              : "N/A"}{" "}
+            {data?.duration}
           </Text>
 
           <Text color="white">{data?.description}</Text>
