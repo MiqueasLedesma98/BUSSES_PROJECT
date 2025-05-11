@@ -37,7 +37,7 @@ const routes = [
       },
       {
         path: "enterprise",
-        element: lazy(() => import("../pages/Construction")),
+        element: lazy(() => import("../pages/Enterprise"))
       },
       {
         path: "metrics",
