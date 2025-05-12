@@ -14,5 +14,6 @@
   "not-found-movies": "Movies not found",
   "not-found-musics": "Musics not found",
   "not-found": "Empty list",
-  "search": "Search"
+  "search": "Search",
+  "config": "Settings"
 }

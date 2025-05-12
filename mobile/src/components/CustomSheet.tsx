@@ -4,7 +4,7 @@ import {ViewStyle} from "react-native";
 import {Sheet, SheetProps, ColorProp} from "tamagui";
 
 interface IProps {
-  modalKey: "lang-select" | "movieDetail";
+  modalKey: "lang-select" | "movieDetail" | "promotion-detail";
   frameStyle?: ViewStyle;
   sheetProps?: SheetProps;
   bgColor?: ColorProp;

@@ -5,6 +5,7 @@ import MusicScreen from "@/screens/MusicScreen";
 import RootLayout from "@/layouts/RootLayout";
 import DefaultLayout from "@/layouts/DefaultLayout";
 import MediaPlayer from "@/screens/MediaPlayer";
+import Config from "@/screens/Config";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +18,9 @@ const RootNavigator = () => (
     }}>
     <Stack.Screen
       name="Home"
-      layout={({children}) => <RootLayout>{children}</RootLayout>}
+      layout={({children, navigation}) => (
+        <RootLayout navigation={navigation}>{children}</RootLayout>
+      )}
       options={{contentStyle: {backgroundColor: "darkblue"}}}
       component={HomeScreen}
     />
@@ -28,6 +31,7 @@ const RootNavigator = () => (
       options={{contentStyle: {backgroundColor: "#000"}}}
       component={MediaPlayer}
     />
+    <Stack.Screen name="Config" layout={DefaultLayout} component={Config} />
   </Stack.Navigator>
 );
 

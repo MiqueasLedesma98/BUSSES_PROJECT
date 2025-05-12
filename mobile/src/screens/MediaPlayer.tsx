@@ -71,7 +71,7 @@ const MediaPlayer = () => {
 
         <Video
           disableAudioSessionManagement={false}
-          controls={!isAdPlaying && !isAudio}
+          controls={!isAdPlaying || !isAudio}
           ref={videoRef}
           source={videoSource}
           style={{flex: 1, backgroundColor: "black"}}

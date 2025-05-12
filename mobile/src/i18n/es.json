@@ -14,5 +14,6 @@
   "not-found-movies": "No se encuentran películas",
   "not-found-musics": "No se encuentran canciones",
   "not-found": "Sin elementos",
-  "search": "Buscar"
+  "search": "Buscar",
+  "config": "Configuración"
 }

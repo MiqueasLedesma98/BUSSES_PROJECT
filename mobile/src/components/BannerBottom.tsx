@@ -2,8 +2,10 @@ import {baseUrl} from "@/axios.config";
 import {IPromotion} from "@/interfaces/IFetch";
 import {getPromotion, TPromotionMeta} from "@/services/list.querys";
 import {useI18nStore} from "@/stores/i18nStore";
+import {useModalStore} from "@/stores/modalStore";
 import {useQuery} from "@tanstack/react-query";
 import React, {useMemo} from "react";
+import {TouchableWithoutFeedback} from "react-native";
 import {Image, Spinner} from "tamagui";
 
 const lang = {
@@ -13,6 +15,8 @@ const lang = {
 
 const BannerBottom = ({height}: {height?: number}) => {
   const locale = useI18nStore(s => s.locale) ?? "es";
+
+  const openModal = useModalStore(s => s.openModal);
 
   const {data, isLoading} = useQuery<IPromotion>({
     queryKey: ["banner", lang[locale]],
@@ -32,16 +36,21 @@ const BannerBottom = ({height}: {height?: number}) => {
   }, [data, isLoading]);
 
   return !isLoading ? (
-    <Image
-      source={{uri: imgPath}}
-      resizeMode="stretch"
-      height={height}
-      width={"100%"}
-      backgroundColor="rgba(255, 255, 255, 0.5)"
-      borderTopLeftRadius={25}
-      marginTop={15}
-      borderTopRightRadius={25}
-    />
+    <>
+      <TouchableWithoutFeedback
+        onPress={() => openModal("promotion-detail", data as IPromotion)}>
+        <Image
+          source={{uri: imgPath}}
+          resizeMode="stretch"
+          height={height}
+          width={"100%"}
+          backgroundColor="rgba(255, 255, 255, 0.5)"
+          borderTopLeftRadius={25}
+          marginTop={15}
+          borderTopRightRadius={25}
+        />
+      </TouchableWithoutFeedback>
+    </>
   ) : (
     <Spinner size="large" color="gray" />
   );

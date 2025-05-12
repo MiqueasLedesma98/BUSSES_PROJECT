@@ -1,9 +1,11 @@
-import {IMovie} from "@/interfaces/IFetch";
+import {IMovie, IPromotion} from "@/interfaces/IFetch";
 import {create} from "zustand";
 
 type ModalTypes = {
   movieDetail: IMovie;
   "lang-select": boolean;
+  "promotion-detail": IPromotion;
+
   // agregar otros modales aquí con sus tipos:
   // settings: ISettings;
   // userProfile: IUser;
