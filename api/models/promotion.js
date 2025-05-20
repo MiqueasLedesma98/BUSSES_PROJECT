@@ -4,8 +4,8 @@ const { sequelize } = require("../config/db");
 const Promotion = sequelize.define(
   "Promotion",
   {
+    title: { allowNull: true, type: DataTypes.STRING },
     id: {
-      title: { allowNull: true, type: DataTypes.STRING },
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,

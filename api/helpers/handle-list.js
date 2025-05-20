@@ -7,4 +7,13 @@ function handleList({ results, limit, page }) {
   };
 }
 
-module.exports = { handleList };
+function formatForBarChart({ results, collection }) {
+  const labelKey = collection === "promotion" ? "publicidad" : "titulo";
+
+  return results.rows.map((item) => ({
+    [labelKey]: item.title,
+    vistas: item.views,
+  }));
+}
+
+module.exports = { handleList, formatForBarChart };
