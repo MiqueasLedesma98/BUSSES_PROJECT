@@ -8,4 +8,5 @@ module.exports = {
   stream: require("./stream.controller"),
   sync: require("./sync.controller"),
   upload: require("./upload.controller"),
+  view: require("./view.controller"),
 };
