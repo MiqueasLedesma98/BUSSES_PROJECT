@@ -26,10 +26,13 @@ export const uploadPromotion = async ({ values, data }) => {
   const formData = new FormData();
 
   if (!values.file) throw new Error("No se encuentra el archivo");
+  if (!values.secondary)
+    throw new Error("No se encuentra el archivo para detalles");
 
   formData.append("title", values.title);
   formData.append("description", values.description);
   formData.append("media", values.file);
+  formData.append("secondary", values.secondary);
   formData.append("type_banner", data.type_banner);
 
   await api.post(`/promotion/${data?.type}/${values.lang}`, formData);

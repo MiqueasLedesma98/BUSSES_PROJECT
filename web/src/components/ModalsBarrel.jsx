@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import { Suspense, lazy } from "react";
 import { useModalStore } from "../store";
 import { LinearProgress } from "@mui/material";
 

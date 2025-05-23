@@ -27,20 +27,22 @@ module.exports = {
         req.body;
       const { type, lang } = req.params;
 
-      const { media } = req.files;
+      const { media, secondary } = req.files;
 
       const filePath = `/media/${type}/${lang}/${media[0]?.filename}`;
+      const filePathSecondary = `/media/${type}/${lang}/${secondary[0]?.filename}`;
 
       const newPromotion = await Promotion.create({
-        path: filePath,
-        type,
-        lang,
-        title,
+        description,
         expirationDate: expirationDate
           ? new Date(expirationDate)
           : new Date(new Date().setFullYear(new Date().getFullYear() + 1000)),
+        lang,
+        path_secondary: filePathSecondary,
+        path: filePath,
+        title,
         type_banner,
-        description,
+        type,
       });
 
       const currentCompany = await Company.findByPk(company);

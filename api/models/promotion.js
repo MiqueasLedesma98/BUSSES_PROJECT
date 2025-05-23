@@ -12,6 +12,7 @@ const Promotion = sequelize.define(
       primaryKey: true,
     },
     path: { type: DataTypes.STRING, allowNull: false },
+    path_secondary: { type: DataTypes.STRING, allowNull: true },
     type: { type: DataTypes.ENUM(["banner", "video"]), allowNull: false },
     type_banner: {
       type: DataTypes.ENUM([

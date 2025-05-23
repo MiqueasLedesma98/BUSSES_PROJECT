@@ -18,7 +18,10 @@ router.post(
     //   "carousel_banner",
     // ]),
     validateFields,
-    upload.fields([{ name: "media", maxCount: 1 }]),
+    upload.fields([
+      { name: "media", maxCount: 1 },
+      { name: "secondary", maxCount: 1 },
+    ]),
   ],
   controller.new_promotion
 );
