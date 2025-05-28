@@ -10,6 +10,10 @@ const Version = sequelize.define(
       allowNull: false,
       primaryKey: true,
     },
+    isAplicated: { type: DataTypes.BOOLEAN, default: false },
+    models: {
+      type: DataTypes.ARRAY(DataTypes.ENUM(["promotion", "multimedia", ""])),
+    },
     number: {
       type: DataTypes.INTEGER,
       validate: { isNumeric: true },

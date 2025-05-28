@@ -6,4 +6,5 @@ module.exports = {
   ...require("./multimedia"),
   ...require("./promotion"),
   ...require("./user"),
+  ...require("./version"),
 };

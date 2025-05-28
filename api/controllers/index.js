@@ -9,4 +9,5 @@ module.exports = {
   sync: require("./sync.controller"),
   upload: require("./upload.controller"),
   view: require("./view.controller"),
+  version: require('./version.controller'),
 };
