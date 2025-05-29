@@ -8,7 +8,7 @@
     "seed": "node ./seed/all.seed.js"
   },
   "dependencies": {
-    "axios": "^1.8.4",
+    "axios": "^1.9.0",
     "bcryptjs": "^3.0.2",
     "colors": "^1.4.0",
     "cookie-parser": "~1.4.4",
