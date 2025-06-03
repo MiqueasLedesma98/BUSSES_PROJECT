@@ -21,12 +21,8 @@ module.exports = {
   firstSync: async (req, res, next) => {
     try {
       const [multimedias, promotions] = await Promise.all([
-        Multimedia.findAll({
-          attributes: ["title", "description", "cover_path", "url_path", "id"],
-        }),
-        Promotion.findAll({
-          attributes: [],
-        }),
+        Multimedia.findAll(),
+        Promotion.findAll(),
       ]);
 
       res.send({ multimedias, promotions });

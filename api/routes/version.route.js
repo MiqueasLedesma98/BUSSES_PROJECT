@@ -12,9 +12,6 @@ if (NODE_ENV === "MAIN_SERVER" || "DEV") {
   router.post("/", [validateJWT], controller.createVersion);
 
   router.get("/backup", [validateJWT], controller.backup);
-
-  
-
 }
 
 module.exports = router;

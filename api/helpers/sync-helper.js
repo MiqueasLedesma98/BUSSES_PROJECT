@@ -1,4 +1,5 @@
 const axios = require("axios");
+const fs = require("fs");
 const {
   Version,
   User,
@@ -10,7 +11,30 @@ const {
   Device,
 } = require("../models");
 const { sequelize } = require("../config/db");
+const path = require("path");
 const MAIN_SERVER_URL = process.env.MAIN_SERVER_URL;
+
+/**
+ * Aplana un objeto anidado con archivos a rutas relativas.
+ * @param {object} structure - Objeto anidado con archivos y carpetas
+ * @param {string} basePath - Ruta relativa acumulada
+ * @returns {string[]} - Array de rutas relativas tipo "movie/eng/file.png"
+ */
+function flattenStructure(structure, basePath = "") {
+  let files = [];
+
+  for (const key in structure) {
+    if (key === "files") {
+      files.push(...structure[key].map((f) => path.join(basePath, f)));
+    } else {
+      for (const nested of structure[key]) {
+        files.push(...flattenStructure(nested, path.join(basePath, key)));
+      }
+    }
+  }
+
+  return files;
+}
 
 async function exportLocalChanges() {
   const [multimediaViews, promotionViews] = await Promise.all([
@@ -91,10 +115,77 @@ module.exports = {
     }
   },
   /**
-   * Sincroniza archivos entre la carpeta local y la base de datos.
-   * @param {string[]} dbImagePaths - Array de rutas relativas desde la base de datos, ej: ["producto1.png"]
+   * Sincroniza los archivos entre una estructura anidada y la base de datos remota.
+   * @param {string[]} dbPaths - Array de rutas relativas desde la base de datos
+   * @param {object} localStructure - Estructura anidada local generada por readNestedFolders
+   * @returns {Promise<void>}
    */
-  syncMediaFyles: async function () {
-    // TODO: sincronizar carpeta multimedia
+  syncMediaFyles: async function syncMediaFiles(dbPaths, localStructure) {
+    const localPaths = flattenStructure(localStructure); // ["movie/eng/file.png", ...]
+
+    const dbSet = new Set(dbPaths.map((p) => p.replace(/^\/+/, ""))); // Aseguramos que no empiecen con "/"
+    const localSet = new Set(localPaths);
+
+    // Descargar los archivos que están en la DB pero no en disco
+    for (const dbPath of dbSet) {
+      if (!localSet.has(dbPath)) {
+        const fileUrl = `${MAIN_SERVER}/${dbPath}`;
+        const localFilePath = path.join(MEDIA_FOLDER, dbPath);
+
+        try {
+          // Crear carpeta si no existe
+          await fs.mkdir(path.dirname(localFilePath), { recursive: true });
+
+          const res = await axios.get(fileUrl, { responseType: "stream" });
+          const writer = fsSync.createWriteStream(localFilePath);
+
+          res.data.pipe(writer);
+
+          await new Promise((resolve, reject) => {
+            writer.on("finish", resolve);
+            writer.on("error", reject);
+          });
+
+          console.log(`📥 Descargado: ${dbPath}`);
+        } catch (err) {
+          console.warn(`❌ Error al descargar ${dbPath}:`, err.message);
+        }
+      }
+    }
+
+    // Eliminar archivos huérfanos que están en disco pero no en DB
+    for (const localPath of localSet) {
+      if (!dbSet.has(localPath)) {
+        const fullPath = path.join(MEDIA_FOLDER, localPath);
+        await fs.unlink(fullPath);
+        console.log(`🗑️ Eliminado archivo huérfano: ${localPath}`);
+      }
+    }
+  },
+  /**
+   * Recorre recursivamente una lista de carpetas y archivos y devuelve
+   * una estructura anidada representando el contenido.
+   *
+   * @param {string[]} entries - Lista de nombres obtenidos con fs.readdirSync
+   * @param {string} basePath - Ruta base para resolver los paths completos
+   * @returns {Promise<object>}
+   */
+  readNestedFolders: async function (entries, basePath) {
+    const result = {};
+
+    for (const entry of entries) {
+      const fullPath = path.join(basePath, entry);
+      const stat = await fs.promises.stat(fullPath);
+
+      if (stat.isDirectory()) {
+        const nestedEntries = await fs.promises.readdir(fullPath);
+        result[entry] = [await readNestedFolders(nestedEntries, fullPath)];
+      } else {
+        if (!result.files) result.files = [];
+        result.files.push(entry);
+      }
+    }
+
+    return result;
   },
 };

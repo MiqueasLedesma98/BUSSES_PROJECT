@@ -5,9 +5,11 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
 const fs = require("fs");
+const { schedule } = require("node-cron");
+const { crontTasks } = require("./lib");
 
 // Middleware - manejo de error
-const { httpErrors, countViews } = require("./middlewares");
+const { httpErrors } = require("./middlewares");
 
 // DB - Config
 const { initializeDB } = require("./config/db");
@@ -66,6 +68,8 @@ const routes = fs.readdirSync(path.join(__dirname, "routes"), {
 routes.forEach((route) => {
   app.use(`/api/${route.split(".")[0]}`, require(`./routes/${route}`));
 });
+
+Object.values(crontTasks).forEach((task) => schedule(...task));
 
 // Manejo de errores
 app.use(httpErrors);
