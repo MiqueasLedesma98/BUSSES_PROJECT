@@ -36,9 +36,7 @@ module.exports = {
    */
   sync: async (req, res, next) => {
     try {
-      const result = await Multimedia.findAll({
-        attributes: ["title", "description", "cover_path", "url_path", "id"],
-      });
+      const result = await Multimedia.findAll();
 
       res.send(result);
     } catch (error) {

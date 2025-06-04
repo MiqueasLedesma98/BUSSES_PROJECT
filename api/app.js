@@ -69,7 +69,8 @@ routes.forEach((route) => {
   app.use(`/api/${route.split(".")[0]}`, require(`./routes/${route}`));
 });
 
-Object.values(crontTasks).forEach((task) => schedule(...task));
+if (process.env.NODE_ENV === "DEV" || "SECONDARY_SERVER")
+  Object.values(crontTasks).forEach((task) => schedule(...task));
 
 // Manejo de errores
 app.use(httpErrors);

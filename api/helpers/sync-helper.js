@@ -120,8 +120,30 @@ module.exports = {
    * @param {object} localStructure - Estructura anidada local generada por readNestedFolders
    * @returns {Promise<void>}
    */
-  syncMediaFyles: async function syncMediaFiles(dbPaths, localStructure) {
+  syncMediaFyles: async function syncMediaFiles(localStructure) {
     const localPaths = flattenStructure(localStructure); // ["movie/eng/file.png", ...]
+
+    // Rutas a todos los archivos de promociónes y media
+    const dbPaths = [];
+
+    const [media, promotions] = await Promise.all([
+      Multimedia.findAll({
+        attributes: ["cover_path", "url_path"],
+      }),
+      Promotion.findAll({
+        attributes: ["path", "path_secondary"],
+      }),
+    ]);
+
+    media.forEach((m) => {
+      if (m.cover_path) dbPaths.push(m.cover_path);
+      if (m.url_path) dbPaths.push(m.url_path);
+    });
+
+    promotions.forEach((p) => {
+      if (p.path) dbPaths.push(p.path);
+      if (p.path_secondary) dbPaths.push(p.path_secondary);
+    });
 
     const dbSet = new Set(dbPaths.map((p) => p.replace(/^\/+/, ""))); // Aseguramos que no empiecen con "/"
     const localSet = new Set(localPaths);
@@ -129,7 +151,7 @@ module.exports = {
     // Descargar los archivos que están en la DB pero no en disco
     for (const dbPath of dbSet) {
       if (!localSet.has(dbPath)) {
-        const fileUrl = `${MAIN_SERVER}/${dbPath}`;
+        const fileUrl = `${MAIN_SERVER_URL}/${dbPath}`;
         const localFilePath = path.join(MEDIA_FOLDER, dbPath);
 
         try {
@@ -166,12 +188,13 @@ module.exports = {
    * Recorre recursivamente una lista de carpetas y archivos y devuelve
    * una estructura anidada representando el contenido.
    *
-   * @param {string[]} entries - Lista de nombres obtenidos con fs.readdirSync
    * @param {string} basePath - Ruta base para resolver los paths completos
    * @returns {Promise<object>}
    */
-  readNestedFolders: async function (entries, basePath) {
+  readNestedFolders: async function (basePath) {
     const result = {};
+
+    const entries = fs.readdirSync(path.join(__dirname, "..", "media"));
 
     for (const entry of entries) {
       const fullPath = path.join(basePath, entry);
