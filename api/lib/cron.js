@@ -3,7 +3,6 @@ const {
   syncMediaFyles,
   readNestedFolders,
 } = require("../helpers");
-const { axios } = require("./axios");
 
 let isRunning = false;
 
@@ -17,7 +16,7 @@ module.exports = {
           isRunning = true;
           await syncWithMainServer();
           const localStructure = await readNestedFolders();
-          await syncMediaFyles([]);
+          await syncMediaFyles([], localStructure);
         }
       } catch (error) {
         console.error(error.response?.data?.msg);
