@@ -37,16 +37,17 @@ function flattenStructure(structure, basePath = "") {
 }
 
 async function exportLocalChanges() {
-  const [multimediaViews, promotionViews] = await Promise.all([
+  const [multimedias, promotions, devices] = await Promise.all([
     Multimedia.findAll({
       attributes: ["views", "id"],
     }),
     Promotion.findAll({
       attributes: ["views", "id"],
     }),
+    Device.findAll(),
   ]);
 
-  return { multimediaViews, promotionViews };
+  return { multimedias, promotions, devices };
 }
 
 async function resetAndImportDatabase(data) {

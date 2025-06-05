@@ -14,4 +14,6 @@ if (NODE_ENV === "MAIN_SERVER" || "DEV") {
   router.get("/backup", [validateJWT], controller.backup);
 }
 
+router.put("/sync", [validateJWT], controller.sync);
+
 module.exports = router;

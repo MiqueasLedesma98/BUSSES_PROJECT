@@ -18,7 +18,7 @@ module.exports = {
   /**
    * @type {ExpressController<propsType>}
    */
-  firstSync: async (req, res, next) => {
+  firstSync: async (_req, res, next) => {
     try {
       const [multimedias, promotions] = await Promise.all([
         Multimedia.findAll(),
@@ -34,7 +34,7 @@ module.exports = {
   /**
    * @type {ExpressController<propsType>}
    */
-  sync: async (req, res, next) => {
+  sync: async (_req, res, next) => {
     try {
       const result = await Multimedia.findAll();
 

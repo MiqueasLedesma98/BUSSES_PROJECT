@@ -70,9 +70,25 @@ module.exports = {
    */
   sync: async (req, res, next) => {
     try {
-      const incoming = req.body;
+      const { multimedias, promotions, devices } = req.body;
 
-      // TODO: agregar la diferencia de vistas en promotions y multimedia
+      // 1. Devices: hacer bulkCreate con updateOnDuplicate
+      if (devices.length) {
+        await models.Device.bulkCreate(devices, {
+          updateOnDuplicate: Object.keys(devices[0] || {}), // asegura que actualiza todos los campos
+        });
+      }
+
+      // 2. Multimedia: actualizar vistas
+      for (const { id, view } of multimedias) {
+        await models.Multimedia.increment({ views: view }, { where: { id } });
+      }
+
+      // 3. Promociones: actualizar vistas
+      for (const { id, view } of promotions) {
+        await models.Promotion.increment({ views: view }, { where: { id } });
+      }
+
       return res.json({ msg: "Success" });
     } catch (error) {
       next(error);
