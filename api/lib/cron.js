@@ -4,6 +4,9 @@ const {
   readNestedFolders,
 } = require("../helpers");
 
+const NODE_ENV = process.env.NODE_ENV;
+const MAIN_SERVER = NODE_ENV === "MAIN_SERVER" || NODE_ENV === "DEV";
+
 let isRunning = false;
 
 module.exports = {
@@ -12,6 +15,7 @@ module.exports = {
     async () => {
       try {
         if (isRunning) return;
+        if (MAIN_SERVER) return;
         else {
           isRunning = true;
           await syncWithMainServer();

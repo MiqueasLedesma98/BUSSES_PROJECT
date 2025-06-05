@@ -42,6 +42,7 @@ const Config = ({navigation}: {navigation: NavigationProp<any>}) => {
           {t("config", {locale})}
         </H5>
       </XStack>
+
       <CodeField
         InputComponent={TextInput}
         ref={ref}
@@ -50,6 +51,9 @@ const Config = ({navigation}: {navigation: NavigationProp<any>}) => {
         value={value}
         onEndEditing={() => Alert.alert("Error", "El código no es válido")}
         returnKeyType="done"
+        onSubmitEditing={() =>
+          Alert.alert("Configuración enviada", "El código fue enviado")
+        }
         onChangeText={setValue}
         cellCount={CELL_COUNT}
         rootStyle={styles.codeFieldRoot}

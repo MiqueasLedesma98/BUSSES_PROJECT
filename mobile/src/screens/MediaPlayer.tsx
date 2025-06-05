@@ -1,8 +1,8 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import {RouteProp, useRoute, useNavigation} from "@react-navigation/native";
 import {IMovie} from "@/interfaces/IFetch";
 import Video, {VideoRef} from "react-native-video";
-import {baseUrl} from "@/axios.config";
+import api, {baseUrl} from "@/axios.config";
 import {Button, Image, View} from "tamagui";
 import {X} from "@tamagui/lucide-icons";
 
@@ -34,9 +34,23 @@ const MediaPlayer = () => {
     }
   };
 
-  const videoSource = isAdPlaying
-    ? {uri: adUrl}
-    : {uri: baseUrl + movie.url_path};
+  const videoSource = useMemo(() => {
+    return isAdPlaying ? {uri: adUrl} : {uri: baseUrl + movie.url_path};
+  }, [isAdPlaying, adUrl, baseUrl, movie.url_path]);
+
+  useEffect(() => {
+    const uri = videoSource?.uri;
+    if (!uri) return;
+
+    const filename = uri.split("/").pop();
+    const videoId = filename?.split(".")[0];
+
+    if (videoId) {
+      api.put(`/view/${videoId}`).catch(err => {
+        console.error("Error incrementando vista:", err);
+      });
+    }
+  }, [videoSource.uri]);
 
   return (
     <>
