@@ -41,3 +41,13 @@ export const getPromotion = async ({ meta }) => {
     return error;
   }
 };
+
+export const getVersion = async () => {
+  try {
+    const { data } = await api.get("/version");
+    return data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
