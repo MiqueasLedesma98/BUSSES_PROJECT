@@ -1,13 +1,16 @@
-import { Box, MenuItem, Select, Stack, Typography } from "@mui/material";
+import { Box, Button, MenuItem, Select, Typography } from "@mui/material";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { useQuery } from "@tanstack/react-query";
 import { getMetrics } from "../services";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { Download } from "@mui/icons-material";
+import { downloadAsXLSX } from "../helpers";
 
 const chartSetting = {
   xAxis: [
     {
       label: "Vistas",
+      dataKey: "vistas",
     },
   ],
   height: 400,
@@ -20,19 +23,41 @@ const BarChartComponent = ({ queryKey, collection, type, dataKey, color }) => {
     isFetching,
     isRefetching,
   } = useQuery({
-    queryKey: [queryKey],
+    queryKey: [queryKey, type],
     queryFn: getMetrics,
-    meta: { limit: 10, collection, type },
+    meta: { limit: 20, collection, type },
   });
 
+  const normalizedData = useMemo(
+    () =>
+      data?.map((item) => ({
+        ...item,
+        vistas: Number(item.vistas),
+      })) || [],
+    [data]
+  );
+
   return (
-    <BarChart
-      loading={isFetching || isRefetching}
-      dataset={data}
-      yAxis={[{ scaleType: "band", dataKey }]}
-      series={[{ dataKey: "vistas", label: "Vistas", color }]}
-      {...chartSetting}
-    />
+    <>
+      <Button
+        disabled={!normalizedData.length}
+        variant="outlined"
+        endIcon={<Download />}
+        onClick={() =>
+          downloadAsXLSX(normalizedData, `${collection}-${type}-metrics.xlsx`)
+        }
+      >
+        Descargar archivo .xlsx
+      </Button>
+      <BarChart
+        Axis={{ dataKey: "vistas" }}
+        loading={isFetching || isRefetching}
+        dataset={normalizedData}
+        yAxis={[{ scaleType: "band", dataKey }]}
+        series={[{ dataKey: "vistas", label: "Vistas", color }]}
+        {...chartSetting}
+      />
+    </>
   );
 };
 
@@ -72,7 +97,7 @@ const Metrics = () => {
         collection={"multimedia"}
         color={"#3A9DC0"}
         dataKey={"titulo"}
-        type={"movie"}
+        type={topBarChar}
         queryKey={"metric-movies"}
       />
 
@@ -97,7 +122,7 @@ const Metrics = () => {
         color={"#74D2F7"}
         dataKey={"publicidad"}
         queryKey={"metric-promotions"}
-        type={"banner"}
+        type={bottomBarChar}
       />
     </Box>
   );
