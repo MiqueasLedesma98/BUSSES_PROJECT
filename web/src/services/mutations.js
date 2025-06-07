@@ -35,7 +35,7 @@ export const uploadPromotion = async ({ values, data }) => {
   formData.append("secondary", values.secondary);
   formData.append("type_banner", data.type_banner);
 
-  await api.post(`/promotion/${data?.type}/${values.lang}`, formData);
+  await api.post(`/promotion/${data?.type}/${data.lang}`, formData);
 
   return true;
 };

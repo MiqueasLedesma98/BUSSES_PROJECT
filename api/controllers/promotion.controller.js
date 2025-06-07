@@ -1,7 +1,9 @@
-const { Sequelize } = require("sequelize");
 const { deleteUploadedFiles } = require("../helpers");
 const { Promotion, Company } = require("../models");
+const fs = require("fs");
+const path = require("path");
 const _ = require("lodash");
+const { handleOldPromotion } = require("../helpers/promotion.helper");
 
 /**
  * @template T
@@ -26,6 +28,8 @@ module.exports = {
       const { description, expirationDate, company, type_banner, title } =
         req.body;
       const { type, lang } = req.params;
+
+      await handleOldPromotion({ lang, type });
 
       const { media, secondary } = req.files;
 
@@ -88,8 +92,6 @@ module.exports = {
         { type, lang, description, expirationDate, isActive },
         (value) => value !== undefined && value !== null
       );
-
-      console.log(updateData);
 
       promotion.set(updateData);
       await promotion.save();

@@ -74,6 +74,7 @@ const CreatePromotionModal = () => {
           <Form onSubmit={handleSubmit}>
             <DialogContent dividers sx={{ display: "grid", width: 500 }}>
               <TextField
+                required
                 fullWidth
                 size="small"
                 sx={{ mb: 2 }}
@@ -83,6 +84,7 @@ const CreatePromotionModal = () => {
                 onChange={handleChange}
               />
               <TextField
+                required
                 size="small"
                 fullWidth
                 value={values.description}

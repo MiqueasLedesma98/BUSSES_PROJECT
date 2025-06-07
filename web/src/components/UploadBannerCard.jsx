@@ -64,7 +64,7 @@ export const UploadBannerCard = ({
           variant="contained"
           color="primary"
           onClick={() =>
-            openModal("createPromotion", { type, type_banner, title })
+            openModal("createPromotion", { type, type_banner, title, lang })
           }
         >
           Cambiar contenido
