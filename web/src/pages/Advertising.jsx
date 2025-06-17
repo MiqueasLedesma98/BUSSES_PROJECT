@@ -28,7 +28,6 @@ export default function Advertising() {
           Banners
         </Typography>
         <Select
-          hiddenLabel
           value={lang}
           fullWidth
           size="small"

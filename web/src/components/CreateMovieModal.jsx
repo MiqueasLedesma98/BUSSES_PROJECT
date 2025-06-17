@@ -12,7 +12,6 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { Close, Folder, Image, Upload } from "@mui/icons-material";
-import React from "react";
 import { useModalStore } from "../store";
 import { Form, Formik } from "formik";
 import { DropZone } from "./DropZone";
@@ -100,9 +99,14 @@ const CreateMovieModal = ({ type = "movie" }) => {
               )}
               {/* Área de Carga */}
               <DropZone
+                fieldKey="media"
                 file={values.media}
                 setFieldValue={setFieldValue}
-                accept={isMovie ? "video/mp4" : "audio/mp4"}
+                accept={
+                  isMovie
+                    ? { "video/mp4": [".mp4"] }
+                    : { "audio/mp3": [".mp3"] }
+                }
               />
 
               <Box
@@ -156,7 +160,7 @@ const CreateMovieModal = ({ type = "movie" }) => {
                 value={values.title}
                 onChange={handleChange}
                 fullWidth
-                label="Nombre de la película"
+                label="Nombre del archivo"
                 variant="outlined"
                 sx={{ mb: 2 }}
               />

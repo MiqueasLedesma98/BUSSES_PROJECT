@@ -1,8 +1,11 @@
 import { Alert, Box, Button, Typography } from "@mui/material";
-import React from "react";
-import { Card } from "./Card";
+import { useModalStore } from "../store";
+
+const modalKey = "create-publicity";
 
 export const VideoPromotions = () => {
+  const openModal = useModalStore((s) => s.openModal);
+
   return (
     <>
       <Box
@@ -16,7 +19,9 @@ export const VideoPromotions = () => {
           Comerciales
         </Typography>
         <Box sx={{ padding: "20px", display: "flex", gap: "15px" }}>
-          <Button variant="contained">Nuevo Comercial</Button>
+          <Button onClick={() => openModal(modalKey, true)} variant="contained">
+            Nuevo Comercial
+          </Button>
         </Box>
       </Box>
 
@@ -24,15 +29,10 @@ export const VideoPromotions = () => {
         sx={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, 350px)",
-          // justifyContent: "space-around",
           gap: "30px",
         }}
       >
         <Alert severity="info">No se han subido promociones</Alert>
-        {/* <Card />
-        <Card />
-        <Card />
-        <Card /> */}
       </Box>
     </>
   );
