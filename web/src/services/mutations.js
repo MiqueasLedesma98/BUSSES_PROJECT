@@ -39,3 +39,17 @@ export const uploadPromotion = async ({ values, data }) => {
 
   return true;
 };
+
+export const uploadPublicity = async (values) => {
+  const formData = new FormData();
+
+  if (!values.media) throw new Error("No se encuentra el archivo");
+  if (!values.lang) throw new Error("No el lenguaje es obligatorio");
+
+  formData.append("title", values.title);
+  formData.append("media", values.media);
+
+  await api.post(`/promotion/video/${values.lang}`, formData);
+
+  return true;
+};

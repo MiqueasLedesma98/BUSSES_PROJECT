@@ -14,15 +14,30 @@ import { useModalStore } from "../store";
 import { Close, Upload } from "@mui/icons-material";
 import { Form, Formik } from "formik";
 import { DropZone } from "./DropZone";
-
-// TODO: terminar modal
+import { useMutation } from "@tanstack/react-query";
+import { uploadPublicity } from "../services";
+import { enqueueSnackbar } from "notistack";
 
 const modalKey = "create-publicity";
 
 const CreatePublicity = () => {
   const open = useModalStore((s) => s.modals[modalKey]);
   const close = useModalStore((s) => s.closeModal);
-  const _openModal = useModalStore((s) => s.openModal);
+  const openModal = useModalStore((s) => s.openModal);
+
+  const { mutate } = useMutation({
+    mutationKey: [modalKey],
+    mutationFn: uploadPublicity,
+    onSuccess: () => {
+      openModal("success", {
+        redir: "/dashboard/advertising",
+        text: "Exíto",
+      });
+      enqueueSnackbar("Se creo correctamente", { variant: "success" });
+      close(modalKey);
+    },
+    onError: (error) => enqueueSnackbar(error.message, { variant: "error" }),
+  });
 
   return (
     <Dialog maxWidth="sm" fullWidth open={open} onClose={() => close(modalKey)}>
@@ -44,28 +59,37 @@ const CreatePublicity = () => {
       <Formik
         initialValues={{
           title: "",
-          description: "",
-          duration: "",
           lang: "",
-          path: null,
+          media: null,
+          type: "video",
         }}
-        onSubmit={console.log}
+        onSubmit={mutate}
       >
-        {({ values, handleChange, handleSubmit, setFieldValue }) => (
+        {({ values, handleSubmit, handleChange, setFieldValue }) => (
           <Form onSubmit={handleSubmit}>
             <DialogContent dividers>
               <DropZone
-                fieldKey="path"
-                file={values.path}
+                fieldKey="media"
+                file={values.media}
                 setFieldValue={setFieldValue}
                 accept={{ "video/mp4": [".mp4"] }}
               />
-
               <TextField
                 type="file"
                 id="file"
                 style={{ display: "none" }}
-                onChange={(e) => setFieldValue("path", e.target.files[0])}
+                onChange={(e) => setFieldValue("media", e.target.files[0])}
+              />
+              <TextField
+                type="text"
+                fullWidth
+                name="title"
+                label="Titulo"
+                placeholder="Publicidad de empresa"
+                size="small"
+                required
+                onChange={handleChange}
+                sx={{ mb: 2 }}
               />
               <Select
                 value={values.lang}

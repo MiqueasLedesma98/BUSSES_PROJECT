@@ -1,10 +1,18 @@
 import { Alert, Box, Button, Typography } from "@mui/material";
 import { useModalStore } from "../store";
+import { useQuery } from "@tanstack/react-query";
 
 const modalKey = "create-publicity";
 
+// TODO: mostrar las video promociones
+
 export const VideoPromotions = () => {
   const openModal = useModalStore((s) => s.openModal);
+
+  const { data, isFetching } = useQuery({
+    queryKey: ["video-promotions"],
+    enabled: false,
+  });
 
   return (
     <>

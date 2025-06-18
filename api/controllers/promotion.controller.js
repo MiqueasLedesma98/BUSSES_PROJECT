@@ -29,12 +29,16 @@ module.exports = {
         req.body;
       const { type, lang } = req.params;
 
-      await handleOldPromotion({ lang, type });
+      if (type !== "video") await handleOldPromotion({ lang, type });
 
       const { media, secondary } = req.files;
 
       const filePath = `/media/${type}/${lang}/${media[0]?.filename}`;
-      const filePathSecondary = `/media/${type}/${lang}/${secondary[0]?.filename}`;
+
+      let filePathSecondary;
+
+      if (type !== "video")
+        filePathSecondary = `/media/${type}/${lang}/${secondary[0]?.filename}`;
 
       const newPromotion = await Promotion.create({
         description,

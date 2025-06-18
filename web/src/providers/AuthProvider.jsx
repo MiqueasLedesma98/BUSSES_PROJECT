@@ -21,7 +21,6 @@ export const AuthProvider = ({ children }) => {
   const loginMutation = useMutation({
     mutationFn: async (form) => {
       const { data } = await authenticateUser(form);
-      console.log({ data });
       return data;
     },
     onSuccess: ({ user, token }) => {
