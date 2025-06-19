@@ -1,10 +1,8 @@
 import { Box } from "@mui/material";
-import React from "react";
 import { Outlet } from "react-router-dom";
 import { ModalsBarrel, SideBar } from "../components";
 import MainHeader from "../components/MainHeader";
 import Footer from "../components/Footer";
-import FloatButton from "../components/FloatButton";
 
 const MainLayout = () => {
   return (
@@ -30,7 +28,6 @@ const MainLayout = () => {
         <Outlet />
         <Footer />
       </Box>
-      <FloatButton />
     </>
   );
 };

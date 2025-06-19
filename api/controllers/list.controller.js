@@ -89,7 +89,7 @@ module.exports = {
   promotion: async (req, res, next) => {
     try {
       const { type, lang } = req.params;
-      const { type_banner, limit = 0, sort } = req.query;
+      const { type_banner, limit = 0, sort, page = 0 } = req.query;
 
       const where = { type, lang };
       if (type_banner !== "none") where.type_banner = type_banner;

@@ -16,7 +16,11 @@ import { Close } from "@mui/icons-material";
 import { AuthProvider } from "./providers/AuthProvider";
 import Router from "./routes/Router";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { refetchOnWindowFocus: false, refetchOnMount: true },
+  },
+});
 
 function App() {
   return (

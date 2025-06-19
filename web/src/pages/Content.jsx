@@ -77,6 +77,8 @@ const ContentTypeRender = React.memo(
   }
 );
 
+// TODO: hacer que reconozca automaticamente si tiene o no una nueva versión
+
 const Content = () => {
   const { pathname } = useLocation();
   const { palette } = useTheme();

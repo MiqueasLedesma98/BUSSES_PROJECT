@@ -73,7 +73,7 @@ export default function Advertising() {
         />
       </Box>
 
-      <VideoPromotions />
+      <VideoPromotions lang={lang} />
     </Box>
   );
 }

@@ -1,17 +1,18 @@
-import { Alert, Box, Button, Typography } from "@mui/material";
+import { Alert, Box, Button, LinearProgress, Typography } from "@mui/material";
 import { useModalStore } from "../store";
 import { useQuery } from "@tanstack/react-query";
+import { getPromotion } from "../services/list.query";
+import VideoPromotionCard from "./VideoPromotionCard";
 
 const modalKey = "create-publicity";
 
-// TODO: mostrar las video promociones
-
-export const VideoPromotions = () => {
+export const VideoPromotions = ({ lang }) => {
   const openModal = useModalStore((s) => s.openModal);
 
   const { data, isFetching } = useQuery({
-    queryKey: ["video-promotions"],
-    enabled: false,
+    queryKey: ["video-promotions", lang],
+    queryFn: getPromotion,
+    meta: { type: "video", lang, type_banner: "none", limit: 3, page: 0 },
   });
 
   return (
@@ -32,15 +33,24 @@ export const VideoPromotions = () => {
           </Button>
         </Box>
       </Box>
+      {isFetching && <LinearProgress />}
 
       <Box
         sx={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, 350px)",
-          gap: "30px",
+          gap: "1em",
         }}
       >
-        <Alert severity="info">No se han subido promociones</Alert>
+        {data?.results?.length ? (
+          <>
+            {data.results.map((item) => (
+              <VideoPromotionCard {...item} key={item.id} />
+            ))}
+          </>
+        ) : (
+          <Alert severity="info">No se han subido promociones</Alert>
+        )}
       </Box>
     </>
   );
