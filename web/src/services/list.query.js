@@ -51,3 +51,8 @@ export const getVersion = async () => {
     return error;
   }
 };
+
+export const getEnterprises = async () => {
+  const { data } = await api.get("/list/company");
+  return data;
+};

@@ -53,3 +53,8 @@ export const uploadPublicity = async (values) => {
 
   return true;
 };
+
+export const createNewEnterprise = async (values) => {
+  await api.post("/company", values);
+  return "Se ha creado correctamente";
+};

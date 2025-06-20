@@ -1,6 +1,7 @@
 module.exports = {
   auth: require("./auth.controller"),
   categories: require("./categories.controller"),
+  company: require("./company.controller"),
   list: require("./list.controller"),
   media: require("./media.controller"),
   metrics: require("./metrics.controller"),
@@ -8,6 +9,6 @@ module.exports = {
   stream: require("./stream.controller"),
   sync: require("./sync.controller"),
   upload: require("./upload.controller"),
+  version: require("./version.controller"),
   view: require("./view.controller"),
-  version: require('./version.controller'),
 };

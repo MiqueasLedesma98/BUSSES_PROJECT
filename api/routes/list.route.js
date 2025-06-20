@@ -33,4 +33,6 @@ router.get(
   controller.category
 );
 
+router.get("/company", [validateJWT], controller.companies);
+
 module.exports = router;

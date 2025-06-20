@@ -1,5 +1,5 @@
 const { Sequelize, Op } = require("sequelize");
-const { Multimedia, Category, Promotion } = require("../models");
+const { Multimedia, Category, Promotion, Company } = require("../models");
 const { handleList } = require("../helpers");
 
 /**
@@ -144,6 +144,26 @@ module.exports = {
       });
 
       return res.send(handleList({ results }));
+    } catch (error) {
+      next(error);
+    }
+  },
+  /**
+   * @type {ExpressController<propsType>}
+   */
+  companies: async (req, res, next) => {
+    try {
+      const { page = 1, limit = 10 } = req.query;
+
+      const parsedLimit = parseInt(limit);
+      const parsedPage = parseInt(page) - 1;
+
+      const results = await Company.findAndCountAll({
+        offset: parsedLimit * parsedPage,
+        limit: parsedLimit,
+      });
+
+      return res.send(handleList({ results, limit, page }));
     } catch (error) {
       next(error);
     }

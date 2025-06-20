@@ -5,3 +5,4 @@ export * from "./VideoPromotions";
 export * from "./UploadBannerCard";
 export * from "./CreatePromotionModal";
 export * from "./TableCustom";
+export * from "./CreateEnterprise";

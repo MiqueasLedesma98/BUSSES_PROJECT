@@ -1,5 +1,5 @@
 import { Box, Pagination } from "@mui/material";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const CustomPagination = ({ count = 10 }) => {
