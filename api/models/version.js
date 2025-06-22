@@ -12,7 +12,9 @@ const Version = sequelize.define(
     },
     isAplicated: { type: DataTypes.BOOLEAN, default: false },
     models: {
-      type: DataTypes.ARRAY(DataTypes.ENUM(["promotion", "multimedia", ""])),
+      type: DataTypes.ARRAY(
+        DataTypes.ENUM(["promotion", "multimedia", "company", "devices"])
+      ),
     },
     number: {
       type: DataTypes.INTEGER,

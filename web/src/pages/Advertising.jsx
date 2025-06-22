@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { VideoPromotions, UploadBannerCard } from "../components";
 import { useState } from "react";
+import { RenewVersion } from "../components";
 
 export default function Advertising() {
   const [lang, setLang] = useState("esp");
@@ -17,12 +18,13 @@ export default function Advertising() {
       sx={({ palette }) => ({
         gridArea: "main",
         display: "grid",
-        padding: "2rem",
+        padding: 2,
         background: palette.grey["100"],
         overflowY: "scroll",
       })}
       gap={2}
     >
+      <RenewVersion />
       <Stack width={300} direction={"row"} alignItems={"center"}>
         <Typography variant="h5" fontWeight={700} padding={3}>
           Banners

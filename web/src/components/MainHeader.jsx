@@ -1,5 +1,4 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
 import { useLocation } from "react-router-dom";
 import LogoImg from "../assets/veotrans-logo.png";
 import { UserAvatar } from "./UserAvatar";

@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { Version, ...models } = require("../models");
 
 /**
@@ -90,6 +91,31 @@ module.exports = {
       }
 
       return res.json({ msg: "Success" });
+    } catch (error) {
+      next(error);
+    }
+  },
+  /**
+   * @type {ExpressController<propsType>}
+   */
+  renew: async (_req, res, next) => {
+    try {
+      const version = await Version.findOne({ order: [["createdAt", "DESC"]] });
+
+      const versionDate = version.createdAt;
+
+      const results = await Promise.all(
+        Object.values(models).map(
+          async (model) =>
+            await model.findOne({
+              where: { createdAt: { [Op.gt]: versionDate } },
+            })
+        )
+      );
+
+      const haveAndUpdate = results.some((item) => item);
+
+      return res.send({ new: haveAndUpdate });
     } catch (error) {
       next(error);
     }

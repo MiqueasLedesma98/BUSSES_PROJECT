@@ -12,7 +12,8 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Card } from "../components";
 import { useModalStore } from "../store";
 import { useQuery } from "@tanstack/react-query";
-import { getMedia, getVersion } from "../services";
+import { getMedia } from "../services";
+import { RenewVersion } from "../components";
 
 const ContentTypeRender = React.memo(
   ({ title = "", newBtnText = "", redirect = "", type = "" }) => {
@@ -77,18 +78,9 @@ const ContentTypeRender = React.memo(
   }
 );
 
-// TODO: hacer que reconozca automaticamente si tiene o no una nueva versión
-
 const Content = () => {
   const { pathname } = useLocation();
   const { palette } = useTheme();
-
-  const { data, isFetching } = useQuery({
-    queryKey: ["version"],
-    queryFn: getVersion,
-    refetchInterval: 12000,
-    refetchOnWindowFocus: true,
-  });
 
   if (pathname === "/dashboard/content")
     return (
@@ -98,19 +90,13 @@ const Content = () => {
           gridArea: "main",
           display: "grid",
           gridTemplateRows: "1fr 1fr",
-          padding: "2rem",
+          padding: 2,
           background: palette.grey["100"],
           overflowY: "scroll",
         }}
       >
-        <Alert
-          severity="warning"
-          sx={{ my: 2 }}
-          action={<Button variant="contained">Crear nueva versión</Button>}
-        >
-          ¡Se han cargado nuevos contenidos! ¿Actualizar y crear una nueva
-          versión?
-        </Alert>
+        <RenewVersion />
+
         <ContentTypeRender
           title="Películas"
           redirect="/movies"

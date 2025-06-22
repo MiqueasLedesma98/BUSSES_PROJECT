@@ -5,6 +5,7 @@ import { getMetrics } from "../services";
 import { useMemo, useState } from "react";
 import { Download } from "@mui/icons-material";
 import { downloadAsXLSX } from "../helpers";
+import { RenewVersion } from "../components";
 
 const chartSetting = {
   xAxis: [
@@ -77,6 +78,7 @@ const Metrics = () => {
         gap: 4,
       })}
     >
+      <RenewVersion />
       <Box sx={{ display: "grid", gridTemplateColumns: "1fr 200px" }}>
         <Typography variant="h4">Películas más vistas</Typography>
         <Select

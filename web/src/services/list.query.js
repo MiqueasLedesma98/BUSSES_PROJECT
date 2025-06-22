@@ -56,3 +56,8 @@ export const getEnterprises = async () => {
   const { data } = await api.get("/list/company");
   return data;
 };
+
+export const shouldUpdate = async () => {
+  const { data } = await api.get("/version/renew");
+  return data;
+};

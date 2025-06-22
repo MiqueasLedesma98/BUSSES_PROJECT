@@ -1,5 +1,5 @@
 import { Alert, Box, Button } from "@mui/material";
-import { TableCustom } from "../components";
+import { RenewVersion, TableCustom } from "../components";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { getEnterprises } from "../services";
@@ -171,30 +171,18 @@ const Enterprise = () => {
       sx={({ palette }) => ({
         backgroundColor: palette.grey["100"],
         gridTemplateRows: "50px 1fr",
+
         gridArea: "main",
         display: "grid",
         alignItems: "flex-start",
         overflowY: "auto",
         padding: 2,
-        gap: 2,
+        gap: 4,
       })}
     >
-      <Alert
-        severity="error"
-        action={<Button variant="contained">Actualizar todo</Button>}
-      >
-        Hay (3) dispositivos pendientes por actualizar
-      </Alert>
-      {!rows?.length ? (
-        <Alert
-          severity="info"
-          action={<Button variant="contained">Agregar empresa</Button>}
-        >
-          No se encuetran empresas
-        </Alert>
-      ) : (
-        <TableCustom cols={cols} rows={rows} loading={isFetching} />
-      )}
+      <RenewVersion />
+
+      <TableCustom cols={cols} rows={rows} loading={isFetching} />
     </Box>
   );
 };

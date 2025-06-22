@@ -6,13 +6,15 @@ const { version: controller } = require("../controllers");
 
 const { validateJWT } = require("../middlewares");
 
-if (NODE_ENV === "MAIN_SERVER" || "DEV") {
-  router.get("/", [validateJWT], controller.getVersion);
+router.get("/", [validateJWT], controller.getVersion);
 
+if (NODE_ENV === "MAIN_SERVER" || "DEV") {
   router.post("/", [validateJWT], controller.createVersion);
 
   router.get("/backup", [validateJWT], controller.backup);
 }
+
+router.get("/renew", [validateJWT], controller.renew);
 
 router.put("/sync", [validateJWT], controller.sync);
 
