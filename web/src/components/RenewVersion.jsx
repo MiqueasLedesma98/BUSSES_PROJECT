@@ -1,6 +1,7 @@
 import { Alert, Button } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { shouldUpdate } from "../services";
+import { useModalStore } from "../store";
 
 export const RenewVersion = () => {
   const { data } = useQuery({
@@ -9,12 +10,21 @@ export const RenewVersion = () => {
     refetchOnWindowFocus: true,
   });
 
+  const open = useModalStore((s) => s.openModal);
+
   if (data?.new)
     return (
       <Alert
         severity="warning"
         sx={{ my: 2 }}
-        action={<Button variant="contained">Crear nueva versión</Button>}
+        action={
+          <Button
+            onClick={() => open("verison-modal", true)}
+            variant="contained"
+          >
+            Crear nueva versión
+          </Button>
+        }
       >
         ¡Se han cargado nuevos contenidos! ¿Actualizar y crear una nueva
         versión?
