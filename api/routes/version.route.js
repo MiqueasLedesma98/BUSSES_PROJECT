@@ -1,7 +1,5 @@
 const router = require("express").Router();
 
-const NODE_ENV = process.env.NODE_ENV;
-
 const { version: controller } = require("../controllers");
 
 const { validateJWT } = require("../middlewares");
