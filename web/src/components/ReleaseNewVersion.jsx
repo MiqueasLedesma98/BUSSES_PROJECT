@@ -11,6 +11,8 @@ import { useModalStore } from "../store";
 
 const modalKey = "version-modal";
 
+// TODO: Falta hacer la petición
+
 const ReleaseNewVersion = () => {
   const open = useModalStore((s) => s[modalKey]);
 
