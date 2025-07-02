@@ -5,7 +5,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 // Librerias
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { closeSnackbar, SnackbarProvider } from "notistack";
@@ -35,11 +35,11 @@ function App() {
           </IconButton>
         )}
       >
-        <BrowserRouter>
+        <HashRouter>
           <AuthProvider>
             <Router />
           </AuthProvider>
-        </BrowserRouter>
+        </HashRouter>
         <ReactQueryDevtools initialIsOpen={false} />
       </SnackbarProvider>
     </QueryClientProvider>
