@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: "Veotrans",
-      watch: true,
+      watch: false,
       script: "./bin/www",
       instances: "max",
       exec_mode: "cluster",
