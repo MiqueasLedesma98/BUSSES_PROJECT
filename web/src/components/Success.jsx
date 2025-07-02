@@ -7,7 +7,6 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import React from "react";
 import { useModalStore } from "../store";
 import { Check } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
@@ -62,7 +61,7 @@ const Success = () => {
             handleClose();
           }}
         >
-          {open?.text}
+          {open?.text || 'Éxito'}
         </Button>
       </DialogActions>
     </Dialog>

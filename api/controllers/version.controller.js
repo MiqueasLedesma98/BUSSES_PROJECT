@@ -102,7 +102,7 @@ module.exports = {
     try {
       const version = await Version.findOne({ order: [["createdAt", "DESC"]] });
 
-      const versionDate = version.createdAt;
+      const versionDate = version?.createdAt;
 
       const results = await Promise.all(
         Object.values(models).map(

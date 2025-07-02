@@ -87,7 +87,7 @@ const Metrics = () => {
         >
           {[
             { label: "Películas", value: "movie" },
-            { label: "Musicas", value: "music" },
+            { label: "Músicas", value: "music" },
           ].map((item, i) => (
             <MenuItem key={item.value + i} value={item.value}>
               {item.label}

@@ -52,8 +52,9 @@ export const getVersion = async () => {
   }
 };
 
-export const getEnterprises = async () => {
-  const { data } = await api.get("/list/company");
+export const getEnterprises = async ({ meta }) => {
+  const { page } = meta;
+  const { data } = await api.get(`/list/company?page=${page}`);
   return data;
 };
 

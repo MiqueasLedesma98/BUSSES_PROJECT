@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
@@ -29,12 +28,12 @@ const CreatePublicity = () => {
     mutationKey: [modalKey],
     mutationFn: uploadPublicity,
     onSuccess: () => {
+      enqueueSnackbar("Se a creado correctamente", { variant: "success" });
+      close(modalKey);
       openModal("success", {
         redir: "/dashboard/advertising",
-        text: "Exíto",
+        text: "Éxito",
       });
-      enqueueSnackbar("Se creo correctamente", { variant: "success" });
-      close(modalKey);
     },
     onError: (error) => enqueueSnackbar(error.message, { variant: "error" }),
   });

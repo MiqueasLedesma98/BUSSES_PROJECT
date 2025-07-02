@@ -25,6 +25,7 @@ import {
 } from "@mui/icons-material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadPromotion } from "../services";
+import { enqueueSnackbar } from "notistack";
 
 const CreatePromotionModal = () => {
   const data = useModalStore((s) => s.modals?.createPromotion);
@@ -39,13 +40,16 @@ const CreatePromotionModal = () => {
     mutationFn: uploadPromotion,
     mutationKey: [data?.type, data?.type_banner],
     meta: data,
-    onSuccess: (_, { values, data }) => {
-      openModal("success", { redir: "/dashboard/advertising" });
-      queryClient.refetchQueries({
-        queryKey: [values.lang, data.type, data.type_banner],
+    onSuccess: () => {
+      openModal("success", {
+        redir: "/dashboard/advertising",
+        text: "Volver",
       });
+      queryClient.refetchQueries();
+      handleClose();
+      enqueueSnackbar("¡Creado exitosamente!", { variant: "success" });
     },
-    onError: console.log,
+    onError: (error) => enqueueSnackbar(error.message, { variant: "error" }),
   });
 
   return (

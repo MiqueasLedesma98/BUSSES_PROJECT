@@ -10,7 +10,7 @@ import {
 import { useModalStore } from "../store";
 import { Close, Save } from "@mui/icons-material";
 import { Form, Formik } from "formik";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNewEnterprise } from "../services";
 import { enqueueSnackbar } from "notistack";
 
@@ -20,11 +20,14 @@ export const CreateEnterprise = () => {
   const open = useModalStore((s) => s.modals[modalKey]);
   const close = useModalStore((s) => s.closeModal);
 
+  const client = useQueryClient();
+
   const { mutate } = useMutation({
     mutationKey: [modalKey],
     mutationFn: createNewEnterprise,
     onSuccess: (data) => {
       enqueueSnackbar(data, { variant: "success" });
+      client.refetchQueries();
       close(modalKey);
     },
     onError: (error) => enqueueSnackbar(error.message, { variant: "error" }),

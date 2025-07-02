@@ -29,7 +29,8 @@ module.exports = {
         req.body;
       const { type, lang } = req.params;
 
-      if (type !== "video") await handleOldPromotion({ lang, type });
+      if (type !== "video")
+        await handleOldPromotion({ lang, type, type_banner, title });
 
       const { media, secondary } = req.files;
 

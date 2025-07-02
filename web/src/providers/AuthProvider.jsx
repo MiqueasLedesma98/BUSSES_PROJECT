@@ -1,8 +1,9 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { authenticateUser } from "../services/auth";
+import { enqueueSnackbar } from "notistack";
 
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
@@ -33,10 +34,9 @@ export const AuthProvider = ({ children }) => {
 
       // Redirigir al usuario
       navigate("/dashboard/content", { replace: true });
+      enqueueSnackbar("Usuario autenticado", { variant: "success" });
     },
-    onError: (error) => {
-      console.error("Error en login:", error);
-    },
+    onError: (error) => enqueueSnackbar(error.message, { variant: "error" }),
   });
 
   // Función de login usando la mutación

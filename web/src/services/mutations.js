@@ -43,7 +43,7 @@ export const uploadPromotion = async ({ values, data }) => {
 export const uploadPublicity = async (values) => {
   const formData = new FormData();
 
-  if (!values.media) throw new Error("No se encuentra el archivo");
+  if (!values.media) throw new Error("No se encuentra el archivo version ");
   if (!values.lang) throw new Error("No el lenguaje es obligatorio");
 
   formData.append("title", values.title);
@@ -57,4 +57,9 @@ export const uploadPublicity = async (values) => {
 export const createNewEnterprise = async (values) => {
   await api.post("/company", values);
   return "Se ha creado correctamente";
+};
+
+export const createNewVersion = async (values) => {
+  await api.post("/version", values);
+  return "¡Version creada exitosamente!";
 };

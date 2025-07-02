@@ -1,11 +1,22 @@
-import { Typography, Box, Stack, TextField, Button } from "@mui/material";
+import {
+  Typography,
+  Box,
+  Stack,
+  TextField,
+  Button,
+  IconButton,
+} from "@mui/material";
 import { Formik, Form } from "formik";
 import LoginImg from "../assets/img-login.png";
 import LogoImg from "../assets/veotrans-logo.png";
 import { useAuthContext } from "../hooks";
+import { useState } from "react";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function Login() {
   const { login } = useAuthContext();
+
+  const [visible, setVisible] = useState(false);
 
   return (
     <Box
@@ -59,10 +70,22 @@ export default function Login() {
                     Contraseña
                   </Typography>
                   <TextField
+                    type={visible ? "text" : "password"}
                     placeholder="********"
-                    type="password"
                     name="password"
                     value={values.password}
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <IconButton
+                            sx={{ ml: 2 }}
+                            onClick={() => setVisible(!visible)}
+                          >
+                            {visible ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        ),
+                      },
+                    }}
                     onChange={handleChange}
                   />
                 </Stack>

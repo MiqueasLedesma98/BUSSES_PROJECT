@@ -3,6 +3,7 @@ import { Box, Button, Divider } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useModalStore } from "../store";
 import CustomPagination from "./CustomPagination";
+import { downloadDataTable } from "../helpers";
 
 const modalKey = "create-enterprise";
 
@@ -27,12 +28,17 @@ const CustomFooter = () => {
 };
 
 export const TableCustom = ({ rows = [], cols = [], loading = false }) => {
-  // TODO: Hacer funcionar el boton de crear excel
-
   return (
     <Box>
       <Button
+        disabled={rows.length === 0}
         fullWidth
+        onClick={() =>
+          downloadDataTable(
+            [{ sheetName: "Empresas", rows, cols }],
+            "empresa-data"
+          )
+        }
         sx={{ mb: 2 }}
         variant="outlined"
         endIcon={<Download />}
