@@ -3,9 +3,12 @@ module.exports = {
     {
       name: "Veotrans",
       watch: true,
-      script: "./app.js",
+      script: "./bin/www",
       instances: "max",
       exec_mode: "cluster",
+      env: {
+        PORT: 4050,
+      },
     },
   ],
 };
