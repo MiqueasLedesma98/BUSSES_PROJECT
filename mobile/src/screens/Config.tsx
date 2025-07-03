@@ -10,6 +10,9 @@ import {
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
 import {Alert, StyleSheet, TextInput} from "react-native";
+import {useMutation} from "@tanstack/react-query";
+import {sendConfig} from "@/services/config.query";
+import {useSqliteStore} from "@/stores/sqliteStore";
 
 const CELL_COUNT = 6;
 
@@ -17,11 +20,20 @@ const Config = ({navigation}: {navigation: NavigationProp<any>}) => {
   const t = useI18nStore(s => s.t);
   const locale = useI18nStore(s => s.locale);
 
+  const db = useSqliteStore(s => s.db);
+
   const [value, setValue] = useState("");
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
+  });
+
+  const {mutate} = useMutation({
+    mutationKey: ["config-code"],
+    mutationFn: sendConfig,
+    onSuccess: () => navigation.navigate("Config-seat"),
+    onError: () => Alert.alert("Código invalido"),
   });
 
   return (
@@ -49,11 +61,9 @@ const Config = ({navigation}: {navigation: NavigationProp<any>}) => {
         {...props}
         // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
         value={value}
-        onEndEditing={() => Alert.alert("Error", "El código no es válido")}
+        onEndEditing={() => mutate({code: value, db})}
         returnKeyType="done"
-        onSubmitEditing={() =>
-          Alert.alert("Configuración enviada", "El código fue enviado")
-        }
+        onSubmitEditing={() => mutate({code: value, db})}
         onChangeText={setValue}
         cellCount={CELL_COUNT}
         rootStyle={styles.codeFieldRoot}

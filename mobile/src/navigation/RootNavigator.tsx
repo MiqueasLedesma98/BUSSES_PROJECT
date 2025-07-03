@@ -6,6 +6,7 @@ import RootLayout from "@/layouts/RootLayout";
 import DefaultLayout from "@/layouts/DefaultLayout";
 import MediaPlayer from "@/screens/MediaPlayer";
 import Config from "@/screens/Config";
+import ConfigSeat from "@/screens/ConfigSeat";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,11 @@ const RootNavigator = () => (
       component={MediaPlayer}
     />
     <Stack.Screen name="Config" layout={DefaultLayout} component={Config} />
+    <Stack.Screen
+      name="Config-seat"
+      layout={DefaultLayout}
+      component={ConfigSeat}
+    />
   </Stack.Navigator>
 );
 

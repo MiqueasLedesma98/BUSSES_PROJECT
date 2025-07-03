@@ -19,7 +19,6 @@ const DefaultLayout = ({navigation, children}: DefaultLayoutProps) => {
   return (
     <YStack flex={1}>
       <GradientBackground />
-
       <XStack flex={1}>
         <SideBar navigation={navigation} />
         {children}

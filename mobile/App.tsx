@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {createTamagui, TamaguiProvider} from "tamagui";
 import {defaultConfig} from "@tamagui/config/v4";
 import {NavigationContainer} from "@react-navigation/native";
@@ -9,6 +9,7 @@ import {GestureHandlerRootView} from "react-native-gesture-handler";
 import {DevToolsBubble} from "react-native-react-query-devtools";
 import BootSplash from "react-native-bootsplash";
 import {LogBox} from "react-native";
+import {useSqlite} from "@/hooks/useSqlite";
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -21,13 +22,14 @@ const config = createTamagui(defaultConfig);
 const queryClient = new QueryClient();
 
 function App(): React.JSX.Element {
+  useSqlite();
+
   return (
     <GestureHandlerRootView>
       <TamaguiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <NavigationContainer
             onReady={async () => {
-              await new Promise(resolve => setTimeout(resolve, 2000)); // Espera 2 segundos
               BootSplash.hide({fade: true});
             }}>
             <RootNavigator />

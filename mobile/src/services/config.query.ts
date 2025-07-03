@@ -1,11 +1,19 @@
-import api from "@/axios.config";
+import {SQLiteDatabase} from "react-native-sqlite-storage";
 
-interface ISendConfig {}
+interface ISendConfig {
+  code: string;
+  db?: SQLiteDatabase;
+}
 
-export const sendConfig = async (form: ISendConfig) => {
-  try {
-    await api.put("/config", form);
-  } catch (error) {
-    console.error(error);
-  }
+export const sendConfig = async (props: ISendConfig) => {
+  const {code, db} = props;
+
+  if (!db) throw new Error("No existe la DB");
+
+  const [results] = await db.executeSql(`SELECT * FROM code WHERE value = ?`, [
+    code,
+  ]);
+
+  if (results?.rows.length) return true;
+  else throw new Error("El código es incorrecto");
 };
