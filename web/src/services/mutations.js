@@ -59,7 +59,7 @@ export const createNewEnterprise = async (values) => {
   return "Se ha creado correctamente";
 };
 
-export const createNewVersion = async (values) => {
-  await api.post("/version", values);
+export const createNewVersion = async () => {
+  await api.post("/version");
   return "¡Version creada exitosamente!";
 };

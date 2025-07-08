@@ -89,14 +89,12 @@ const Content = () => {
           height: "100%",
           gridArea: "main",
           display: "grid",
-          gridTemplateRows: "1fr 1fr",
           padding: 2,
           background: palette.grey["100"],
           overflowY: "scroll",
         }}
       >
         <RenewVersion />
-
         <ContentTypeRender
           title="Películas"
           redirect="/movies"

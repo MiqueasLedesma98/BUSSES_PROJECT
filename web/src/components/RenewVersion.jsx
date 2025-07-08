@@ -16,7 +16,7 @@ export const RenewVersion = () => {
     return (
       <Alert
         severity="warning"
-        sx={{ my: 2 }}
+        sx={{ my: 2, maxHeight: 50, height: "fit-content" }}
         action={
           <Button
             onClick={() => open("verison-modal", true)}

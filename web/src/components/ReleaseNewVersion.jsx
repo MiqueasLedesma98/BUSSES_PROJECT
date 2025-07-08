@@ -8,15 +8,22 @@ import {
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import { useModalStore } from "../store";
-
+import { useMutation } from "@tanstack/react-query";
+import { createNewVersion } from "../services";
+import { enqueueSnackbar } from "notistack";
 const modalKey = "version-modal";
-
-// TODO: Falta hacer la petición
 
 const ReleaseNewVersion = () => {
   const open = useModalStore((s) => s[modalKey]);
 
   const close = useModalStore((s) => s.closeModal);
+
+  const { mutate } = useMutation({
+    mutationKey: [modalKey],
+    mutationFn: createNewVersion,
+    onSuccess: (value) => enqueueSnackbar(value, { variant: "success" }),
+    onError: (err) => enqueueSnackbar(err.message, { variant: "error" }),
+  });
 
   const handleClose = () => close(modalKey);
 
@@ -36,7 +43,9 @@ const ReleaseNewVersion = () => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button variant="text">Si</Button>
+        <Button variant="text" onClick={mutate}>
+          Si
+        </Button>
         <Button color="error" variant="text">
           No
         </Button>

@@ -100,7 +100,13 @@ module.exports = {
    */
   renew: async (_req, res, next) => {
     try {
-      const version = await Version.findOne({ order: [["createdAt", "DESC"]] });
+      let version = await Version.findOne({ order: [["createdAt", "DESC"]] });
+
+      if (!version) {
+        version = await Version.create({
+          number: 1,
+        });
+      }
 
       const versionDate = version?.createdAt;
 
