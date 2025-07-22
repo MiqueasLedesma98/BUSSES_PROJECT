@@ -1,0 +1,119 @@
+[
+  { "name": "Acción", "lang": "esp", "description": "N/A", "type": "movie" },
+  { "name": "Action", "lang": "eng", "description": "N/A", "type": "movie" },
+
+  { "name": "Comedia", "lang": "esp", "description": "N/A", "type": "movie" },
+  { "name": "Comedy", "lang": "eng", "description": "N/A", "type": "movie" },
+
+  { "name": "Drama", "lang": "esp", "description": "N/A", "type": "movie" },
+  { "name": "Drama", "lang": "eng", "description": "N/A", "type": "movie" },
+
+  { "name": "Terror", "lang": "esp", "description": "N/A", "type": "movie" },
+  { "name": "Horror", "lang": "eng", "description": "N/A", "type": "movie" },
+
+  {
+    "name": "Ciencia ficción",
+    "lang": "esp",
+    "description": "N/A",
+    "type": "movie"
+  },
+  {
+    "name": "Science Fiction",
+    "lang": "eng",
+    "description": "N/A",
+    "type": "movie"
+  },
+
+  {
+    "name": "Aventura",
+    "lang": "esp",
+    "description": "N/A",
+    "type": "movie"
+  },
+  {
+    "name": "Adventure",
+    "lang": "eng",
+    "description": "N/A",
+    "type": "movie"
+  },
+
+  {
+    "name": "Animación",
+    "lang": "esp",
+    "description": "N/A",
+    "type": "movie"
+  },
+  {
+    "name": "Animation",
+    "lang": "eng",
+    "description": "N/A",
+    "type": "movie"
+  },
+
+  { "name": "Romance", "lang": "esp", "description": "N/A", "type": "movie" },
+  { "name": "Romance", "lang": "eng", "description": "N/A", "type": "movie" },
+
+  {
+    "name": "Documental",
+    "lang": "esp",
+    "description": "N/A",
+    "type": "movie"
+  },
+  {
+    "name": "Documentary",
+    "lang": "eng",
+    "description": "N/A",
+    "type": "movie"
+  },
+
+  {
+    "name": "Fantasía",
+    "lang": "esp",
+    "description": "N/A",
+    "type": "movie"
+  },
+  { "name": "Fantasy", "lang": "eng", "description": "N/A", "type": "movie" },
+
+  { "name": "Crimen", "lang": "esp", "description": "N/A", "type": "movie" },
+  { "name": "Crime", "lang": "eng", "description": "N/A", "type": "movie" },
+
+  { "name": "Pop", "lang": "esp", "description": "N/A", "type": "music" },
+  { "name": "Pop", "lang": "eng", "description": "N/A", "type": "music" },
+
+  { "name": "Rock", "lang": "esp", "description": "N/A", "type": "music" },
+  { "name": "Rock", "lang": "eng", "description": "N/A", "type": "music" },
+
+  { "name": "Reguetón", "lang": "esp", "description": "N/A", "type": "music" },
+  { "name": "Reggaeton", "lang": "eng", "description": "N/A", "type": "music" },
+
+  { "name": "Clásica", "lang": "esp", "description": "N/A", "type": "music" },
+  { "name": "Classical", "lang": "eng", "description": "N/A", "type": "music" },
+
+  { "name": "Jazz", "lang": "esp", "description": "N/A", "type": "music" },
+  { "name": "Jazz", "lang": "eng", "description": "N/A", "type": "music" },
+
+  { "name": "Rap", "lang": "esp", "description": "N/A", "type": "music" },
+  { "name": "Rap", "lang": "eng", "description": "N/A", "type": "music" },
+
+  {
+    "name": "Electrónica",
+    "lang": "esp",
+    "description": "N/A",
+    "type": "music"
+  },
+  {
+    "name": "Electronic",
+    "lang": "eng",
+    "description": "N/A",
+    "type": "music"
+  },
+
+  { "name": "Salsa", "lang": "esp", "description": "N/A", "type": "music" },
+  { "name": "Salsa", "lang": "eng", "description": "N/A", "type": "music" },
+
+  { "name": "Metal", "lang": "esp", "description": "N/A", "type": "music" },
+  { "name": "Metal", "lang": "eng", "description": "N/A", "type": "music" },
+
+  { "name": "Folclore", "lang": "esp", "description": "N/A", "type": "music" },
+  { "name": "Folk", "lang": "eng", "description": "N/A", "type": "music" }
+]

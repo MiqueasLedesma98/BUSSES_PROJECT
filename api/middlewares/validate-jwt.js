@@ -28,7 +28,7 @@ module.exports = {
       if (ytoken) {
         const { email } = jwt.verify(ytoken, process.env.SECRET_KEY);
 
-        const user = await User.findOne({ where: email });
+        const user = await User.findOne({ email });
 
         if (!user)
           return res.status(401).json({

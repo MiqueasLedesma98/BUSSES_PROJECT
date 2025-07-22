@@ -1,4 +1,4 @@
-const axios = require("axios");
+const { axios } = require("../lib/axios");
 const fs = require("fs");
 const {
   Version,

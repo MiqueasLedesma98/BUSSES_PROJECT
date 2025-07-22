@@ -70,7 +70,7 @@ routes.forEach((route) => {
   app.use(`/api/${route.split(".")[0]}`, require(`./routes/${route}`));
 });
 
-if (process.env.NODE_ENV === "DEV" || "SECONDARY_SERVER")
+if (["DEV", "SECONDARY_SERVER"].includes(process.env.NODE_ENV))
   Object.values(crontTasks).forEach((task) => schedule(...task));
 
 // Manejo de errores

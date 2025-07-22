@@ -11,7 +11,7 @@ let isRunning = false;
 
 module.exports = {
   start: [
-    "*/2 * * * *",
+    "*/1 * * * *",
     async () => {
       try {
         if (isRunning) return;
@@ -28,6 +28,5 @@ module.exports = {
         isRunning = false;
       }
     },
-    { timezone: "America/Argentina/Buenos_Aires" },
   ],
 };

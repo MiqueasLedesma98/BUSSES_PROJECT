@@ -4,7 +4,7 @@ const axios = require("axios");
 const { generateJWT } = require("../helpers/jwt");
 
 const instance = axios.create({
-  baseURL: process.env.BASE_URL,
+  baseURL: process.env.MAIN_SERVER_URL,
 });
 
 instance.interceptors.request.use(async (config) => {
