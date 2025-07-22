@@ -71,10 +71,10 @@ module.exports = {
    */
   sync: async (req, res, next) => {
     try {
-      const { multimedias, promotions, devices } = req.body;
+      const { multimedias = [], promotions = [], devices = [] } = req.body;
 
       // 1. Devices: hacer bulkCreate con updateOnDuplicate
-      if (devices.length) {
+      if (devices?.length) {
         await models.Device.bulkCreate(devices, {
           updateOnDuplicate: Object.keys(devices[0] || {}), // asegura que actualiza todos los campos
         });

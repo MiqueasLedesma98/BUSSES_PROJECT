@@ -97,11 +97,9 @@ module.exports = {
    * @description Sincroniza las bases de datos remota y local
    */
   syncWithMainServer: async function () {
-    const { data: remoteVersion } = await axios.get(
-      MAIN_SERVER_URL + "/version"
-    );
+    const { data: remoteVersion } = await axios.get("/version");
 
-    await axios.post(MAIN_SERVER_URL + "/version/sync", {
+    await axios.put("/version/sync", {
       data: await exportLocalChanges(),
     });
 
@@ -110,7 +108,7 @@ module.exports = {
     });
 
     if (!localVersion || remoteVersion.number > localVersion.number) {
-      const { data: backup } = await axios.get(MAIN_SERVER_URL + "/backup");
+      const { data: backup } = await axios.get("/backup");
 
       await resetAndImportDatabase(backup);
     }
