@@ -108,7 +108,7 @@ module.exports = {
     });
 
     if (!localVersion || remoteVersion.number > localVersion.number) {
-      const { data: backup } = await axios.get("/backup");
+      const { data: backup } = await axios.get("/version/backup");
 
       await resetAndImportDatabase(backup);
     }
