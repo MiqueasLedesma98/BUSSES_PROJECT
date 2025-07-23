@@ -64,6 +64,8 @@ module.exports = {
         order = [["createdAt", "DESC"]]; // fallback
       }
 
+      const [test] = await Multimedia.findAll();
+
       const results = await Multimedia.findAndCountAll({
         offset: parsedLimit * formatPage,
         limit: parsedLimit,

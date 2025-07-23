@@ -6,6 +6,7 @@ module.exports = {
       script: "./bin/www",
       instances: 10,
       exec_mode: "cluster",
+      autorestart: true,
       env: {
         PORT: 4050,
       },

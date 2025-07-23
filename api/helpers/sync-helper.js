@@ -14,6 +14,8 @@ const { sequelize } = require("../config/db");
 const path = require("path");
 const MAIN_SERVER_URL = process.env.MAIN_SERVER_URL;
 
+const MEDIA_FOLDER = path.join(__dirname, "..");
+
 /**
  * Aplana un objeto anidado con archivos a rutas relativas.
  * @param {object} structure - Objeto anidado con archivos y carpetas
@@ -44,7 +46,9 @@ async function exportLocalChanges() {
     Promotion.findAll({
       attributes: ["views", "id"],
     }),
-    Device.findAll(),
+    Device.findAll({
+      attributes: ["state", "id"],
+    }),
   ]);
 
   return { multimedias, promotions, devices };
@@ -110,8 +114,21 @@ module.exports = {
     if (!localVersion || remoteVersion.number > localVersion.number) {
       const { data: backup } = await axios.get("/version/backup");
 
-      await resetAndImportDatabase(backup);
-    }
+      const formatBackupData = (backup) => ({
+        users: backup.User,
+        multimedia: backup.Multimedia,
+        category: backup.Category,
+        Bus: backup.Bus,
+        companies: backup.Company,
+        promotions: backup.Promotion,
+        devices: backup.Device,
+        versionNumber: backup.Version?.number || 1,
+      });
+
+      await resetAndImportDatabase(formatBackupData(backup));
+
+      return true;
+    } else return false;
   },
   /**
    * Sincroniza los archivos entre una estructura anidada y la base de datos remota.
@@ -153,12 +170,29 @@ module.exports = {
         const fileUrl = `${MAIN_SERVER_URL}/${dbPath}`;
         const localFilePath = path.join(MEDIA_FOLDER, dbPath);
 
+        // Verificar si ya existe físicamente
+        try {
+          await fs.promises.access(localFilePath, fs.constants.F_OK);
+          continue; // Ya existe, no descargar
+        } catch {
+          // No existe, continuar con la descarga
+        }
+
         try {
           // Crear carpeta si no existe
-          await fs.mkdir(path.dirname(localFilePath), { recursive: true });
+          await new Promise((resolve, reject) => {
+            fs.mkdir(
+              path.dirname(localFilePath),
+              { recursive: true },
+              (error) => {
+                if (error) reject("Error creando carpeta");
+                resolve(true);
+              }
+            );
+          });
 
           const res = await axios.get(fileUrl, { responseType: "stream" });
-          const writer = fsSync.createWriteStream(localFilePath);
+          const writer = fs.createWriteStream(localFilePath);
 
           res.data.pipe(writer);
 
@@ -182,6 +216,8 @@ module.exports = {
         console.log(`🗑️ Eliminado archivo huérfano: ${localPath}`);
       }
     }
+
+    console.log("Sincronización terminada correctamente".green);
   },
   /**
    * Recorre recursivamente una lista de carpetas y archivos y devuelve
@@ -190,18 +226,17 @@ module.exports = {
    * @param {string} basePath - Ruta base para resolver los paths completos
    * @returns {Promise<object>}
    */
-  readNestedFolders: async function (basePath) {
+  readNestedFolders: async function readNestedFolders(basePath) {
     const result = {};
 
-    const entries = fs.readdirSync(path.join(__dirname, "..", "media"));
+    const entries = await fs.promises.readdir(basePath);
 
     for (const entry of entries) {
       const fullPath = path.join(basePath, entry);
       const stat = await fs.promises.stat(fullPath);
 
       if (stat.isDirectory()) {
-        const nestedEntries = await fs.promises.readdir(fullPath);
-        result[entry] = [await readNestedFolders(nestedEntries, fullPath)];
+        result[entry] = await readNestedFolders(fullPath); // CORRECTO
       } else {
         if (!result.files) result.files = [];
         result.files.push(entry);

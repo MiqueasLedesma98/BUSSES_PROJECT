@@ -4,6 +4,8 @@ const {
   readNestedFolders,
 } = require("../helpers");
 
+const path = require("path");
+
 const NODE_ENV = process.env.NODE_ENV;
 const MAIN_SERVER = NODE_ENV === "MAIN_SERVER" || NODE_ENV === "DEV";
 
@@ -18,12 +20,16 @@ module.exports = {
         if (MAIN_SERVER) return;
         else {
           isRunning = true;
-          await syncWithMainServer();
-          const localStructure = await readNestedFolders();
-          await syncMediaFyles([], localStructure);
+          const shouldSyncMediaFolder = await syncWithMainServer();
+          if (shouldSyncMediaFolder) {
+            const localStructure = await readNestedFolders(
+              path.join(__dirname, "..", "media")
+            );
+            await syncMediaFyles([], localStructure);
+          }
         }
       } catch (error) {
-        console.error(error.response?.data?.msg);
+        console.error(error);
       } finally {
         isRunning = false;
       }

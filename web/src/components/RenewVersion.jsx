@@ -19,7 +19,7 @@ export const RenewVersion = () => {
         sx={{ my: 2, maxHeight: 50, height: "fit-content" }}
         action={
           <Button
-            onClick={() => open("verison-modal", true)}
+            onClick={() => open("version-modal", true)}
             variant="contained"
           >
             Crear nueva versión

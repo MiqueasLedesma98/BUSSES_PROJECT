@@ -28,8 +28,8 @@ const {
 const app = express();
 
 // Relaciones
-User.hasMany(Multimedia, { foreignKey: "UserId", onDelete: "CASCADE" });
-Bus.hasMany(Device, { foreignKey: "BusId", onDelete: "CASCADE" });
+User.hasMany(Multimedia, { onDelete: "CASCADE" });
+Bus.hasMany(Device, { onDelete: "CASCADE" });
 Company.hasMany(Bus, { foreignKey: "CompanyId", onDelete: "CASCADE" });
 Multimedia.belongsToMany(Category, {
   through: "media_categories",

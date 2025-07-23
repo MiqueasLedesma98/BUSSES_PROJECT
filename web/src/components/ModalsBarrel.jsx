@@ -2,6 +2,7 @@ import { Suspense, lazy } from "react";
 import { useModalStore } from "../store";
 import { LinearProgress } from "@mui/material";
 
+const ModalAskDelete = lazy(() => import("./ModalAskDelete"));
 const ReleaseNewVersion = lazy(() => import("./ReleaseNewVersion"));
 const Success = lazy(() => import("./Success"));
 const CreateMovieModal = lazy(() => import("./CreateMovieModal"));
@@ -21,6 +22,7 @@ export const ModalsBarrel = () => {
       {modals.success && <Success />}
       {modals["create-enterprise"] && <CreateEnterprise />}
       {modals["version-modal"] && <ReleaseNewVersion />}
+      {modals["ask-delete"] && <ModalAskDelete />}
     </Suspense>
   );
 };

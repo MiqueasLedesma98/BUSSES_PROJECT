@@ -1,44 +1,48 @@
 require("dotenv").config();
 const { User, Category, Company } = require("../models");
 const bcrypt = require("bcryptjs");
+const { sequelize } = require("../config");
 
 const seedUsers = async () => {
   try {
-    const salt = await bcrypt.genSalt(10);
-    const password = await bcrypt.hash("123456a", salt);
+    await sequelize.authenticate();
+    await sequelize.sync({ force: true });
 
-    const users = [
-      {
-        email: "admin@admin.com",
-        name: "ADMIN",
-        password,
-        role: "admin",
-      },
-      {
-        email: "buss1@gmail.com",
-        name: "buss1",
-        password,
-        role: "user",
-      },
-    ];
+    // const salt = await bcrypt.genSalt(10);
+    // const password = await bcrypt.hash("123456a", salt);
 
-    const companies = [{ name: "Pantene" }];
+    // const users = [
+    //   {
+    //     email: "admin@admin.com",
+    //     name: "ADMIN",
+    //     password,
+    //     role: "admin",
+    //   },
+    //   {
+    //     email: "buss1@gmail.com",
+    //     name: "buss1",
+    //     password,
+    //     role: "user",
+    //   },
+    // ];
 
-    if (process.env.NODE_ENV === "DEV") {
-      await Company.bulkCreate(companies);
-      console.log("✔️ Companias de testeo creadas");
-    }
+    // const companies = [{ name: "Pantene" }];
 
-    const categories = [
-      { name: "Acción", lang: "esp", description: "N/A", type: "movie" },
-      { name: "action", lang: "eng", description: "N/A", type: "movie" },
-    ];
+    // if (process.env.NODE_ENV === "DEV") {
+    //   await Company.bulkCreate(companies);
+    //   console.log("✔️ Companias de testeo creadas");
+    // }
 
-    await User.bulkCreate(users);
-    console.log("✔️ Usuarios insertados correctamente.");
+    // const categories = [
+    //   { name: "Acción", lang: "esp", description: "N/A", type: "movie" },
+    //   { name: "action", lang: "eng", description: "N/A", type: "movie" },
+    // ];
 
-    await Category.bulkCreate(categories);
-    console.log("✔️ Categorias insertadas correctamente.");
+    // await User.bulkCreate(users);
+    // console.log("✔️ Usuarios insertados correctamente.");
+
+    // await Category.bulkCreate(categories);
+    // console.log("✔️ Categorias insertadas correctamente.");
 
     process.exit();
   } catch (error) {

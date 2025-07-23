@@ -23,7 +23,7 @@ module.exports = {
       const xtoken = req.header("x-token");
       const ytoken = req.header("y-token");
 
-      if (process.env.BUSS) return next();
+      if (process.env.NODE_ENV === "SECONDARY_SERVER") return next();
 
       if (ytoken) {
         const { email } = jwt.verify(ytoken, process.env.SECRET_KEY);

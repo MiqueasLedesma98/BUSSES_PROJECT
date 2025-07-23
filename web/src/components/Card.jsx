@@ -3,11 +3,18 @@ import {
   CardMedia,
   CardContent,
   Typography,
+  IconButton,
+  Stack,
+  Box,
+  Tooltip,
 } from "@mui/material";
 import { baseURL } from "../api";
 import { useState, useRef, useEffect } from "react";
+import { Delete } from "@mui/icons-material";
+import { useModalStore } from "../store";
 
-export function Card({ title, cover_path, url_path, year, type }) {
+export function Card({ title, cover_path, url_path, year, type, id }) {
+  const openModal = useModalStore((s) => s.openModal);
   const isMusic = type === "music";
   const [showVideo, setShowVideo] = useState(false);
   const hoverTimeout = useRef(null);
@@ -88,12 +95,23 @@ export function Card({ title, cover_path, url_path, year, type }) {
           paddingLeft: "15px",
         }}
       >
-        <Typography variant="subtitle2" fontWeight={700}>
-          {title}
-        </Typography>
-        <Typography variant="body2">
-          {year} | {isMusic ? "Music" : "Action comedy"}
-        </Typography>
+        <Stack direction="row" justifyContent={"space-between"}>
+          <Box>
+            <Typography variant="subtitle2" fontWeight={700}>
+              {title}
+            </Typography>
+            <Typography variant="body2">
+              {year} | {isMusic ? "Music" : "Action comedy"}
+            </Typography>
+          </Box>
+          <Box>
+            <Tooltip title="Eliminar">
+              <IconButton onClick={() => openModal("ask-delete", id)}>
+                <Delete />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </Stack>
       </CardContent>
     </MuiCard>
   );
