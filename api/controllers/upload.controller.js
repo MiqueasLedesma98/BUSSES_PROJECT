@@ -1,6 +1,6 @@
 const _ = require("lodash");
 const { Multimedia, Category } = require("../models");
-const { deleteUploadedFiles } = require("../helpers");
+const { deleteUploadedFiles, deleteFile } = require("../helpers");
 
 /**
  * @template T
@@ -51,7 +51,6 @@ module.exports = {
         title,
         type,
         url_path: mediaPath,
-        UserId: req.uid,
         year,
       });
 
@@ -114,6 +113,27 @@ module.exports = {
     } catch (error) {
       // Eliminar archivos en caso de error
       deleteUploadedFiles(req);
+      next(error);
+    }
+  },
+  /**
+   * @type {ExpressController<propsType>}
+   */
+  delete: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+
+      const deleted = await Multimedia.findByPk(id);
+
+      if (deleted) {
+        await deleted.destroy();
+
+        deleteFile(deleted.url_path);
+        deleteFile(deleted.cover_path);
+      }
+
+      res.send({ msg: "ok" });
+    } catch (error) {
       next(error);
     }
   },

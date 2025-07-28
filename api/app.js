@@ -16,7 +16,6 @@ const { initializeDB } = require("./config/db");
 
 // Modelos
 const {
-  User,
   Multimedia,
   Bus,
   Category,
@@ -28,9 +27,9 @@ const {
 const app = express();
 
 // Relaciones
-User.hasMany(Multimedia, { onDelete: "CASCADE" });
-Bus.hasMany(Device, { onDelete: "CASCADE" });
 Company.hasMany(Bus, { foreignKey: "CompanyId", onDelete: "CASCADE" });
+Bus.belongsTo(Company, { foreignKey: "CompanyId", onDelete: "CASCADE" });
+Bus.hasMany(Device, { onDelete: "CASCADE" });
 Multimedia.belongsToMany(Category, {
   through: "media_categories",
   onDelete: "CASCADE",

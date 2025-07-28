@@ -134,7 +134,7 @@ module.exports = {
 
       const where = {
         type,
-        lang,
+        lang: lang === "all" ? ["esp", "eng"] : lang,
       };
 
       if (name) where.name = Op.iLike(name);

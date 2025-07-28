@@ -25,4 +25,18 @@ const deleteUploadedFiles = (req) => {
   });
 };
 
-module.exports = { deleteUploadedFiles };
+/**
+ * Eliminar un archivo usando una ruta
+ * @param {string} pathFile
+ */
+const deleteFile = (pathFile) => {
+  const filePath = path.join(__dirname, "..", pathFile);
+
+  if (fs.existsSync(filePath))
+    fs.unlink(filePath, (err) => {
+      if (err) throw new Error("Ocurrió en error al eliminar el archivo");
+      else return true;
+    });
+};
+
+module.exports = { deleteUploadedFiles, deleteFile };

@@ -4,7 +4,7 @@ module.exports = {
       name: "Veotrans",
       watch: true,
       script: "./bin/www",
-      instances: 10,
+      instances: process.env.NODE_ENV === "MAIN_SERVER" ? 10 : "max",
       exec_mode: "cluster",
       autorestart: true,
       env: {

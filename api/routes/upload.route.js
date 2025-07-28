@@ -35,4 +35,6 @@ router.put(
   controller.put
 );
 
+router.delete("/:id", [validateJWT], controller.delete);
+
 module.exports = router;
