@@ -10,6 +10,7 @@ import {
   MenuItem,
   Box,
   CircularProgress,
+  LinearProgress,
 } from "@mui/material";
 import { Close, Folder, Image, Upload } from "@mui/icons-material";
 import { useModalStore } from "../store";
@@ -18,6 +19,23 @@ import { DropZone } from "./DropZone";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { uploadMovie, getCategories } from "../services";
 import { enqueueSnackbar } from "notistack";
+import { useState } from "react";
+
+function LinearProgressWithLabel(props) {
+  return (
+    <Box sx={{ display: "flex", alignItems: "center" }}>
+      <Box sx={{ width: "100%", mr: 1 }}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      <Box sx={{ minWidth: 35 }}>
+        <Typography
+          variant="body2"
+          sx={{ color: "text.secondary" }}
+        >{`${Math.round(props.value)}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
 
 const CreateMovieModal = ({ type = "movie" }) => {
   const strModal = type === "music" ? "createMusic" : "createMovie";
@@ -28,6 +46,8 @@ const CreateMovieModal = ({ type = "movie" }) => {
 
   const queryClient = useQueryClient();
 
+  const [progress, onProgress] = useState(0);
+
   const { data, isLoading } = useQuery({
     queryKey: ["categories"],
     meta: { type, lang: "all" },
@@ -36,7 +56,7 @@ const CreateMovieModal = ({ type = "movie" }) => {
 
   const { mutate, isPending } = useMutation({
     mutationKey: [`upload-${type}`],
-    mutationFn: uploadMovie,
+    mutationFn: (value) => uploadMovie(value, onProgress),
     onSuccess: async () => {
       await queryClient.refetchQueries({
         queryKey: ["home-cards-movie", "home-cards-music", "movies"],
@@ -45,12 +65,15 @@ const CreateMovieModal = ({ type = "movie" }) => {
         redir: `/dashboard/content/${isMovie ? "movies" : "musics"}`,
         text: `Ir a ${isMovie ? "Peliculas" : "Musicas"}`,
       });
+      onProgress(0);
       close(strModal);
     },
-    onError: (err) =>
+    onError: (err) => {
       enqueueSnackbar(`A ocurrido un error: ${err.message}`, {
         variant: "error",
-      }),
+      });
+      onProgress(0);
+    },
   });
 
   return (
@@ -268,6 +291,7 @@ const CreateMovieModal = ({ type = "movie" }) => {
                   }
                 />
               </Box>
+              {progress ? <LinearProgressWithLabel value={progress} /> : null}
             </DialogContent>
 
             <DialogActions sx={{ pb: 3, px: 3 }}>

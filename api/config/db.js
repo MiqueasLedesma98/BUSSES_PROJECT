@@ -5,8 +5,8 @@ const sequelize = new Sequelize("veotrans", "postgres", "postgres", {
   dialect: "postgres",
   logging: false,
   pool: {
-    max: 2,
-    min: 0,
+    max: 30,
+    min: 5,
     acquire: 20000,
     idle: 5000,
   },

@@ -1,6 +1,6 @@
 import api from "../api";
 
-export const uploadMovie = async (values) => {
+export const uploadMovie = async (values, onProgress) => {
   const formData = new FormData();
 
   formData.append("title", values.title);
@@ -17,6 +17,14 @@ export const uploadMovie = async (values) => {
       "Content-Type": "multipart/form-data",
     },
     maxBodyLength: Infinity,
+    onUploadProgress: (progressEvent) => {
+      if (onProgress && progressEvent.total) {
+        const percent = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+        onProgress(percent);
+      }
+    },
   });
 
   return true;
