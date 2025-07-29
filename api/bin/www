@@ -27,9 +27,10 @@ const server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-const HOST = "192.168.1.126";
+const HOST =
+  process.env.NODE_ENV === "MAIN_SERVER" ? "192.168.1.126" : "127.0.0.1";
 
-server.listen(port, process.env.NODE_ENV === "MAIN_SERVER" ? undefined : HOST);
+server.listen(port, HOST);
 server.on("error", onError);
 server.on("listening", onListening);
 
@@ -86,6 +87,10 @@ function onError(error) {
 function onListening() {
   const addr = server.address();
   const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
-  console.log(`Server is running => http://${HOST}:${port}`.green);
+  console.log(
+    `Server is running => http://${
+      process.env.NODE_ENV === "MAIN_SERVER" ? HOST : "localhost"
+    }:${port}`.green
+  );
   debug("Listening on " + bind);
 }
