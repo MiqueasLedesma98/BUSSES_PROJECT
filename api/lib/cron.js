@@ -17,7 +17,6 @@ module.exports = {
     async () => {
       try {
         if (isRunning) return;
-        if (MAIN_SERVER) return;
         else {
           isRunning = true;
           const shouldSyncMediaFolder = await syncWithMainServer();

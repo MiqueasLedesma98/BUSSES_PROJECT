@@ -11,4 +11,5 @@ module.exports = {
   upload: require("./upload.controller"),
   version: require("./version.controller"),
   view: require("./view.controller"),
+  device: require('./device.controller'),
 };

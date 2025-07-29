@@ -8,6 +8,8 @@ const fs = require("fs");
 const { schedule } = require("node-cron");
 const { crontTasks } = require("./lib");
 
+const isPrimaryInstance = process.env.pm_id == 0;
+
 // Middleware - manejo de error
 const { httpErrors } = require("./middlewares");
 
@@ -15,35 +17,19 @@ const { httpErrors } = require("./middlewares");
 const { initializeDB } = require("./config/db");
 
 // Modelos
-const {
-  Multimedia,
-  Bus,
-  Category,
-  Company,
-  Device,
-  Promotion,
-} = require("./models");
+const { Multimedia, Category, Company, Device } = require("./models");
 
 const app = express();
 
 // Relaciones
-Company.hasMany(Bus, { foreignKey: "CompanyId", onDelete: "CASCADE" });
-Bus.belongsTo(Company, { foreignKey: "CompanyId", onDelete: "CASCADE" });
-Bus.hasMany(Device, { onDelete: "CASCADE" });
+Device.belongsTo(Company, { through: "CompanyId", onDelete: "CASCADE" });
 Multimedia.belongsToMany(Category, {
   through: "media_categories",
   onDelete: "CASCADE",
 });
+
 Category.belongsToMany(Multimedia, {
   through: "media_categories",
-  onDelete: "CASCADE",
-});
-Company.belongsToMany(Promotion, {
-  through: "company_promotions",
-  onDelete: "CASCADE",
-});
-Promotion.belongsToMany(Company, {
-  through: "company_promotions",
   onDelete: "CASCADE",
 });
 
@@ -69,7 +55,10 @@ routes.forEach((route) => {
   app.use(`/api/${route.split(".")[0]}`, require(`./routes/${route}`));
 });
 
-if (["DEV", "SECONDARY_SERVER"].includes(process.env.NODE_ENV))
+if (
+  ["DEV", "SECONDARY_SERVER"].includes(process.env.NODE_ENV) &&
+  isPrimaryInstance
+)
   Object.values(crontTasks).forEach((task) => schedule(...task));
 
 // Manejo de errores

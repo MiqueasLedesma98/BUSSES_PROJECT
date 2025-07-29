@@ -2,6 +2,7 @@ require("dotenv").config();
 const { User, Category, Company } = require("../models");
 const bcrypt = require("bcryptjs");
 const { sequelize } = require("../config");
+const categories = require("./categories.json");
 
 const seedUsers = async () => {
   try {
@@ -25,15 +26,10 @@ const seedUsers = async () => {
       },
     ];
 
-    const companies = [{ name: "Pantene" }];
+    const companies = [];
 
     await Company.bulkCreate(companies);
     console.log("✔️ Companias de testeo creadas");
-
-    const categories = [
-      { name: "Acción", lang: "esp", description: "N/A", type: "movie" },
-      { name: "action", lang: "eng", description: "N/A", type: "movie" },
-    ];
 
     await User.bulkCreate(users);
     console.log("✔️ Usuarios insertados correctamente.");

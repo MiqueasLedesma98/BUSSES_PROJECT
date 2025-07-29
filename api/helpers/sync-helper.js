@@ -56,7 +56,10 @@ async function exportLocalChanges() {
 
 async function resetAndImportDatabase(data) {
   const transaction = await sequelize.transaction();
+
   try {
+    console.log(data);
+
     await sequelize.sync({ force: true, transaction });
 
     await Promise.all(
@@ -118,7 +121,6 @@ module.exports = {
         users: backup.User,
         multimedia: backup.Multimedia,
         category: backup.Category,
-        Bus: backup.Bus,
         companies: backup.Company,
         promotions: backup.Promotion,
         devices: backup.Device,

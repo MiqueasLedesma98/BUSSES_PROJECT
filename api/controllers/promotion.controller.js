@@ -54,9 +54,6 @@ module.exports = {
         type,
       });
 
-      const currentCompany = await Company.findByPk(company);
-      if (currentCompany) await newPromotion.addCompany(currentCompany);
-
       return res.send({
         msg: "Promoción guardada correctamente",
         newPromotion,
