@@ -5,9 +5,17 @@ import Video, {VideoRef} from "react-native-video";
 import api, {baseUrl} from "@/axios.config";
 import {Button, Image, View} from "tamagui";
 import {X} from "@tamagui/lucide-icons";
+import {useQuery} from "@tanstack/react-query";
+import {getPromotion, TPromotionMeta} from "@/services/list.querys";
+import {useI18nStore} from "@/stores/i18nStore";
 
 type RootStackParamList = {
   "Media-Player": IMovie;
+};
+
+const localeFormat = {
+  es: "esp",
+  en: "eng",
 };
 
 type MediaPlayerRouteProp = RouteProp<RootStackParamList, "Media-Player">;
@@ -17,14 +25,28 @@ const MediaPlayer = () => {
   const navigation = useNavigation();
   const movie = route.params;
 
+  const locale = useI18nStore(s => s.locale);
+
   const videoRef = useRef<VideoRef>(null);
   const isAudio = movie.url_path?.toLowerCase().endsWith(".mp3");
 
   const [closeBtn, setCloseBtn] = useState(true);
   const [isAdPlaying, setIsAdPlaying] = useState(!isAudio);
 
-  const adUrl =
-    baseUrl + "/media/movie/eng/cfd45f74-b5c3-46de-a8ab-e95a0dabe466.mp4";
+  const {data, isLoading} = useQuery({
+    queryKey: ["media-player"],
+    queryFn: getPromotion,
+    meta: {
+      lang: localeFormat[locale],
+      type: "video",
+      type_banner: "none",
+    } as TPromotionMeta,
+  });
+
+  const adUrl = useMemo(() => {
+    if (isLoading || !data?.path) return null;
+    return baseUrl + data.path;
+  }, [data, isLoading]);
 
   const handleEnd = () => {
     if (isAdPlaying) {
@@ -35,7 +57,8 @@ const MediaPlayer = () => {
   };
 
   const videoSource = useMemo(() => {
-    return isAdPlaying ? {uri: adUrl} : {uri: baseUrl + movie.url_path};
+    if (isAdPlaying && adUrl) return {uri: adUrl};
+    return {uri: baseUrl + movie.url_path};
   }, [isAdPlaying, adUrl, baseUrl, movie.url_path]);
 
   useEffect(() => {
@@ -46,9 +69,13 @@ const MediaPlayer = () => {
     const videoId = filename?.split(".")[0];
 
     if (videoId) {
-      api.put(`/view/${videoId}`).catch(err => {
-        console.error("Error incrementando vista:", err);
-      });
+      isAdPlaying
+        ? api.put(`/view/${data?.id}`).catch(err => {
+            console.error("Error incrementando vista:", err);
+          })
+        : api.put(`/view/${movie.id}`).catch(err => {
+            console.error("Error incrementando vista:", err);
+          });
     }
   }, [videoSource.uri]);
 
@@ -83,17 +110,19 @@ const MediaPlayer = () => {
           />
         )}
 
-        <Video
-          disableAudioSessionManagement={false}
-          controls={!isAdPlaying || !isAudio}
-          ref={videoRef}
-          source={videoSource}
-          style={{flex: 1, backgroundColor: "black"}}
-          resizeMode="contain"
-          onEnd={handleEnd}
-          onFullscreenPlayerDidDismiss={navigation.goBack}
-          onControlsVisibilityChange={() => setCloseBtn(prev => !prev)}
-        />
+        {(!isAdPlaying || (isAdPlaying && adUrl)) && (
+          <Video
+            disableAudioSessionManagement={false}
+            controls={!isAdPlaying} // ✅ ocultar controles en anuncios
+            ref={videoRef}
+            source={videoSource}
+            style={{flex: 1, backgroundColor: "black"}}
+            resizeMode="contain"
+            onEnd={handleEnd}
+            onFullscreenPlayerDidDismiss={navigation.goBack}
+            onControlsVisibilityChange={() => setCloseBtn(prev => !prev)}
+          />
+        )}
       </View>
     </>
   );

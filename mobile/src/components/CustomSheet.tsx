@@ -26,6 +26,7 @@ const CustomSheet = (props: IProps) => {
       onOpenChange={() => close(modalKey)}
       dismissOnSnapToBottom
       dismissOnOverlayPress
+      snapPoints={[90]}
       animation="medium"
       modal
       {...sheetProps}>

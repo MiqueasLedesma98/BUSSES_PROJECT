@@ -6,8 +6,7 @@ import {useI18nStore} from "@/stores/i18nStore";
 import {useWindowDimensions} from "react-native";
 import {NavigationProp} from "@react-navigation/native";
 import CustomSheet from "./CustomSheet";
-
-const baseUrl = "https://nhvdt5z3-3000.brs.devtunnels.ms/api";
+import {baseUrl} from "@/axios.config";
 
 const MovieDetail = ({navigation}: {navigation: NavigationProp<any>}) => {
   const t = useI18nStore(s => s.t);

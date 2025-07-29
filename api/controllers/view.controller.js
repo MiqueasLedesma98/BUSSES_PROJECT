@@ -25,11 +25,13 @@ module.exports = {
       ]);
 
       if (media) {
+        await media.increment("views");
         await media.save();
         return res.send(true);
       }
 
       if (promotion) {
+        await promotion.increment("views");
         await promotion.save();
         return res.send(true);
       }

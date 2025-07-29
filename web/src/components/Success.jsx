@@ -10,6 +10,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useModalStore } from "../store";
 import { Check } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Success = () => {
   const open = useModalStore((s) => s.modals?.success);
@@ -17,7 +18,12 @@ const Success = () => {
 
   const navigate = useNavigate();
 
-  const handleClose = () => close("success");
+  const client = useQueryClient();
+
+  const handleClose = () => {
+    client.refetchQueries({ type: "active" });
+    close("success");
+  };
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
@@ -58,10 +64,11 @@ const Success = () => {
           color="primary"
           onClick={async () => {
             await navigate(open?.redir || "/dashboard");
+            client.refetchQueries({ type: "active" });
             handleClose();
           }}
         >
-          {open?.text || 'Éxito'}
+          {open?.text || "Éxito"}
         </Button>
       </DialogActions>
     </Dialog>

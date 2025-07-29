@@ -17,6 +17,7 @@ import { Form, Formik } from "formik";
 import { DropZone } from "./DropZone";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { uploadMovie, getCategories } from "../services";
+import { enqueueSnackbar } from "notistack";
 
 const CreateMovieModal = ({ type = "movie" }) => {
   const strModal = type === "music" ? "createMusic" : "createMovie";
@@ -29,7 +30,7 @@ const CreateMovieModal = ({ type = "movie" }) => {
 
   const { data, isLoading } = useQuery({
     queryKey: ["categories"],
-    meta: { type, lang: "esp" },
+    meta: { type, lang: "all" },
     queryFn: getCategories,
   });
 
@@ -46,7 +47,10 @@ const CreateMovieModal = ({ type = "movie" }) => {
       });
       close(strModal);
     },
-    onError: console.log,
+    onError: (err) =>
+      enqueueSnackbar(`A ocurrido un error: ${err.message}`, {
+        variant: "error",
+      }),
   });
 
   return (

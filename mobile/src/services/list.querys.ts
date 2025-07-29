@@ -32,7 +32,8 @@ export type TPromotionMeta = {
     | "welcome_banner"
     | "bottom_bar"
     | "left_bar"
-    | "carousel_banner";
+    | "carousel_banner"
+    | "none";
   limit?: number;
 };
 

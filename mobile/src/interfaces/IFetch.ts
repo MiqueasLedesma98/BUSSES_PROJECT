@@ -37,9 +37,11 @@ export interface IMovie {
 export interface IPromotion {
   id: string;
   path: string;
+  title: string;
   type: "banner" | "video";
   type_banner: "welcome_banner" | "bottom_bar" | "left_bar" | "carousel_banner";
   lang: "esp" | "eng";
+  path_secondary: string;
   views: number;
   description?: string | null;
   expirationDate: string;

@@ -3,6 +3,16 @@ import {NavigationProp} from "@react-navigation/native";
 import {Button, H5, XStack, YStack} from "tamagui";
 import {ArrowLeft} from "@tamagui/lucide-icons";
 import {useI18nStore} from "@/stores/i18nStore";
+import api from "@/axios.config";
+import {useFormik} from "formik";
+import {useMutation} from "@tanstack/react-query";
+
+const initialValues = {};
+
+type TInitialValues = typeof initialValues;
+
+const mutationFn = async (values: TInitialValues) =>
+  await api.post("/device", values);
 
 export default function ConfigSeat({
   navigation,
@@ -11,6 +21,18 @@ export default function ConfigSeat({
 }) {
   const t = useI18nStore(s => s.t);
   const locale = useI18nStore(s => s.locale);
+
+  const {values, setValues} = useFormik({
+    initialValues,
+    onSubmit: values => mutate(values),
+  });
+
+  const {mutate} = useMutation({
+    mutationKey: ["config-seat"],
+    mutationFn,
+    onSuccess: () => {},
+    onError: error => {},
+  });
 
   return (
     <YStack gap="$2">
