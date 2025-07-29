@@ -14,8 +14,8 @@ require("colors");
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || "3000");
-app.set("port", port);
+const PORT = normalizePort(process.env.PORT || "3000");
+app.set("port", PORT);
 
 /**
  * Create HTTP server.
@@ -30,7 +30,7 @@ const server = http.createServer(app);
 const HOST =
   process.env.NODE_ENV === "MAIN_SERVER" ? "192.168.1.126" : "127.0.0.1";
 
-server.listen(port, HOST);
+server.listen(PORT, HOST);
 server.on("error", onError);
 server.on("listening", onListening);
 
@@ -63,7 +63,7 @@ function onError(error) {
     throw error;
   }
 
-  const bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+  const bind = typeof PORT === "string" ? "Pipe " + PORT : "Port " + PORT;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -87,10 +87,6 @@ function onError(error) {
 function onListening() {
   const addr = server.address();
   const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
-  console.log(
-    `Server is running => http://${
-      process.env.NODE_ENV === "MAIN_SERVER" ? HOST : "localhost"
-    }:${port}`.green
-  );
+  console.log(`Server is running => http://${HOST}:${PORT}`.green);
   debug("Listening on " + bind);
 }
