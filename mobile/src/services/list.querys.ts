@@ -1,6 +1,7 @@
 import api from "@/axios.config";
 import {
   ICategory,
+  ICompany,
   IFetchResponse,
   IMovie,
   IPromotion,
@@ -66,4 +67,16 @@ export const getCategories: QueryFunction<IFetchResponse<ICategory>> = async ({
     console.log(error);
     return error;
   }
+};
+
+export type TCompanyMeta = {
+  limit: string | number;
+  page: string | number;
+};
+
+export const getCompanies: QueryFunction<IFetchResponse<ICompany>> = async ({
+  meta,
+}) => {
+  const {data} = await api.get("/list/company", {params: meta as TCompanyMeta});
+  return data;
 };

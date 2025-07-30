@@ -59,3 +59,10 @@ export interface ICategory {
   name: string;
   media_categories?: TMediaCategory;
 }
+
+export interface ICompany {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+}

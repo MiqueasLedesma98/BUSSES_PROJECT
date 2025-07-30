@@ -24,7 +24,7 @@ const NavOptions = ({navigation}: {navigation: NavigationProp<any>}) => {
       if (!db) return null;
 
       const [result]: ResultSet[] = await db.executeSql(
-        `SELECT * FROM device WHERE id = 1`,
+        `SELECT * FROM device WHERE 1 = 1`,
       );
       if (result.rows.length > 0) {
         const row = result.rows.item(0);
@@ -38,6 +38,9 @@ const NavOptions = ({navigation}: {navigation: NavigationProp<any>}) => {
     },
     enabled: !!db,
   });
+
+  console.log({data});
+
   return (
     <XStack gap={15}>
       <Button transparent onPress={() => setLocale("es")}>

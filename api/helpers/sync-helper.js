@@ -5,7 +5,6 @@ const {
   User,
   Multimedia,
   Category,
-  Bus,
   Company,
   Promotion,
   Device,
@@ -46,9 +45,7 @@ async function exportLocalChanges() {
     Promotion.findAll({
       attributes: ["views", "id"],
     }),
-    Device.findAll({
-      attributes: ["state", "id"],
-    }),
+    Device.findAll(),
   ]);
 
   return { multimedias, promotions, devices };
@@ -74,7 +71,6 @@ async function resetAndImportDatabase(data) {
         Category.create(category, { transaction })
       )
     );
-    await Promise.all(data.Bus.map((bus) => Bus.create(bus, { transaction })));
 
     await Promise.all(
       data.companies.map((company) => Company.create(company, { transaction }))
@@ -114,7 +110,7 @@ module.exports = {
       order: [["number", "DESC"]],
     });
 
-    if (!localVersion || remoteVersion.number > localVersion.number) {
+    if (!localVersion || localVersion?.number < remoteVersion?.number) {
       const { data: backup } = await axios.get("/version/backup");
 
       const formatBackupData = (backup) => ({

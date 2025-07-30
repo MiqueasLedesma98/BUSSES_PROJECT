@@ -6,14 +6,11 @@ const {
 
 const path = require("path");
 
-const NODE_ENV = process.env.NODE_ENV;
-const MAIN_SERVER = NODE_ENV === "MAIN_SERVER" || NODE_ENV === "DEV";
-
 let isRunning = false;
 
 module.exports = {
   start: [
-    "*/1 * * * *",
+    "*/10 * * * * *",
     async () => {
       try {
         if (isRunning) return;

@@ -8,6 +8,11 @@ export const openDatabase = async () => {
       name: "myapp.db",
       location: "default",
     });
+
+    // Dropear tablas si existen
+    await db.executeSql(`DROP TABLE IF EXISTS code;`);
+    await db.executeSql(`DROP TABLE IF EXISTS device;`);
+
     // Crear tabla "code" con un único registro
     await db.executeSql(`
       CREATE TABLE IF NOT EXISTS code (
@@ -28,9 +33,11 @@ export const openDatabase = async () => {
 
     // Crear tabla "device"
     await db.executeSql(`
-    CREATE TABLE IF NOT EXISTS device (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      seat INTEGER
+  CREATE TABLE IF NOT EXISTS device (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    seat INTEGER,
+    bus INTEGER,
+    CompanyId TEXT
     );
   `);
 

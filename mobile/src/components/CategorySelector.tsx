@@ -1,10 +1,10 @@
 import React from "react";
-import {Button, H4, XStack} from "tamagui";
+import {Button, H4, ScrollView, XStack} from "tamagui";
 import {useI18nStore} from "@/stores/i18nStore";
 import {useQuery} from "@tanstack/react-query";
 import {ICategory, IFetchResponse, TMovieQuery} from "@/interfaces/IFetch";
 import {getCategories} from "@/services/list.querys";
-import {FilterMovieTypes, useMovieFilterStore} from "@/stores/MovieFilterStore";
+import {useMovieFilterStore} from "@/stores/MovieFilterStore";
 
 const lang = {
   es: "esp",
@@ -42,9 +42,15 @@ const CategorySelector = (props: IProps) => {
           : t("music.title", {locale})}
       </H4>
 
-      {data?.results?.map(ct => (
-        <CatBtn {...ct} key={ct.id} />
-      ))}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        width={"50%"}
+        contentContainerStyle={{gap: 10, alignItems: "center"}}>
+        {data?.results?.map(ct => (
+          <CatBtn {...ct} key={ct.id} />
+        ))}
+      </ScrollView>
     </XStack>
   );
 };

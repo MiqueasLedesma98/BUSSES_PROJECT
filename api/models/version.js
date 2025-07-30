@@ -18,6 +18,7 @@ const Version = sequelize.define(
     },
     number: {
       type: DataTypes.INTEGER,
+      autoIncrement: true,
       validate: { isNumeric: true },
     },
   },
