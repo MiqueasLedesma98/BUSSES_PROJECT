@@ -10,7 +10,7 @@ let isRunning = false;
 
 module.exports = {
   start: [
-    "*/10 * * * * *",
+    "*/25 * * * * *",
     async () => {
       try {
         if (isRunning) return;

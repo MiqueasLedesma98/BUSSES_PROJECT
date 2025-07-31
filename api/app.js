@@ -24,12 +24,12 @@ const app = express();
 // Relaciones
 Device.belongsTo(Company, { through: "CompanyId", onDelete: "CASCADE" });
 Multimedia.belongsToMany(Category, {
-  through: "media_categories",
+  through: "multimedia_categories",
   onDelete: "CASCADE",
 });
 
 Category.belongsToMany(Multimedia, {
-  through: "media_categories",
+  through: "multimedia_categories",
   onDelete: "CASCADE",
 });
 
