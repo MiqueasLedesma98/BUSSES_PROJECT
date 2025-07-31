@@ -22,7 +22,11 @@ const initializeDB = async () => {
     await sequelize.authenticate();
     console.log("Conexión con DB establecida");
 
-    await sequelize.sync({ force: true });
+    let options;
+
+    if (process.env.NODE_ENV === "MAIN_SERVER") options = { force: false };
+
+    await sequelize.sync(options);
     console.log("Database sincronizada");
   } catch (error) {
     console.error("No se a podido conectar a la base de datos:", error);
