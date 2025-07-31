@@ -44,7 +44,18 @@ module.exports = {
    */
   createVersion: async (_req, res, next) => {
     try {
-      await Version.create();
+      const fixedId = "00000000-0000-0000-0000-000000000001";
+
+      const latestVersion = await Version.findOne({
+        order: [["number", "DESC"]],
+      });
+
+      const nextNumber = latestVersion?.number ? latestVersion.number + 1 : 1;
+
+      await Version.upsert({
+        id: fixedId,
+        number: nextNumber,
+      });
 
       return res.send(true);
     } catch (error) {

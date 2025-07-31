@@ -60,7 +60,7 @@ module.exports = {
       order: [["number", "DESC"]],
     });
 
-    if (!localVersion || localVersion?.number < remoteVersion?.number) {
+    if (localVersion?.number ?? 0 < remoteVersion?.number) {
       const response = await axios.get("/version/backup", {
         responseType: "stream",
       });
