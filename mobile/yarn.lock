@@ -6435,6 +6435,11 @@ kind-of@^6.0.2:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
+kiosk-react-native@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/kiosk-react-native/-/kiosk-react-native-0.1.2.tgz#e9cd5c50f160dc623e6da75a8a492d92ca075c3d"
+  integrity sha512-an51l7RXonQy6gLETCCa7Sl8L8wpgIB7+gEZWKM3QH3IfsThwdW3awzlyoVTmjefI6DdKIQ7OdJzdCRUPb2WsQ==
+
 kleur@^3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"

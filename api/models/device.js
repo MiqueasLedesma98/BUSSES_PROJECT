@@ -11,6 +11,8 @@ const Device = sequelize.define(
       primaryKey: true,
     },
     state: { type: DataTypes.ENUM("ACTIVE", "INACTIVE"), default: "ACTIVE" },
+    seat: { type: DataTypes.INTEGER, required: false },
+    bus: { type: DataTypes.INTEGER, required: false },
   },
   { timestamps: true, version: false }
 );

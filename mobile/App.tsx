@@ -10,6 +10,7 @@ import {DevToolsBubble} from "react-native-react-query-devtools";
 import BootSplash from "react-native-bootsplash";
 import {LogBox} from "react-native";
 import {useSqlite} from "@/hooks/useSqlite";
+import {enableKioskMode} from "kiosk-react-native";
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -20,6 +21,8 @@ i18n.locale = "es";
 const config = createTamagui(defaultConfig);
 
 const queryClient = new QueryClient();
+
+enableKioskMode();
 
 function App(): React.JSX.Element {
   useSqlite();

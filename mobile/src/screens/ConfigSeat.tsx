@@ -11,7 +11,13 @@ import {
   XStack,
   YStack,
 } from "tamagui";
-import {ArrowLeft, Check, ChevronDown} from "@tamagui/lucide-icons";
+import {
+  ArrowLeft,
+  Check,
+  ChevronDown,
+  Lock,
+  LockOpen,
+} from "@tamagui/lucide-icons";
 import {useI18nStore} from "@/stores/i18nStore";
 import api from "@/axios.config";
 import {useFormik} from "formik";
@@ -21,6 +27,7 @@ import {getCompanies} from "@/services/list.querys";
 import {ICompany} from "@/interfaces/IFetch";
 import {useSqliteStore} from "@/stores/sqliteStore";
 import {SQLiteDatabase} from "react-native-sqlite-storage";
+import {disableKioskMode, enableKioskMode} from "kiosk-react-native";
 
 type TInitial = {
   company: "" | ICompany;
@@ -134,6 +141,14 @@ export default function ConfigSeat({
           {t("config", {locale})}
         </H5>
         {isLoading && <ActivityIndicator />}
+        <XStack marginLeft={"auto"}>
+          <Button onPress={() => disableKioskMode()} chromeless>
+            <LockOpen color={"#fff"} />
+          </Button>
+          <Button onPress={() => enableKioskMode()} chromeless>
+            <Lock color={"#fff"} />
+          </Button>
+        </XStack>
       </XStack>
 
       <Input
