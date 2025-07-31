@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {createTamagui, TamaguiProvider} from "tamagui";
 import {defaultConfig} from "@tamagui/config/v4";
 import {NavigationContainer} from "@react-navigation/native";
@@ -10,7 +10,8 @@ import {DevToolsBubble} from "react-native-react-query-devtools";
 import BootSplash from "react-native-bootsplash";
 import {LogBox} from "react-native";
 import {useSqlite} from "@/hooks/useSqlite";
-import {enableKioskMode} from "kiosk-react-native";
+import {enableKioskMode, disableKioskMode} from "kiosk-react-native";
+import {useKioskStore} from "@/stores/kioskStore";
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -22,10 +23,15 @@ const config = createTamagui(defaultConfig);
 
 const queryClient = new QueryClient();
 
-enableKioskMode();
-
 function App(): React.JSX.Element {
   useSqlite();
+
+  const isKiosk = useKioskStore(s => s.isKiosk);
+
+  useEffect(() => {
+    if (isKiosk) enableKioskMode();
+    else disableKioskMode();
+  }, [isKiosk]);
 
   return (
     <GestureHandlerRootView>

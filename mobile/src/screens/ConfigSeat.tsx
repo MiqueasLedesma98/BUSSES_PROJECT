@@ -28,6 +28,7 @@ import {ICompany} from "@/interfaces/IFetch";
 import {useSqliteStore} from "@/stores/sqliteStore";
 import {SQLiteDatabase} from "react-native-sqlite-storage";
 import {disableKioskMode, enableKioskMode} from "kiosk-react-native";
+import {useKioskStore} from "@/stores/kioskStore";
 
 type TInitial = {
   company: "" | ICompany;
@@ -123,6 +124,8 @@ export default function ConfigSeat({
     [values.company],
   );
 
+  const setKiosk = useKioskStore(s => s.setKiosk);
+
   return (
     <YStack gap="$2" width={"70%"}>
       <XStack gap="$2" alignItems="center">
@@ -142,10 +145,10 @@ export default function ConfigSeat({
         </H5>
         {isLoading && <ActivityIndicator />}
         <XStack marginLeft={"auto"}>
-          <Button onPress={() => disableKioskMode()} chromeless>
+          <Button onPress={() => setKiosk(false)} chromeless>
             <LockOpen color={"#fff"} />
           </Button>
-          <Button onPress={() => enableKioskMode()} chromeless>
+          <Button onPress={() => setKiosk(true)} chromeless>
             <Lock color={"#fff"} />
           </Button>
         </XStack>
