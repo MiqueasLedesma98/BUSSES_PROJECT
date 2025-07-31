@@ -11,13 +11,6 @@ const Version = sequelize.define(
       primaryKey: true,
     },
     isAplicated: { type: DataTypes.BOOLEAN, default: false },
-    models: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isIn: [["promotion", "multimedia", "company", "devices"]],
-      },
-    },
     number: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
