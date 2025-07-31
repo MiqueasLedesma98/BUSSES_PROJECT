@@ -3,6 +3,9 @@ const fs = require("fs");
 const { Version, Multimedia, Promotion, Device } = require("../models");
 const path = require("path");
 const MAIN_SERVER_URL = process.env.MAIN_SERVER_URL;
+const { exec } = require("child_process");
+const util = require("util");
+const execPromise = util.promisify(exec);
 
 const MEDIA_FOLDER = path.join(__dirname, "..");
 
@@ -65,7 +68,6 @@ module.exports = {
       const SQL_PATH = path.join(__dirname, "..", "temp_restore.sql");
       const writer = fs.createWriteStream(SQL_PATH);
 
-      // Guardar localmente
       await new Promise((resolve, reject) => {
         response.data.pipe(writer);
         writer.on("finish", resolve);
@@ -80,30 +82,33 @@ module.exports = {
       const connectionUri = `postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}/${DB_NAME}`;
 
       try {
-        // 1. Validar el archivo SQL (ejecutar dentro de una transacción con rollback)
+        // 1. Validar el archivo SQL
         const validateCmd = `psql "${connectionUri}" -v ON_ERROR_STOP=1 -c "BEGIN;" -f "${SQL_PATH}" -c "ROLLBACK;"`;
-        await exec(validateCmd);
+        console.log("🔍 Validando archivo SQL...");
+        await execPromise(validateCmd);
         console.log("✅ Archivo SQL validado correctamente.");
 
         // 2. Ejecutar restauración real
         const restoreCmd = `psql "${connectionUri}" -v ON_ERROR_STOP=1 -f "${SQL_PATH}"`;
-        await exec(restoreCmd);
+        console.log("🔁 Ejecutando restauración...");
+        await execPromise(restoreCmd);
         console.log("✅ Base de datos restaurada correctamente.");
       } catch (error) {
-        console.error(
-          "❌ Error durante validación o restauración:",
-          error.stderr || error.message
-        );
-        // Opcional: borrar archivo temporal aunque hubo error
-        fs.unlinkSync(SQL_PATH);
-        throw error; // o manejar error según convenga
+        console.error("❌ Error durante validación o restauración:");
+        console.error(error.stderr || error.message);
+        if (fs.existsSync(SQL_PATH)) fs.unlinkSync(SQL_PATH);
+        throw new Error("Restauración fallida");
       }
 
-      // Borrar archivo temporal después de restaurar
-      fs.unlinkSync(SQL_PATH);
+      // Borrar el archivo SQL si todo salió bien
+      if (fs.existsSync(SQL_PATH)) fs.unlinkSync(SQL_PATH);
 
+      console.log("✅ Sincronización completada con éxito.");
       return true;
-    } else return false;
+    }
+
+    console.log("ℹ️ No hay nuevas versiones remotas.");
+    return false;
   },
   /**
    * Sincroniza los archivos entre una estructura anidada y la base de datos remota.

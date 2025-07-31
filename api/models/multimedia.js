@@ -11,8 +11,21 @@ const Multimedia = sequelize.define(
       primaryKey: true,
     },
     title: { type: DataTypes.STRING, allowNull: false },
-    lang: { type: DataTypes.ENUM("esp", "eng") },
-    type: { type: DataTypes.ENUM("movie", "music") },
+    lang: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isIn: [["esp", "eng"]],
+      },
+    },
+
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isIn: [["movie", "music"]],
+      },
+    },
     description: {
       type: DataTypes.STRING,
       defaultValue: "N/A",

@@ -13,17 +13,29 @@ const Promotion = sequelize.define(
     },
     path: { type: DataTypes.STRING, allowNull: false },
     path_secondary: { type: DataTypes.STRING, allowNull: true },
-    type: { type: DataTypes.ENUM(["banner", "video"]), allowNull: false },
-    type_banner: {
-      type: DataTypes.ENUM([
-        "welcome_banner",
-        "bottom_bar",
-        "left_bar",
-        "carousel_banner",
-      ]),
-      allowNull: true,
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isIn: [["banner", "video"]],
+      },
     },
-    lang: { type: DataTypes.ENUM(["esp", "eng"]) },
+
+    type_banner: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        isIn: [["welcome_banner", "bottom_bar", "left_bar", "carousel_banner"]],
+      },
+    },
+
+    lang: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        isIn: [["esp", "eng"]],
+      },
+    },
     views: { type: DataTypes.BIGINT, defaultValue: 0 },
     description: { type: DataTypes.STRING },
     expirationDate: { type: DataTypes.DATE, allowNull: false },

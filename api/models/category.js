@@ -11,9 +11,24 @@ const Category = sequelize.define(
       primaryKey: true,
     },
     description: { type: DataTypes.STRING, allowNull: false },
-    lang: { type: DataTypes.ENUM("eng", "esp") },
-    name: { type: DataTypes.STRING, allowNull: false },
-    type: { type: DataTypes.ENUM("music", "movie") },
+    lang: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isIn: [["eng", "esp"]],
+      },
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isIn: [["music", "movie"]],
+      },
+    },
   },
   { timestamps: true, version: false }
 );

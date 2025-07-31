@@ -14,7 +14,14 @@ const Device = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false, // si la relación es obligatoria
     },
-    state: { type: DataTypes.ENUM("ACTIVE", "INACTIVE"), default: "ACTIVE" },
+    state: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "ACTIVE",
+      validate: {
+        isIn: [["ACTIVE", "INACTIVE"]],
+      },
+    },
     seat: { type: DataTypes.INTEGER, required: false },
     bus: { type: DataTypes.INTEGER, required: false },
   },
