@@ -5,6 +5,13 @@ module.exports = {
     {
       name: "Veotrans",
       watch: true,
+      ignore_watch: [
+        "backup.sql",
+        "temp_restore.sql",
+        "node_modules",
+        "logs",
+        "media",
+      ],
       script: "./bin/www",
       instances: process.env.INSTANCES,
       exec_mode: "cluster",

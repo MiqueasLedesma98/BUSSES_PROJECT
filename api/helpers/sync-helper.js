@@ -62,7 +62,7 @@ module.exports = {
         responseType: "stream",
       });
 
-      const SQL_PATH = path.join(__dirname, "temp_restore.sql");
+      const SQL_PATH = path.join(__dirname, "..", "temp_restore.sql");
       const writer = fs.createWriteStream(SQL_PATH);
 
       // Guardar localmente
