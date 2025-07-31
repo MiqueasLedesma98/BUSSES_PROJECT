@@ -10,6 +10,10 @@ const Device = sequelize.define(
       allowNull: false,
       primaryKey: true,
     },
+    CompanyId: {
+      type: DataTypes.UUID,
+      allowNull: false, // si la relación es obligatoria
+    },
     state: { type: DataTypes.ENUM("ACTIVE", "INACTIVE"), default: "ACTIVE" },
     seat: { type: DataTypes.INTEGER, required: false },
     bus: { type: DataTypes.INTEGER, required: false },

@@ -1,15 +1,6 @@
 const { axios } = require("../lib/axios");
 const fs = require("fs");
-const {
-  Version,
-  User,
-  Multimedia,
-  Category,
-  Company,
-  Promotion,
-  Device,
-} = require("../models");
-const { sequelize } = require("../config/db");
+const { Version, Multimedia, Promotion, Device } = require("../models");
 const path = require("path");
 const MAIN_SERVER_URL = process.env.MAIN_SERVER_URL;
 
@@ -51,50 +42,6 @@ async function exportLocalChanges() {
   return { multimedias, promotions, devices };
 }
 
-async function resetAndImportDatabase(data) {
-  const transaction = await sequelize.transaction();
-
-  try {
-    console.log(data);
-
-    await sequelize.sync({ force: true, transaction });
-
-    await Promise.all(
-      data.users.map((user) => User.create(user, { transaction, hooks: false }))
-    );
-
-    await Promise.all(
-      data.multimedia.map((media) => Multimedia.create(media, { transaction }))
-    );
-    await Promise.all(
-      data.category.map((category) =>
-        Category.create(category, { transaction })
-      )
-    );
-
-    await Promise.all(
-      data.companies.map((company) => Company.create(company, { transaction }))
-    );
-
-    await Promise.all(
-      data.promotions.map((promotion) =>
-        Promotion.create(promotion, { transaction })
-      )
-    );
-
-    await Promise.all(
-      data.devices.map((device) => Device.create(device, { transaction }))
-    );
-
-    await Version.create({ number: data.versionNumber }, { transaction });
-
-    await transaction.commit();
-  } catch (error) {
-    await transaction.rollback();
-    throw error;
-  }
-}
-
 module.exports = {
   /**
    * @description Sincroniza las bases de datos remota y local
@@ -111,19 +58,49 @@ module.exports = {
     });
 
     if (!localVersion || localVersion?.number < remoteVersion?.number) {
-      const { data: backup } = await axios.get("/version/backup");
-
-      const formatBackupData = (backup) => ({
-        users: backup.User,
-        multimedia: backup.Multimedia,
-        category: backup.Category,
-        companies: backup.Company,
-        promotions: backup.Promotion,
-        devices: backup.Device,
-        versionNumber: backup.Version?.number || 1,
+      const response = await axios.get("/version/backup", {
+        responseType: "stream",
       });
 
-      await resetAndImportDatabase(formatBackupData(backup));
+      const SQL_PATH = path.join(__dirname, "temp_restore.sql");
+      const writer = fs.createWriteStream(SQL_PATH);
+
+      // Guardar localmente
+      await new Promise((resolve, reject) => {
+        response.data.pipe(writer);
+        writer.on("finish", resolve);
+        writer.on("error", reject);
+      });
+
+      const DB_NAME = process.env.DB_NAME;
+      const DB_USER = process.env.DB_USER;
+      const DB_PASS = process.env.DB_PASS;
+      const DB_HOST = process.env.DB_HOST || "localhost";
+
+      const connectionUri = `postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}/${DB_NAME}`;
+
+      try {
+        // 1. Validar el archivo SQL (ejecutar dentro de una transacción con rollback)
+        const validateCmd = `psql "${connectionUri}" -v ON_ERROR_STOP=1 -c "BEGIN;" -f "${SQL_PATH}" -c "ROLLBACK;"`;
+        await exec(validateCmd);
+        console.log("✅ Archivo SQL validado correctamente.");
+
+        // 2. Ejecutar restauración real
+        const restoreCmd = `psql "${connectionUri}" -v ON_ERROR_STOP=1 -f "${SQL_PATH}"`;
+        await exec(restoreCmd);
+        console.log("✅ Base de datos restaurada correctamente.");
+      } catch (error) {
+        console.error(
+          "❌ Error durante validación o restauración:",
+          error.stderr || error.message
+        );
+        // Opcional: borrar archivo temporal aunque hubo error
+        fs.unlinkSync(SQL_PATH);
+        throw error; // o manejar error según convenga
+      }
+
+      // Borrar archivo temporal después de restaurar
+      fs.unlinkSync(SQL_PATH);
 
       return true;
     } else return false;

@@ -35,7 +35,7 @@ const RootNavigator = () => (
     <Stack.Screen name="Config" layout={DefaultLayout} component={Config} />
     <Stack.Screen
       name="Config-seat"
-      layout={DefaultLayout}
+      // layout={DefaultLayout}
       component={ConfigSeat}
     />
   </Stack.Navigator>

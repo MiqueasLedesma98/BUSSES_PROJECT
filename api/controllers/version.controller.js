@@ -1,5 +1,8 @@
+require("colors");
 const { Op } = require("sequelize");
 const { Version, ...models } = require("../models");
+const { exec } = require("child_process");
+const path = require("path");
 
 /**
  * @template T
@@ -41,9 +44,9 @@ module.exports = {
    */
   createVersion: async (_req, res, next) => {
     try {
-      const newVersion = await Version.create();
+      await Version.create();
 
-      return res.send();
+      return res.send(true);
     } catch (error) {
       next(error);
     }
@@ -53,15 +56,24 @@ module.exports = {
    */
   backup: async (_req, res, next) => {
     try {
-      const allData = {};
+      const DB_NAME = process.env.DB_NAME;
+      const DB_USER = process.env.DB_USER;
+      const DB_PASS = process.env.DB_PASS;
+      const HOST = "localhost";
 
-      await Promise.all(
-        Object.keys(models).map(async (key) => {
-          allData[key] = await models[key].findAll({ raw: true });
-        })
-      );
+      const SQL_PATH = path.join(__dirname, "..", "backup.sql");
 
-      return res.json(allData);
+      const dumpCommand = `PGPASSWORD="${DB_PASS}" pg_dump --clean -U ${DB_USER} -h ${HOST} -d ${DB_NAME} -F p > "${SQL_PATH}"`;
+
+      exec(dumpCommand, (error, _stdout, stderr) => {
+        if (error) {
+          console.error("Error al crear backup:", stderr);
+          return next(error);
+        }
+
+        console.log("✅ Backup creado correctamente:", SQL_PATH);
+        return res.download(SQL_PATH); // ✅ Envía el archivo al cliente
+      });
     } catch (error) {
       next(error);
     }
