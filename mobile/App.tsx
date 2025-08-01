@@ -12,6 +12,7 @@ import {LogBox} from "react-native";
 import {useSqlite} from "@/hooks/useSqlite";
 import {enableKioskMode, disableKioskMode} from "kiosk-react-native";
 import {useKioskStore} from "@/stores/kioskStore";
+import SheetContainer from "@/components/SheetContainer";
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -42,6 +43,7 @@ function App(): React.JSX.Element {
               BootSplash.hide({fade: true});
             }}>
             <RootNavigator />
+            <SheetContainer />
           </NavigationContainer>
           <DevToolsBubble
             onCopy={txt => {

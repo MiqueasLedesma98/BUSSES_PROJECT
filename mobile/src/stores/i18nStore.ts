@@ -7,18 +7,21 @@ const i18n = new I18n({en, es});
 i18n.defaultLocale = "es";
 
 export type Language = "en" | "es";
+export type LangCode = "EN" | "ES";
 
 interface I18nStore {
   locale: Language;
+  code: LangCode;
   setLocale: (lang: Language) => void;
   t: (key: string, config?: Record<string, any>) => string;
 }
 
 export const useI18nStore = create<I18nStore>((set, get) => ({
   locale: "es",
+  code: "ES",
   setLocale: lang => {
     i18n.locale = lang;
-    set({locale: lang});
+    set({locale: lang, code: lang.toUpperCase() as LangCode});
   },
   t: (key, config) => {
     return i18n.t(key, config);

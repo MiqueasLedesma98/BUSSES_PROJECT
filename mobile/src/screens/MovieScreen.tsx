@@ -1,21 +1,12 @@
 import React, {useMemo} from "react";
 import CardMovie from "@/components/CardMovie";
-import {
-  H2,
-  H4,
-  ScrollView,
-  Spinner,
-  useWindowDimensions,
-  View,
-  YStack,
-} from "tamagui";
+import {H4, useWindowDimensions, YStack} from "tamagui";
 import MovieCarousel from "@/components/MovieCarousel";
 import CategorySelector from "@/components/CategorySelector";
 import {useQuery} from "@tanstack/react-query";
 import {getMovies} from "@/services/list.querys";
 import {IFetchResponse, IMovie, TMovieQuery} from "@/interfaces/IFetch";
 import {useI18nStore} from "@/stores/i18nStore";
-import MovieDetail from "@/components/MovieDetail";
 import {NavigationProp} from "@react-navigation/native";
 import {FlatList} from "react-native";
 import {useMovieFilterStore} from "@/stores/MovieFilterStore";
@@ -83,7 +74,6 @@ const MovieScreen = ({navigation}: IProps) => {
           </H4>
         }
       />
-      <MovieDetail navigation={navigation} />
     </>
   );
 };

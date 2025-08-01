@@ -1,14 +1,15 @@
 import {H4, Text} from "tamagui";
 import {useModalStore} from "@/stores/modalStore";
-import {Button, Image, Sheet, XStack, YStack} from "tamagui";
+import {Button, Image, XStack, YStack} from "tamagui";
 import {StarFull} from "@tamagui/lucide-icons";
 import {useI18nStore} from "@/stores/i18nStore";
 import {useWindowDimensions} from "react-native";
-import {NavigationProp} from "@react-navigation/native";
+import {useNavigation} from "@react-navigation/native";
 import CustomSheet from "./CustomSheet";
 import {baseUrl} from "@/axios.config";
 
-const MovieDetail = ({navigation}: {navigation: NavigationProp<any>}) => {
+const MovieDetail = () => {
+  const navigation = useNavigation<any>();
   const t = useI18nStore(s => s.t);
   const locale = useI18nStore(s => s.locale);
   const {width} = useWindowDimensions();

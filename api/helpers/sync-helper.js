@@ -5,6 +5,7 @@ const path = require("path");
 const MAIN_SERVER_URL = process.env.MAIN_SERVER_URL;
 const { exec } = require("child_process");
 const util = require("util");
+const { Op } = require("sequelize");
 const execPromise = util.promisify(exec);
 
 const MEDIA_FOLDER = path.join(__dirname, "..");

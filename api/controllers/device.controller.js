@@ -22,6 +22,7 @@ module.exports = {
       const { company, seat, bus } = req.body;
 
       const company_data = await Company.findByPk(company);
+
       if (!company_data) {
         return res.status(404).json({ error: "Empresa no encontrada" });
       }

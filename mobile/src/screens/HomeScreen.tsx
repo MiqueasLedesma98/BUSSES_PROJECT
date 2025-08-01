@@ -4,7 +4,6 @@ import HomeLinks from "@/components/HomeLinks";
 import React from "react";
 import {ScrollView} from "tamagui";
 import {NavigationProp} from "@react-navigation/native";
-import PromotionModal from "@/components/PromotionModal";
 
 const Home = ({navigation}: {navigation: NavigationProp<any>}) => {
   return (
@@ -18,7 +17,6 @@ const Home = ({navigation}: {navigation: NavigationProp<any>}) => {
         <HomeLinks navigation={navigation} />
         <BannerBottom height={80} />
       </ScrollView>
-      <PromotionModal />
     </>
   );
 };

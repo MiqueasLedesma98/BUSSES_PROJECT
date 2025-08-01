@@ -1,15 +1,15 @@
 import {Dimensions, TouchableWithoutFeedback} from "react-native";
 import React, {useMemo} from "react";
 import {useI18nStore} from "@/stores/i18nStore";
-import {Button, Image, Spinner, Text, View, YStack} from "tamagui";
+import {Button, Image, Spinner, YStack} from "tamagui";
 import {ArrowRight, Film, Music4} from "@tamagui/lucide-icons";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
-import CountrySelect from "./CountrySelect";
 import {ParamListBase, RouteProp, useRoute} from "@react-navigation/native";
 import {IPromotion} from "@/interfaces/IFetch";
 import {useQuery} from "@tanstack/react-query";
 import {getPromotion, TPromotionMeta} from "@/services/list.querys";
 import {baseUrl} from "@/axios.config";
+import CountrySelect from "./CountrySelect";
 
 const {width} = Dimensions.get("screen");
 
@@ -26,7 +26,6 @@ const isBold = (route: RouteProp<ParamListBase>, name: string): string =>
   route.name === name ? "800" : "100";
 
 const SideBar = ({navigation}: TSidebar) => {
-  const focus = navigation.isFocused();
   const t = useI18nStore(s => s.t);
   const locale = useI18nStore(s => s.locale);
 
@@ -80,7 +79,6 @@ const SideBar = ({navigation}: TSidebar) => {
         onPress={() => navigation.navigate("Music")}>
         {t("home.music-btn", {locale})}
       </Button>
-
       {isLoading ? (
         <Spinner />
       ) : (
@@ -93,8 +91,7 @@ const SideBar = ({navigation}: TSidebar) => {
           borderRadius={25}
         />
       )}
-
-      {focus && <CountrySelect />}
+      <CountrySelect />
     </YStack>
   );
 };

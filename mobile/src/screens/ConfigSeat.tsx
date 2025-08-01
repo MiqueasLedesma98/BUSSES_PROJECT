@@ -27,8 +27,8 @@ import {getCompanies} from "@/services/list.querys";
 import {ICompany} from "@/interfaces/IFetch";
 import {useSqliteStore} from "@/stores/sqliteStore";
 import {SQLiteDatabase} from "react-native-sqlite-storage";
-import {disableKioskMode, enableKioskMode} from "kiosk-react-native";
 import {useKioskStore} from "@/stores/kioskStore";
+import GradientBackground from "@/components/GradientBackground";
 
 type TInitial = {
   company: "" | ICompany;
@@ -72,13 +72,13 @@ const mutationFn = async ({
   if (count > 0) {
     // Ya existe → actualizamos
     await db.executeSql(
-      `UPDATE device SET seat = ?, bus = ?, company = ? WHERE id = 1`,
+      `UPDATE device SET seat = ?, bus = ?, companyId = ? WHERE id = 1`,
       [format.seat, format.bus, format.company],
     );
   } else {
     // No existe → insertamos forzando el ID en 1
     await db.executeSql(
-      `INSERT INTO device (id, seat, bus, company) VALUES (1, ?, ?, ?)`,
+      `INSERT INTO device (id, seat, bus, companyId) VALUES (1, ?, ?, ?)`,
       [format.seat, format.bus, format.company],
     );
   }
@@ -127,94 +127,97 @@ export default function ConfigSeat({
   const setKiosk = useKioskStore(s => s.setKiosk);
 
   return (
-    <YStack gap="$2" width={"70%"}>
-      <XStack gap="$2" alignItems="center">
-        <Button
-          borderWidth={2}
-          borderColor={"white"}
-          onPress={() => navigation.goBack()}
-          width={70}
-          height={60}
-          margin={12.5}
-          color={"white"}
-          backgroundColor={"rgba(255,255,255, .2)"}>
-          <ArrowLeft size={50} color={"white"} />
-        </Button>
-        <H5 color={"#fff"} fontWeight={"bold"}>
-          {t("config", {locale})}
-        </H5>
-        {isLoading && <ActivityIndicator />}
-        <XStack marginLeft={"auto"}>
-          <Button onPress={() => setKiosk(false)} chromeless>
-            <LockOpen color={"#fff"} />
+    <>
+      <GradientBackground />
+      <YStack gap="$2" width={"100%"}>
+        <XStack gap="$2" alignItems="center">
+          <Button
+            borderWidth={2}
+            borderColor={"white"}
+            onPress={() => navigation.goBack()}
+            width={70}
+            height={60}
+            margin={12.5}
+            color={"white"}
+            backgroundColor={"rgba(255,255,255, .2)"}>
+            <ArrowLeft size={50} color={"white"} />
           </Button>
-          <Button onPress={() => setKiosk(true)} chromeless>
-            <Lock color={"#fff"} />
-          </Button>
+          <H5 color={"#fff"} fontWeight={"bold"}>
+            {t("config", {locale})}
+          </H5>
+          {isLoading && <ActivityIndicator />}
+          <XStack marginLeft={"auto"}>
+            <Button onPress={() => setKiosk(false)} chromeless>
+              <LockOpen color={"#fff"} />
+            </Button>
+            <Button onPress={() => setKiosk(true)} chromeless>
+              <Lock color={"#fff"} />
+            </Button>
+          </XStack>
         </XStack>
-      </XStack>
 
-      <Input
-        placeholder="Asiento"
-        keyboardType="number-pad"
-        onChangeText={handleChange("seat")}
-        onBlur={handleBlur("seat")}
-      />
-      <Input
-        placeholder="Transporte"
-        keyboardType="number-pad"
-        onChangeText={handleChange("bus")}
-        onBlur={handleBlur("bus")}
-      />
-      <Select open={open} onOpenChange={setOpen} disablePreventBodyScroll>
-        <Select.Trigger iconAfter={ChevronDown}>
-          <Text>{placeholder}</Text>
-        </Select.Trigger>
+        <Input
+          placeholder="Asiento"
+          keyboardType="number-pad"
+          onChangeText={handleChange("seat")}
+          onBlur={handleBlur("seat")}
+        />
+        <Input
+          placeholder="Transporte"
+          keyboardType="number-pad"
+          onChangeText={handleChange("bus")}
+          onBlur={handleBlur("bus")}
+        />
+        <Select open={open} onOpenChange={setOpen} disablePreventBodyScroll>
+          <Select.Trigger iconAfter={ChevronDown}>
+            <Text>{placeholder}</Text>
+          </Select.Trigger>
 
-        <Adapt platform="touch">
-          <Sheet native modal dismissOnSnapToBottom animation="medium">
-            <Sheet.Frame>
+          <Adapt platform="touch">
+            <Sheet native modal dismissOnSnapToBottom animation="medium">
               <Sheet.Frame>
-                <Adapt.Contents />
+                <Sheet.Frame>
+                  <Adapt.Contents />
+                </Sheet.Frame>
               </Sheet.Frame>
-            </Sheet.Frame>
-            <Sheet.Overlay
-              animation="lazy"
-              backgroundColor="$shadowColor"
-              enterStyle={{opacity: 0}}
-              exitStyle={{opacity: 0}}
-            />
-          </Sheet>
-        </Adapt>
+              <Sheet.Overlay
+                animation="lazy"
+                backgroundColor="$shadowColor"
+                enterStyle={{opacity: 0}}
+                exitStyle={{opacity: 0}}
+              />
+            </Sheet>
+          </Adapt>
 
-        <Select.Viewport minWidth={200} opacity={0.5}>
-          <Select.Group>
-            <Select.Label>Compañías</Select.Label>
-            {data?.results?.map((item, i) => (
-              <Select.Item
-                onPressOut={() => {
-                  setFieldValue("company", item);
-                  setOpen(false);
-                }}
-                padding="$5"
-                index={i}
-                key={item.id}
-                value={item.id}>
-                <Select.ItemText>
-                  <Text>{item.name}</Text>
-                </Select.ItemText>
-                <Select.ItemIndicator marginLeft="auto">
-                  <Check size={16} />
-                </Select.ItemIndicator>
-              </Select.Item>
-            ))}
-          </Select.Group>
-        </Select.Viewport>
-      </Select>
+          <Select.Viewport minWidth={200} opacity={0.5}>
+            <Select.Group>
+              <Select.Label>Compañías</Select.Label>
+              {data?.results?.map((item, i) => (
+                <Select.Item
+                  onPressOut={() => {
+                    setFieldValue("company", item);
+                    setOpen(false);
+                  }}
+                  padding="$5"
+                  index={i}
+                  key={item.id}
+                  value={item.id}>
+                  <Select.ItemText>
+                    <Text>{item.name}</Text>
+                  </Select.ItemText>
+                  <Select.ItemIndicator marginLeft="auto">
+                    <Check size={16} />
+                  </Select.ItemIndicator>
+                </Select.Item>
+              ))}
+            </Select.Group>
+          </Select.Viewport>
+        </Select>
 
-      <Button onPress={() => mutate({...values, db})}>
-        Guardar Configuración
-      </Button>
-    </YStack>
+        <Button onPress={() => mutate({...values, db})}>
+          Guardar Configuración
+        </Button>
+      </YStack>
+    </>
   );
 }

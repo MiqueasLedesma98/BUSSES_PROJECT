@@ -20,6 +20,7 @@ const NavOptions = ({navigation}: {navigation: NavigationProp<any>}) => {
 
   const {data} = useQuery<TResult | null>({
     queryKey: ["get-seat"],
+    refetchInterval: 20 * 1000,
     queryFn: async () => {
       if (!db) return null;
 
@@ -38,8 +39,6 @@ const NavOptions = ({navigation}: {navigation: NavigationProp<any>}) => {
     },
     enabled: !!db,
   });
-
-  console.log({data});
 
   return (
     <XStack gap={15}>
