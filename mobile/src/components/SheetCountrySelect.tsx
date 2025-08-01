@@ -20,6 +20,7 @@ const SheetCountrySelect = () => {
   return (
     <CustomSheet
       sheetProps={{snapPoints: [35]}}
+      frameStyle={{ opacity: 0.8 }}
       modalKey="lang-select"
       topEl={
         <H4 marginVertical={"$2"} color={"white"}>
@@ -35,6 +36,7 @@ const SheetCountrySelect = () => {
         {countries.map(country => (
           <YGroup.Item key={country.code}>
             <ListItem
+              backgroundColor="#222"
               onPress={() => {
                 handleClose();
                 setLocale(country.locale as Language);
@@ -45,7 +47,7 @@ const SheetCountrySelect = () => {
               }}
               pressTheme
               iconAfter={<CountryFlag isoCode={country.code} size={22} />}>
-              <Text>{country.label}</Text>
+              <Text color={"#fff"}>{country.label}</Text>
             </ListItem>
           </YGroup.Item>
         ))}

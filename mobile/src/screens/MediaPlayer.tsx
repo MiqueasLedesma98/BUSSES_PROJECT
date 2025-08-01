@@ -36,8 +36,9 @@ const MediaPlayer = () => {
   const {data, isLoading} = useQuery({
     queryKey: ["media-player"],
     queryFn: getPromotion,
+    enabled: !!locale,
     meta: {
-      lang: localeFormat[locale],
+      lang: locale ? localeFormat[locale] : null,
       type: "video",
       type_banner: "none",
     } as TPromotionMeta,
@@ -81,7 +82,7 @@ const MediaPlayer = () => {
 
   return (
     <>
-      {closeBtn && (
+      {closeBtn && !isAdPlaying && (
         <Button
           onPress={navigation.goBack}
           zIndex={10}
