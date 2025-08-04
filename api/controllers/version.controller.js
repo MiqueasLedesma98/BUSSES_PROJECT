@@ -104,17 +104,17 @@ module.exports = {
       }
 
       // 2. Multimedia: actualizar vistas
-      for (const { id, view } of multimedias) {
+      for (const { id, views } of multimedias) {
         await models.Multimedia.increment(
-          { views: parseInt(view) },
+          { views: parseInt(views) },
           { where: { id } }
         );
       }
 
       // 3. Promociones: actualizar vistas
-      for (const { id, view } of promotions) {
+      for (const { id, views } of promotions) {
         await models.Promotion.increment(
-          { views: parseInt(view) },
+          { views: parseInt(views) },
           { where: { id } }
         );
       }
