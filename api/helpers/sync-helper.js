@@ -45,8 +45,6 @@ async function exportLocalChanges() {
     Device.findAll({ raw: true }),
   ]);
 
-  console.log({ multimedias, promotions, devices });
-
   return { multimedias, promotions, devices };
 }
 
@@ -57,9 +55,9 @@ module.exports = {
   syncWithMainServer: async function () {
     const { data: remoteVersion } = await axios.get("/version");
 
-    await axios.put("/version/sync", {
-      data: await exportLocalChanges(),
-    });
+    const currentData = await exportLocalChanges();
+
+    await axios.put("/version/sync", currentData);
 
     const localVersion = await Version.findOne({
       order: [["number", "DESC"]],

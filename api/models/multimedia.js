@@ -35,7 +35,7 @@ const Multimedia = sequelize.define(
     duration: { type: DataTypes.STRING, allowNull: false },
     rate: { type: DataTypes.FLOAT, defaultValue: 0 },
     url_path: { type: DataTypes.STRING, allowNull: false },
-    views: { type: DataTypes.BIGINT, defaultValue: 0 },
+    views: { type: DataTypes.INTEGER , defaultValue: 0 },
     year: { type: DataTypes.STRING, allowNull: false },
   },
 

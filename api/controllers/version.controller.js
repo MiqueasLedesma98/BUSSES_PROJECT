@@ -99,7 +99,7 @@ module.exports = {
       // 1. Devices: hacer bulkCreate con updateOnDuplicate
       if (devices?.length) {
         await models.Device.bulkCreate(devices, {
-          updateOnDuplicate: Object.keys(devices[0] || {}), // asegura que actualiza todos los campos
+          updateOnDuplicate: ["seat", "bus", "CompanyId", "state"],
         });
       }
 
