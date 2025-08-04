@@ -36,12 +36,16 @@ async function exportLocalChanges() {
   const [multimedias, promotions, devices] = await Promise.all([
     Multimedia.findAll({
       attributes: ["views", "id"],
+      raw: true,
     }),
     Promotion.findAll({
       attributes: ["views", "id"],
+      raw: true,
     }),
-    Device.findAll(),
+    Device.findAll({ raw: true }),
   ]);
+
+  console.log({ multimedias, promotions, devices });
 
   return { multimedias, promotions, devices };
 }

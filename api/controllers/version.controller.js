@@ -105,12 +105,18 @@ module.exports = {
 
       // 2. Multimedia: actualizar vistas
       for (const { id, view } of multimedias) {
-        await models.Multimedia.increment({ views: view }, { where: { id } });
+        await models.Multimedia.increment(
+          { views: parseInt(view) },
+          { where: { id } }
+        );
       }
 
       // 3. Promociones: actualizar vistas
       for (const { id, view } of promotions) {
-        await models.Promotion.increment({ views: view }, { where: { id } });
+        await models.Promotion.increment(
+          { views: parseInt(view) },
+          { where: { id } }
+        );
       }
 
       return res.json({ msg: "Success" });

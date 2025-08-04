@@ -7,9 +7,8 @@ module.exports = {
   metrics: require("./metrics.controller"),
   promotion: require("./promotion.controller"),
   stream: require("./stream.controller"),
-  sync: require("./sync.controller"),
   upload: require("./upload.controller"),
   version: require("./version.controller"),
   view: require("./view.controller"),
-  device: require('./device.controller'),
+  device: require("./device.controller"),
 };
