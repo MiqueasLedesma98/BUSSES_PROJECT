@@ -5,6 +5,7 @@ const {
 } = require("../helpers");
 
 const path = require("path");
+const { Multimedia, Promotion } = require("../models");
 
 let isRunning = false;
 
@@ -17,6 +18,10 @@ module.exports = {
         else {
           isRunning = true;
           const shouldSyncMediaFolder = await syncWithMainServer();
+          await Promise.all([
+            Multimedia.update({ views: 0 }, { where: {} }),
+            Promotion.update({ views: 0 }, { where: {} }),
+          ]);
           if (shouldSyncMediaFolder) {
             const localStructure = await readNestedFolders(
               path.join(__dirname, "..", "media")

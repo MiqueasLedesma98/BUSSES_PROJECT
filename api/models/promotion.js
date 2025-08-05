@@ -36,7 +36,7 @@ const Promotion = sequelize.define(
         isIn: [["esp", "eng"]],
       },
     },
-    views: { type: DataTypes.INTEGER , defaultValue: 0 },
+    views: { type: DataTypes.INTEGER, defaultValue: 0 },
     description: { type: DataTypes.STRING },
     expirationDate: { type: DataTypes.DATE, allowNull: false },
     isActive: { type: DataTypes.BOOLEAN, defaultValue: true },

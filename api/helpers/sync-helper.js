@@ -54,16 +54,15 @@ module.exports = {
    */
   syncWithMainServer: async function () {
     const { data: remoteVersion } = await axios.get("/version");
-
     const currentData = await exportLocalChanges();
-
     await axios.put("/version/sync", currentData);
 
     const localVersion = await Version.findOne({
       order: [["number", "DESC"]],
+      raw: true,
     });
 
-    if (localVersion?.number ?? 0 < remoteVersion?.number) {
+    if (!localVersion || localVersion?.number < remoteVersion?.number) {
       const response = await axios.get("/version/backup", {
         responseType: "stream",
       });
@@ -107,6 +106,7 @@ module.exports = {
       if (fs.existsSync(SQL_PATH)) fs.unlinkSync(SQL_PATH);
 
       console.log("✅ Sincronización completada con éxito.");
+
       return true;
     }
 
