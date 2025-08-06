@@ -43,6 +43,7 @@ const ReleaseNewVersion = () => {
           Crear nueva versión
         </Typography>
         <Button
+          onClick={handleClose}
           variant="text"
           sx={{ position: "absolute", top: ".5em", right: ".5em" }}
         >
@@ -61,7 +62,7 @@ const ReleaseNewVersion = () => {
         <Button variant="text" onClick={mutate}>
           Si
         </Button>
-        <Button color="error" variant="text">
+        <Button color="error" variant="text" onClick={handleClose}>
           No
         </Button>
       </DialogActions>

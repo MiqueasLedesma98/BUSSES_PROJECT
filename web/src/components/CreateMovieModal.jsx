@@ -10,7 +10,6 @@ import {
   MenuItem,
   Box,
   CircularProgress,
-  LinearProgress,
 } from "@mui/material";
 import { Close, Folder, Image, Upload } from "@mui/icons-material";
 import { useModalStore } from "../store";
@@ -20,22 +19,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { uploadMovie, getCategories } from "../services";
 import { enqueueSnackbar } from "notistack";
 import { useState } from "react";
-
-function LinearProgressWithLabel(props) {
-  return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Box sx={{ width: "100%", mr: 1 }}>
-        <LinearProgress variant="determinate" {...props} />
-      </Box>
-      <Box sx={{ minWidth: 35 }}>
-        <Typography
-          variant="body2"
-          sx={{ color: "text.secondary" }}
-        >{`${Math.round(props.value)}%`}</Typography>
-      </Box>
-    </Box>
-  );
-}
+import LinearProgressWithLabel from "./LinearProgressWithLabel";
 
 const CreateMovieModal = ({ type = "movie" }) => {
   const strModal = type === "music" ? "createMusic" : "createMovie";

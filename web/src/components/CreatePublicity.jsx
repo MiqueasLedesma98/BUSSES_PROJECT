@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -16,6 +17,8 @@ import { DropZone } from "./DropZone";
 import { useMutation } from "@tanstack/react-query";
 import { uploadPublicity } from "../services";
 import { enqueueSnackbar } from "notistack";
+import { useState } from "react";
+import LinearProgressWithLabel from "./LinearProgressWithLabel";
 
 const modalKey = "create-publicity";
 
@@ -23,10 +26,11 @@ const CreatePublicity = () => {
   const open = useModalStore((s) => s.modals[modalKey]);
   const close = useModalStore((s) => s.closeModal);
   const openModal = useModalStore((s) => s.openModal);
+  const [progress, onProgress] = useState(0);
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: [modalKey],
-    mutationFn: uploadPublicity,
+    mutationFn: (value) => uploadPublicity(value, onProgress),
     onSuccess: () => {
       enqueueSnackbar("Se a creado correctamente", { variant: "success" });
       close(modalKey);
@@ -111,9 +115,17 @@ const CreatePublicity = () => {
                   </MenuItem>
                 ))}
               </Select>
+              {progress ? <LinearProgressWithLabel value={progress} /> : null}
             </DialogContent>
+
             <DialogActions>
-              <Button startIcon={<Upload />} type="submit">
+              <Button
+                fullWidth
+                disabled={isPending}
+                endIcon={<Upload />}
+                startIcon={isPending ? <CircularProgress size={15} /> : null}
+                type="submit"
+              >
                 Subir
               </Button>
             </DialogActions>

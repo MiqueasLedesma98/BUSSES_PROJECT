@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { ModalsBarrel, SideBar } from "../components";
 import MainHeader from "../components/MainHeader";
 import Footer from "../components/Footer";
+import DetailsDrawer from "../components/DetailsDrawer";
 
 const MainLayout = () => {
   return (
@@ -28,6 +29,7 @@ const MainLayout = () => {
         <Outlet />
         <Footer />
       </Box>
+      <DetailsDrawer />
     </>
   );
 };

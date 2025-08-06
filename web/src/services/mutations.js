@@ -30,7 +30,7 @@ export const uploadMovie = async (values, onProgress) => {
   return true;
 };
 
-export const uploadPromotion = async ({ values, data }) => {
+export const uploadPromotion = async ({ values, data }, onProgress) => {
   const formData = new FormData();
 
   if (!values.file) throw new Error("No se encuentra el archivo");
@@ -43,7 +43,16 @@ export const uploadPromotion = async ({ values, data }) => {
   formData.append("secondary", values.secondary);
   formData.append("type_banner", data.type_banner);
 
-  await api.post(`/promotion/${data?.type}/${data.lang}`, formData);
+  await api.post(`/promotion/${data?.type}/${data.lang}`, formData, {
+    onUploadProgress: (progressEvent) => {
+      if (onProgress && progressEvent.total) {
+        const persent = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+        onProgress(persent);
+      }
+    },
+  });
 
   return true;
 };
