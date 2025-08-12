@@ -8,7 +8,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use(async (config) => {
-  const token = await generateJWT({ email: process.env.EMAIL });
+  const token = await generateJWT({ email: "buss1@gmail.com" });
   config.headers["y-token"] = token;
   return config;
 });
