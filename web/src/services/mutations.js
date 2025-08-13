@@ -12,6 +12,9 @@ export const uploadMovie = async (values, onProgress) => {
   formData.append("media", values.media);
   formData.append("cover", values.cover);
 
+  if (!values.cover) throw new Error("El cover es obligatorio");
+  if (!values.media) throw new Error("No se encuentra el archivo");
+
   await api.post(`/upload/${values.type}/${values.lang}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
