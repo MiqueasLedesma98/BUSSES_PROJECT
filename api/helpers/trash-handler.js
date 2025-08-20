@@ -5,25 +5,27 @@ const path = require("path");
  * Elimina los archivos subidos en caso de error.
  * @param {import("express").Request} req - Objeto de la solicitud de Express.
  */
-const deleteUploadedFiles = (req) => {
-  if (!req.files) return;
-
-  ["media", "cover"].forEach((key) => {
-    if (req.files[key]) {
-      req.files[key].forEach((file) => {
-        const filePath = path.join(
-          __dirname,
-          "..",
-          "media",
-          req.params.type,
-          req.params.lang,
-          file.filename
-        );
-        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-      });
+function deleteUploadedFiles(req) {
+  try {
+    // Eliminar archivos individuales
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
     }
-  });
-};
+
+    // Eliminar múltiples archivos
+    if (req.files) {
+      for (const fieldName in req.files) {
+        for (const file of req.files[fieldName]) {
+          if (fs.existsSync(file.path)) {
+            fs.unlinkSync(file.path);
+          }
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Error limpiando archivos:", error);
+  }
+}
 
 /**
  * Eliminar un archivo usando una ruta

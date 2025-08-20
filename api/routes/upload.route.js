@@ -20,8 +20,8 @@ router.post(
       { name: "media", maxCount: 1 },
       { name: "cover", maxCount: 1 },
     ]),
-    handleConversion, // ← Nuevo middleware para conversión
-    cleanupTempFiles, // ← Middleware de limpieza
+    handleConversion, 
+    cleanupTempFiles, 
   ],
   controller.post
 );
@@ -34,8 +34,8 @@ router.put(
     check("lang", "Debe ser un lenguaje válido").isIn(["esp", "eng"]),
     validateFields,
     upload.single("media"),
-    handleConversion, // ← Nuevo middleware para conversión
-    cleanupTempFiles, // ← Middleware de limpieza
+    handleConversion, 
+    cleanupTempFiles, 
   ],
   controller.put
 );

@@ -118,56 +118,54 @@ async function convertToCompatibleFormat(tempPath, finalPath, mimeType) {
   });
 }
 
+async function processSingleFile(file, params) {
+  const { type, lang } = params;
+  const tempPath = file.path;
+
+  if (!fs.existsSync(tempPath)) {
+    throw new Error("Archivo temporal no encontrado");
+  }
+
+  const fileName = path.basename(tempPath);
+  const finalPath = path.join(__dirname, "..", "media", type, lang, fileName);
+
+  const finalFilePath = await convertToCompatibleFormat(
+    tempPath,
+    finalPath,
+    file.mimetype
+  );
+
+  // Actualizar información del archivo
+  file.path = finalFilePath;
+  file.filename = path.basename(finalFilePath);
+  file.originalname = path.basename(finalFilePath);
+
+  return finalFilePath;
+}
+
 // Middleware personalizado para manejar la conversión
-const handleConversion = (req, res, next) => {
-  const oldSend = res.send;
-  res.send = function (data) {
-    try {
-      if (req.file && req.file.path) {
-        const { type, lang } = req.params;
-        const tempPath = req.file.path;
-        const originalExtension = path.extname(req.file.originalname);
-        const fileName = path.basename(tempPath);
-
-        // Ruta final donde se guardará el archivo convertido
-        const finalPath = path.join(
-          __dirname,
-          "..",
-          "media",
-          type,
-          lang,
-          fileName
-        );
-
-        // Convertir el archivo
-        convertToCompatibleFormat(tempPath, finalPath, req.file.mimetype)
-          .then((finalFilePath) => {
-            // Actualizar la información del archivo en req.file
-            req.file.path = finalFilePath;
-            req.file.filename = path.basename(finalFilePath);
-            req.file.originalname = path.basename(finalFilePath);
-
-            // Llamar al send original
-            oldSend.call(this, data);
-          })
-          .catch((error) => {
-            console.error("Error en conversión:", error);
-            oldSend.call(this, {
-              error: "Error al convertir el archivo",
-              details: error.message,
-            });
-          });
-      } else {
-        oldSend.call(this, data);
-      }
-    } catch (error) {
-      oldSend.call(this, {
-        error: "Error en el proceso de conversión",
-        details: error.message,
-      });
+const handleConversion = async (req, res, next) => {
+  try {
+    if (req.file) {
+      await processSingleFile(req.file, req.params);
     }
-  };
-  next();
+
+    if (req.files) {
+      for (const fieldName in req.files) {
+        for (const file of req.files[fieldName]) {
+          await processSingleFile(file, req.params);
+        }
+      }
+    }
+
+    next(); // Continuar al controlador
+  } catch (error) {
+    console.error("Error en conversión:", error);
+    res.status(500).json({
+      error: "Error al convertir el archivo",
+      details: error.message,
+    });
+  }
 };
 
 // Configuración de multer

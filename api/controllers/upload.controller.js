@@ -34,12 +34,32 @@ module.exports = {
       } = req.body;
       const { type, lang } = req.params;
 
-      const mediaPath = req.files["media"]
-        ? `/media/${type}/${lang}/${req.files["media"][0].filename}`
-        : null;
+      // Verificar que los archivos existen después de la conversión
+      if (!req.files || !req.files["media"] || !req.files["media"][0]) {
+        return res.status(400).json({
+          error: "Archivo de media es requerido",
+        });
+      }
 
-      const coverPath = req.files["cover"]
-        ? `/media/${type}/${lang}/${req.files["cover"][0].filename}`
+      const mediaFile = req.files["media"][0];
+      const coverFile = req.files["cover"] ? req.files["cover"][0] : null;
+
+      // Verificar que los archivos convertidos existen
+      if (!fs.existsSync(mediaFile.path)) {
+        throw new Error(
+          "Archivo de media no encontrado después de la conversión"
+        );
+      }
+
+      if (coverFile && !fs.existsSync(coverFile.path)) {
+        throw new Error(
+          "Archivo de cover no encontrado después de la conversión"
+        );
+      }
+
+      const mediaPath = `/media/${type}/${lang}/${mediaFile.filename}`;
+      const coverPath = coverFile
+        ? `/media/${type}/${lang}/${coverFile.filename}`
         : null;
 
       const newMedia = await Multimedia.create({
@@ -58,12 +78,11 @@ module.exports = {
         const categoryInstances = await Category.findAll({
           where: { id: categories },
         });
-
         await newMedia.addCategories(categoryInstances);
       }
 
       return res.status(201).json({
-        msg: "Archivo subido con éxito",
+        msg: "Archivo subido y convertido con éxito",
         media: newMedia,
       });
     } catch (error) {
