@@ -1,6 +1,7 @@
 const _ = require("lodash");
 const { Multimedia, Category } = require("../models");
 const { deleteUploadedFiles, deleteFile } = require("../helpers");
+const fs = require('fs');
 
 /**
  * @template T
