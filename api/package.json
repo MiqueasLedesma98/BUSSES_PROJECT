@@ -8,6 +8,8 @@
     "seed": "node ./seed/all.seed.js"
   },
   "dependencies": {
+    "@ffmpeg/core": "^0.12.10",
+    "@ffmpeg/ffmpeg": "^0.12.15",
     "axios": "^1.9.0",
     "bcryptjs": "^3.0.2",
     "colors": "^1.4.0",

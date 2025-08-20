@@ -1,11 +1,13 @@
-const { validateJWT, validateFields } = require("../middlewares");
-
+const {
+  validateJWT,
+  validateFields,
+  upload,
+  handleConversion,
+  cleanupTempFiles,
+} = require("../middlewares");
 const router = require("express").Router();
 const { check } = require("express-validator");
-
 const { upload: controller } = require("../controllers");
-
-const { upload } = require("../middlewares");
 
 router.post(
   "/:type/:lang",
@@ -18,6 +20,8 @@ router.post(
       { name: "media", maxCount: 1 },
       { name: "cover", maxCount: 1 },
     ]),
+    handleConversion, // ← Nuevo middleware para conversión
+    cleanupTempFiles, // ← Middleware de limpieza
   ],
   controller.post
 );
@@ -28,9 +32,10 @@ router.put(
     validateJWT,
     check("type", "Debe ser un tipo válido").isIn(["movie", "music"]),
     check("lang", "Debe ser un lenguaje válido").isIn(["esp", "eng"]),
-    // check("media", "El archivo es obligatorio").not().isEmpty(),
     validateFields,
     upload.single("media"),
+    handleConversion, // ← Nuevo middleware para conversión
+    cleanupTempFiles, // ← Middleware de limpieza
   ],
   controller.put
 );
