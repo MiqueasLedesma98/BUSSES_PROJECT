@@ -11,6 +11,7 @@ module.exports = {
         "node_modules",
         "logs",
         "media",
+        "temp",
       ],
       script: "./bin/www",
       instances: process.env.INSTANCES,
